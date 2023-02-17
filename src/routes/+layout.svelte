@@ -1,7 +1,9 @@
-<script></script>
+<script>
+  //
+</script>
 
-<main>
-  <nav>
+<main class="p20">
+  <nav class="p20">
     <ul>
       <li><a href="/">Home</a></li>
       <li><a href="/">About</a></li>
@@ -14,6 +16,7 @@
 </main>
 
 <style lang="scss">
+  // DARK
   main {
     display: grid;
     grid-template-columns: 200px 1fr;
@@ -24,13 +27,11 @@
 
   nav {
     grid-area: nav;
-    background-color: #f1f1f1;
-    padding: 20px;
+    background: #6929c4;
   }
 
   .main {
     grid-area: main;
-    padding: 20px;
   }
 
   @media (max-width: 600px) {

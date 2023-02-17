@@ -11,5 +11,7 @@
 		"vite": "^4.0.0"
 	},
 	"type": "module",
-	"dependencies": {}
+	"dependencies": {
+		"plotly.js-dist": "^2.18.2"
+	}
 }
