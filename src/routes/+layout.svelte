@@ -1,13 +1,13 @@
 <script>
-  //
+  import { base } from "$app/paths";
 </script>
 
 <main class="p20">
   <nav class="p20">
     <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/">About</a></li>
-      <li><a href="/">Contact</a></li>
+      <li><a href="{base}/">Home</a></li>
+      <li><a href="{base}/">About</a></li>
+      <li><a href="{base}/">Contact</a></li>
     </ul>
   </nav>
   <div class="main">
@@ -16,7 +16,6 @@
 </main>
 
 <style lang="scss">
-  // DARK
   main {
     display: grid;
     grid-template-columns: 200px 1fr;
