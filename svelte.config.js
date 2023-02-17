@@ -7,13 +7,7 @@ const dev = process.argv.includes( 'dev' );
 const config = {
 	preprocess: preprocess(),
 	kit: {
-		adapter: adapter( {
-			pages: 'build',
-			assets: 'build',
-		} ),
-		paths: {
-			base: dev ? '' : '/QKerns',
-		},
+		adapter: adapter(),
 	}
 };
 
