@@ -1,4 +1,4 @@
-import{S as b,i as k,s as I,k as h,q as n,a as D,l as x,m as u,r,h as o,c as R,b as N,E as t,C as U}from"../../chunks/index-7ccf10d2.js";function O(L){let e,c,f,_,s,y,C=`// Example 1: F with RBF
+import{S as b,i as k,s as I,k as h,q as n,a as D,l as x,m as u,r,h as o,c as R,b as N,F as t,C as U}from"../../chunks/index-ea944ca2.js";function O(L){let e,c,f,_,s,y,C=`// Example 1: F with RBF
       function F1(x, y) {
         const r = Math.sqrt(x * x + y * y);
         return Math.exp(-r * r);
