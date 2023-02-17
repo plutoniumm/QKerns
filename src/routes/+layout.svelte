@@ -3,8 +3,24 @@
 </script>
 
 <main>
-  <nav class="p20 fade-right">
-    <ul>
+  <nav class="fade-right">
+    <div id="logo" class="ƒ ∆-ct mx-a" style="padding: 20px 0 10px 0;">
+      <img
+        src="{base}/qiskit.svg"
+        alt="logo"
+        height="36px"
+        width="36px"
+        style="margin-right: 5px;"
+      />
+      <div
+        class="fw4"
+        style="font-size:24px;line-height:36px;align-self:center"
+      >
+        new qkerns()
+      </div>
+    </div>
+    <hr class="w-50 o-25" />
+    <ul class="p20">
       <li><a href="{base}/">Home</a></li>
       <li>
         <a href="{base}/visualisations">Visualisations</a>
@@ -20,7 +36,7 @@
 <style lang="scss">
   main {
     display: grid;
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: 250px 1fr;
     grid-template-rows: 1fr;
     grid-template-areas: "nav main";
     height: 100vh;
@@ -36,7 +52,7 @@
   .content {
     grid-area: main;
     overflow-y: scroll;
-    width: 100%;
+    width: calc(100% - 40px);
     max-width: 1200px;
     margin: 0 auto;
   }

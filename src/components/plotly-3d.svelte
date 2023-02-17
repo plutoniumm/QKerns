@@ -1,7 +1,6 @@
 <script>
   import { onMount } from "svelte";
   import { rand } from "./plotly";
-  import Plotly from "plotly.js-dist";
 
   let plotlyDiv;
   const id = Math.round(Math.random() * 1e10).toString(36);
@@ -13,8 +12,9 @@
   const x = new Float32Array(samples);
   const y = new Float32Array(samples);
   const z = new Float32Array(samples);
+  onMount(async () => {
+    const Plotly = await import("plotly.js-dist");
 
-  onMount(() => {
     for (let i = 0; i < samples; i++) {
       x[i] = rand(-1, 1);
       y[i] = rand(-1, 1);

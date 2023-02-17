@@ -1,6 +1,5 @@
 <script>
   import { onMount } from "svelte";
-  import Plotly from "plotly.js-dist";
 
   let plotlyDiv;
   const id = Math.round(Math.random() * 1e10).toString(36);
@@ -20,7 +19,9 @@
   const y = linspace(-1, 1, samples);
   const z = new Array(samples);
 
-  onMount(() => {
+  onMount(async () => {
+    const Plotly = await import("plotly.js-dist");
+
     for (let i = 0; i < samples; i++)
       z[i] = new Float32Array(x.map((x) => F(x, y[i])));
 
