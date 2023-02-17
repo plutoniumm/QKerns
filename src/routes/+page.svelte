@@ -1,28 +1,5 @@
 <section>
-  <h2>3D</h2>
-  <pre>
-    {`function plotFunction3D(F) {
-      const numPoints = 100;
-      const x = new Array(numPoints);
-      const y = new Array(numPoints);
-      const z = new Array(numPoints);
-      for (let i = 0; i < numPoints; i++) {
-        x[i] = Math.random();
-        y[i] = Math.random();
-        z[i] = F(x[i], y[i]);
-      }
-      const data = [
-        {
-          x: x,
-          y: y,
-          z: z,
-          type: 'surface'
-        }
-      ];
-      Plotly.newPlot('plot', data);
-    }`}
-  </pre>
-  <h3>Usage</h3>
+  <h2>3D Usage</h2>
   <pre>
     {`// Example 1: F with RBF
       function F1(x, y) {
@@ -39,27 +16,7 @@
       plotFunction3D(F2);
       `}
   </pre>
-  <h2>Heatmap</h2>
-  <pre>
-    {`function plotFunctionHeatmap(F) {
-    const numPoints = 100;
-    const x = new Array(numPoints);
-    const z = new Array(numPoints);
-    for (let i = 0; i < numPoints; i++) {
-      x[i] = Math.random();
-      z[i] = F(x[i], 0);
-    }
-    const data = [
-      {
-        x: x,
-        y: z,
-        type: 'heatmap'
-      }
-    ];
-    Plotly.newPlot('plot', data);
-  }`}
-  </pre>
-  <h3>Usage</h3>
+  <h2>Heatmap Usage</h2>
   <pre>
     {`// Example 1: F with RBF
       function F1(x, y) {
