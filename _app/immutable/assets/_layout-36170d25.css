@@ -1,2 +1,0 @@
-main.svelte-u42w6l{display:grid;grid-template-columns:200px 1fr;grid-template-rows:1fr;grid-template-areas:"nav main";height:100vh}nav.svelte-u42w6l{grid-area:nav;background-color:#f1f1f1;padding:20px}.main.svelte-u42w6l{grid-area:main;padding:20px}@media(max-width: 600px){main.svelte-u42w6l{grid-template-columns:1fr;grid-template-rows:50px 1fr;grid-template-areas:"nav"
-        "main"}}
