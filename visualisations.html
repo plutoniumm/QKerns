@@ -21,6 +21,7 @@
 
 	<meta http-equiv="content-security-policy" content="">
 		<link href="/QKerns/_app/immutable/assets/_layout-9fffa3fb.css" rel="stylesheet">
+		<link href="/QKerns/_app/immutable/assets/_page-2252abf3.css" rel="stylesheet">
 		<link rel="modulepreload" href="/QKerns/_app/immutable/start-718d033d.js">
 		<link rel="modulepreload" href="/QKerns/_app/immutable/chunks/index-7ccf10d2.js">
 		<link rel="modulepreload" href="/QKerns/_app/immutable/chunks/singletons-34ffe2d7.js">
@@ -29,7 +30,7 @@
 		<link rel="modulepreload" href="/QKerns/_app/immutable/components/pages/_layout.svelte-91e42fd7.js">
 		<link rel="modulepreload" href="/QKerns/_app/immutable/modules/pages/_layout.js-9cbb603b.js">
 		<link rel="modulepreload" href="/QKerns/_app/immutable/chunks/_layout-da46b06b.js">
-		<link rel="modulepreload" href="/QKerns/_app/immutable/components/pages/_page.svelte-b40aee8f.js">
+		<link rel="modulepreload" href="/QKerns/_app/immutable/components/pages/visualisations/_page.svelte-f1973b31.js">
 </head>
 
 <body data-sveltekit-preload-data="hover">
@@ -39,52 +40,24 @@
 <main class="svelte-18bskqs"><nav class="p20 fade-right svelte-18bskqs"><ul class="svelte-18bskqs"><li class="svelte-18bskqs"><a href="/QKerns/">Home</a></li>
       <li class="svelte-18bskqs"><a href="/QKerns/visualisations">Visualisations</a></li>
       <li class="svelte-18bskqs"><a href="/QKerns/">Contact</a></li></ul></nav>
-  <div class="p20 fade content svelte-18bskqs"><section><h2>3D Usage</h2>
-  <pre>    // Example 1: F with RBF
-      function F1(x, y) {
-        const r = Math.sqrt(x * x + y * y);
-        return Math.exp(-r * r);
-      }
-      plotFunction3D(F1);
-
-      // Example 2: F with Laplacian
-      function F2(x, y) {
-        const r = Math.sqrt(x * x + y * y);
-        return Math.exp(-r);
-      }
-      plotFunction3D(F2);
-      
-  </pre>
-  <h2>Heatmap Usage</h2>
-  <pre>    // Example 1: F with RBF
-      function F1(x, y) {
-        const r = Math.sqrt(x * x + y * y);
-        return Math.exp(-r * r);
-      }
-      plotFunctionHeatmap(F1);
-
-      // Example 2: F with Laplacian
-      function F2(x, y) {
-        const r = Math.sqrt(x * x + y * y);
-        return Math.exp(-r);
-      }
-      plotFunctionHeatmap(F2);
-      
-  </pre>
+  <div class="p20 fade content svelte-18bskqs"><section><h1>Kernel Functions</h1></section>
+<section><h2>Baseline: $F(x, y) = x * y$</h2>
+  <div class="ƒ"><div id="cmot41" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div>
+    <div id="sur5so" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div></div>
 </section></div>
 </main>
 
 
-		<script type="module" data-sveltekit-hydrate="wd0nge">
+		<script type="module" data-sveltekit-hydrate="hv7yeu">
 			import { start } from "/QKerns/_app/immutable/start-718d033d.js";
 
 			start({
 				assets: "/QKerns",
 				env: {},
-				target: document.querySelector('[data-sveltekit-hydrate="wd0nge"]').parentNode,
+				target: document.querySelector('[data-sveltekit-hydrate="hv7yeu"]').parentNode,
 				version: "1676638183404",
 				hydrate: {
-					node_ids: [0, 2],
+					node_ids: [0, 3],
 					data: [null,null],
 					form: null,
 					error: null
