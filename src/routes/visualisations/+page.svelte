@@ -1,77 +1,66 @@
 <script>
   import Plot from "../../components/plotly.svelte";
 
-  $: holds = new Int16Array([
-    100, 200, 300, 400, 500, 600, 700, 1000, 1100, 1200,
-  ]);
+  $: holds = ["0.01", "0.1", "1"];
 
-  const RBF = (x, y) => Math.exp(-1 * (holds[0] / 100) * (x - y) ** 2);
-  const Laplacian = (x, y) => Math.exp(-1 * (holds[1] / 100) * Math.abs(x - y));
+  const config = [
+    {
+      name: "Plain",
+      title: "Baseline testing with just to see things work",
+      desc: `Here we plot the function $F(x, y) = x * y$ simply for an established
+    baseline.`,
+      f: `return x * y;`,
+    },
+    {
+      name: "RBF",
+      title: "RBF Kernel: $F(x, y) = e^{-\\gamma * (x - y)^2}$",
+      desc: `Here we plot the function $F(x, y) = e^{-\\gamma * (x - y)^2}$, where $\gamma$ is a hyperparameter.`,
+      f: `return Math.exp(-1 * gamma * (x - y) ** 2);`,
+    },
+    {
+      name: "Laplacian",
+      title: "Laplacian Kernel: $F(x, y) = e^{-\\gamma * |x - y|}$",
+      desc: `Here we plot the function $F(x, y) = e^{-\\gamma * |x - y|}$, where $\gamma$ is a hyperparameter.`,
+      f: `return Math.exp(-1 * gamma * Math.abs(x - y));`,
+    },
+  ];
 </script>
 
 <section>
   <h1>Kernel Functions</h1>
 </section>
-<section>
-  <h2>Baseline: $F(x, y) = x * y$</h2>
-  <div>
-    Here we plot the function $F(x, y) = x * y$ simply for an established
-    baseline.
-  </div>
-  <div class="ƒ">
-    <Plot samples={1000} type="scatter3d" />
-    <Plot samples={50} type="heatmap" />
-  </div>
-</section>
 
-<hr class="o-25" />
-<section>
-  <h2>RBF Kernel: $F(x, y) = e^{`{-\\gamma * (x - y)^2}`}$</h2>
-  <div>
-    Here we plot the function $F(x, y) = e^{`{-\\gamma * (x - y)^2}`}$, where
-    $\gamma$ is a hyperparameter.
-  </div>
-  <div>
-    <label for="gamma">Gamma</label>
-    <input
-      type="range"
-      id="gamma"
-      min="0"
-      max="100"
-      step="1"
-      bind:value={holds[0]}
-    />
-    <span>{holds[0] / 100}</span>
-    <div class="ƒ">
-      <Plot samples={1000} type="scatter3d" F={RBF} />
-      <Plot samples={50} type="heatmap" F={RBF} />
+{#each config as func, indx}
+  {@const name = func.name}
+  {@const f = func.f}
+
+  <hr class="o-25" />
+  <section>
+    <h2>{func.title}</h2>
+    <div>{func.desc}</div>
+    <div>
+      <label for="gamma">Gamma</label>
+      <input class="rpm-10" type="text" bind:value={holds[indx]} />
+      <div class="ƒ">
+        <Plot
+          samples={1000}
+          type="scatter3d"
+          {name}
+          F={new Function("x", "y", `gamma=${+holds[indx]}`, f)}
+        />
+        <Plot
+          samples={50}
+          type="heatmap"
+          {name}
+          F={new Function("x", "y", `gamma=${+holds[indx]}`, f)}
+        />
+      </div>
     </div>
-  </div>
-</section>
-<hr class="o-25" />
-<section>
-  <h2>Laplacian Kernel: $F(x, y) = e^{`{-\\gamma * |x - y|}`}$</h2>
-  <div>
-    Here we plot the function $F(x, y) = e^{`{-\\gamma * |x - y|}`}$, where
-    $\gamma$ is a hyperparameter.
-  </div>
-  <div>
-    <label for="gamma">Gamma</label>
-    <input
-      type="range"
-      id="gamma"
-      min="0"
-      max="100"
-      step="1"
-      bind:value={holds[1]}
-    />
-    <span>{holds[1] / 100}</span>
-    <div class="ƒ">
-      <Plot samples={1000} type="scatter3d" F={Laplacian} />
-      <Plot samples={50} type="heatmap" F={Laplacian} />
-    </div>
-  </div>
-</section>
+  </section>
+{/each}
 
 <style>
+  input[type="text"] {
+    background: #fff;
+  }
 </style>

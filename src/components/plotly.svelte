@@ -2,7 +2,8 @@
   import { onMount } from "svelte";
   import { rand, initialise } from "./plotly";
 
-  let plotlyDiv,
+  let //
+    plotlyDiv,
     regen,
     resample = false;
   const id = Math.round(Math.random() * 1e10).toString(36);
