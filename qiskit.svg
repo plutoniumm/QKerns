@@ -14,7 +14,7 @@
     </linearGradient>
   </defs>
   <rect fill="url(#f)" x="0" y="0" width="140" height="140" rx="28"/>
-  <g filter="invert(100%)" transform="scale(0.8) translate(14,14)">
+  <g filter="invert(100%)" transform="scale(0.8) translate(15.5,14)">
   <path fill="url(#a)" d="M131 103c-1-13-31-20-60-21-30 0-61 8-61 21s30 20 59 20c30 0 62-7 62-20Zm-62 16c-32-1-55-9-55-16 0-8 25-16 57-16s55 9 55 16-25 16-57 16Z"/>
   <path fill="#000" d="M70 140a70 70 0 1 1 62-103 70 70 0 0 1-62 103ZM70 5a65 65 0 1 0 58 34A65 65 0 0 0 70 5Z"/>
   <path fill="#000" d="M88 131c0-6-8-10-18-10s-18 4-18 10c0 5 8 9 18 9s18-4 18-9Zm-18 5c-8 0-13-3-13-5s5-5 13-5 13 3 13 5-5 5-13 5Z"/>

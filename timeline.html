@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" href="./favicon.png" />
+	<meta name="viewport" content="width=device-width" />
+
+	<link rel="stylesheet" href="https://api.nukes.in/css/global.css">
+	<link rel="stylesheet" href="https://api.nukes.in/css/keyframes.css">
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" crossorigin="anonymous">
+
+	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js" crossorigin="anonymous"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"
+		crossorigin="anonymous"></script>
+
+	<meta http-equiv="content-security-policy" content="">
+		<link href="./_app/immutable/assets/_layout-289f4c5d.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/_page-b1ae4cd2.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/start-68d92dd1.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index-7af328a4.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons-fb294236.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/paths-24bb4e9c.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/preload-helper-41c905a7.js">
+		<link rel="modulepreload" href="./_app/immutable/components/pages/_layout.svelte-823ee6a1.js">
+		<link rel="modulepreload" href="./_app/immutable/modules/pages/_layout.js-9cbb603b.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/_layout-da46b06b.js">
+		<link rel="modulepreload" href="./_app/immutable/components/pages/timeline/_page.svelte-2c76598c.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/mermaid.95cd9c8e-c4654e6d.js">
+</head>
+
+<body data-sveltekit-preload-data="hover">
+	<div style="display: contents">
+
+
+<main class="svelte-1bg17n1"><nav class="fade-right svelte-1bg17n1"><div id="logo" class="ƒ ∆-ct mx-a" style="padding: 20px 0 10px 0;"><img src="/qiskit.svg" alt="logo" height="32px" width="32px" style="margin-right: 5px;">
+      <div class="fw4" style="font-size:24px;line-height:36px;align-self:center">new qkerns()
+      </div></div>
+    <hr class="w-50 o-25">
+    <h4 class="p10 m0 svelte-1bg17n1">Pages</h4>
+    <ul class="p20 svelte-1bg17n1"><li class="svelte-1bg17n1"><a href="/">Home</a></li>
+      <li class="svelte-1bg17n1"><a href="/visualisations">Visualisations</a></li>
+      <li class="svelte-1bg17n1"><a href="/mechanism">Mechanism</a></li>
+      <li class="svelte-1bg17n1"><a href="/rbfgen">RBF Generalisation</a></li>
+      <li class="svelte-1bg17n1"><a href="/timeline">Timeline</a></li></ul>
+    <h4 class="p10 m0 svelte-1bg17n1">Python Files</h4>
+    <ul class="p20 svelte-1bg17n1"><li class="svelte-1bg17n1"><a href="/python#qgss-kerns.html">QGSS QSVM (2021)</a></li>
+      <li class="svelte-1bg17n1"><a href="/python#docs-hybrid.html">Std Hybrid Classifier </a></li></ul></nav>
+  <div class="p20 fade content svelte-1bg17n1"><article class="p-abs rpm-10 svelte-ot3qun" id="toc" style="right: 10px;top:10px;background:#fff;padding-right:15px;"><ol></ol></article>
+<section class="svelte-ot3qun"><header class="svelte-ot3qun">General</header>
+  <h4>Problem: Finding new Quantum Kernel Functions for data mapping to be used in
+    QSVMs and other QML Algorithms
+  </h4>
+  <div><b>Probable Tools</b>
+    <div><chip class="svelte-ot3qun"><a href="https://youtu.be/RI35E5ewBuI" class="svelte-ot3qun">Liquid Neural Nets</a></chip></div>
+    <b>Current State</b>
+    <pre class="d-n">  <!-- HTML_TAG_START -->graph LR
+    Derivation --> Generalisation --> RBF --> Matern --> x["Currently: Wendland"]
+    NewKernel --> Derivation --> RidgeRegression("From Ridge Regression")
+
+    CoreMath --> DeepNets("Deep Nets are Kernels")
+    CoreMath --> UAT("Universal Approximation Theorem")
+
+    Optimisations --> GeneticOpti("Genetic Optimisation")
+    Optimisations --> Annealing --> SVM2QUBO("SVM &rarr; QUBO")
+        Annealing --> GradonQUBO("Gradient Descent Step on QUBO")
+
+    Quantum --> QKerns("Quantum Kernels")
+    Quantum --> Hybrid("Hybrid Quantum Algorithms")
+
+    Other --> FeynmanPath("Feynman Path Integral as data analysis tool")
+
+    subgraph "StartingPoints"
+        NewKernel
+        CoreMath
+        Optimisations
+        Quantum
+        Other
+    end
+<!-- HTML_TAG_END -->
+</pre>
+<main><div id="rendered"><!-- HTML_TAG_START --><!-- HTML_TAG_END --></div>
+</main></div></section>
+
+<section class="svelte-ot3qun"><header class="svelte-ot3qun">Week 5</header>
+  <div>???</div></section>
+<section class="svelte-ot3qun"><header class="svelte-ot3qun">Week 4</header>
+  <pre class="d-n">  <!-- HTML_TAG_START -->
+    graph LR
+    GaussianKernel --> RBFKernel --> PeriodicKernel --> MaternKernel --> Unkown["???"]
+  <!-- HTML_TAG_END -->
+</pre>
+<main><div id="rendered"><!-- HTML_TAG_START --><!-- HTML_TAG_END --></div>
+</main>
+  <details class="mini svelte-ot3qun"><summary class="svelte-ot3qun">Presentation</summary>
+    <iframe src="/templates/w3.html" sandbox="allow-scripts" title="w3" frameborder="0" class="svelte-ot3qun"></iframe></details></section>
+
+<section class="svelte-ot3qun"><header class="svelte-ot3qun">Week 3</header>
+  <details class="mini svelte-ot3qun"><summary class="svelte-ot3qun">Code</summary>
+    <iframe src="/templates/w3py.html" sandbox="allow-scripts" title="w3py" frameborder="0" class="svelte-ot3qun"></iframe></details>
+  <b>Useful Questions</b>
+  <ul><li><input type="checkbox" checked disabled>
+      What are Kernel Functions
+      <br>
+      <input type="checkbox" disabled>How do they work i.e how much can we
+      predict the behavior of a function if at all?
+    </li>
+    <li><input type="checkbox" disabled>
+      What are the different types of Kernel Functions and how were they Arrived
+      upton? visualising them!!
+    </li>
+    <li><input type="checkbox" disabled>
+      What are the different types of Kernel Functions that are used in QML? (I think
+      this is the most important question)
+      <br>
+      <input type="checkbox" disabled>
+      As a sub question, I think I would need to think of a few ways to visualise
+      Quantum Kernels since right now that seems like very poorly documented online
+    </li></ul>
+
+  <b>Useful Resources</b>
+  <ul><li class="svelte-ot3qun"><a href="https://www.nature.com/articles/s41567-021-01287-z" class="svelte-ot3qun">[Nature] Q-kernel estimation provide Exp Q Speedup via the use of
+        Q-enhanced feature spaces
+      </a></li>
+    <li class="svelte-ot3qun"><a href="https://ar5iv.labs.arxiv.org/html/2111.06063" class="svelte-ot3qun">[Ar5iv] Infinite NNs are not blackboxes but SVMs
+      </a></li>
+    <li class="svelte-ot3qun"><a href="https://cognitivemedium.com/magic_paper/assets/Hornik.pdf" class="svelte-ot3qun">Multilayer NNs are universal approximators (Universal Approximation
+        Thm): Can be used to make a Kernel out of NN (a relatively newer idea
+        floating around
+        <a href="https://ieeexplore.ieee.org/abstract/document/7877043" class="svelte-ot3qun">here</a>
+        )?
+      </a></li>
+    <li class="svelte-ot3qun"><a href="https://www.nature.com/articles/s41598-018-20275-7" class="svelte-ot3qun">Optimisation Techniques using Self Organised Criticality (SOC)
+        Search(was shown to be more efficient than simulated annealing, incl on
+        problems equivalent to finding ground state on Ising Spin Glass)</a></li>
+    <li class="svelte-ot3qun"><a href="https://ar5iv.labs.arxiv.org/html/2107.03402" class="svelte-ot3qun">The above paper is important since it was theorized here, that training
+        dynamics of NNs are attracted towards SOC States, (this however might be
+        too far from our use case since we&#39;re not looking at NNs directly but
+        SVMs, not sure)</a></li></ul></section>
+
+<details class="svelte-ot3qun"><summary class="svelte-ot3qun">Week 2</summary>
+  <div><ul><li>Doing LitRev of QML Algorithms</li></ul>
+    <b>Picking Topics</b>
+    <ul><li>Encoding Kernel Function Finding efficient kernel fns for QML (like
+        DLOG) that work better on QCs than on classical computers
+      </li>
+      <li>Encoding Data ZZ Z XZ Finding better encodings for data</li>
+      <li>RL for Ansatz Using RL for finding better initial guess for ansatz
+      </li>
+      <li>Problems in Finance Finding better ways to solve problems in finance
+      </li></ul></div></details>
+
+<details class="svelte-ot3qun"><summary class="svelte-ot3qun">Week 1</summary>
+  <div><ul><li class="svelte-ot3qun">Revision:
+        <a href="https://youtube.com/playlist?list=PLvvQ7qimTOklI0uO9gYfng__EyFfOoSna" class="svelte-ot3qun">[WILP: QIC]
+        </a></li>
+      <li class="svelte-ot3qun">Started:
+        <a href="https://youtube.com/playlist?list=PLmRxgFnCIhaMgvot-Xuym_hn69lmzIokg" class="svelte-ot3qun">[UnivWaterloo: QML MOOC]
+        </a></li></ul></div>
+</details></div>
+</main>
+
+
+		<script type="module" data-sveltekit-hydrate="1j6jft9">
+			import { start } from "./_app/immutable/start-68d92dd1.js";
+
+			start({
+				assets: "",
+				env: {},
+				target: document.querySelector('[data-sveltekit-hydrate="1j6jft9"]').parentNode,
+				version: "1676886205626",
+				hydrate: {
+					node_ids: [0, 6],
+					data: [null,null],
+					form: null,
+					error: null
+				}
+			});
+		</script>
+	</div>
+
+	<script type="module">
+		import renderMathInElement from "https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.mjs";
+
+		setTimeout( () => {
+			renderMathInElement( document.querySelector( '.content' ), {
+				output: 'html',
+				delimiters: [
+					{ left: '$$', right: '$$', display: true },
+					{ left: '$', right: '$', display: false }
+				],
+				throwOnError: false
+			} );
+		}, 1000 );
+	</script>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+		body {
+			background: #f5f5f7;
+			font-family: 'Inter', sans-serif;
+		}
+
+		.katex {
+			font-size: 1em !important;
+		}
+
+		.hljs {
+			border-radius: 10px;
+		}
+
+		.shadow {
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+			transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+		}
+
+		.shadow:hover {
+			box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+				0 10px 10px rgba(0, 0, 0, 0.22);
+		}
+
+		.bold {
+			font-weight: 700;
+		}
+	</style>
+	<style>
+		/* For TOC on timeline page */
+		#toc ol {
+			list-style-type: none;
+			counter-reset: level-1;
+			padding-left: 1rem;
+		}
+
+		#toc li {
+			color: #888;
+			font-weight: 300;
+			padding: 2px 0;
+			counter-increment: level-1;
+		}
+
+		#toc li:before {
+			content: counters(level-1, ".") " ";
+		}
+
+		#toc ol ol {
+			list-style-type: none;
+			counter-reset: level-2;
+		}
+
+		#toc li ol li {
+			counter-increment: level-2;
+		}
+
+		#toc li ol li:before {
+			content: counters(level-1, ".") "." counters(level-2, ".") " ";
+		}
+	</style>
+	<style>
+		/* For mermaid on timeline page */
+		#rendered svg {
+			max-height: 500px;
+			max-width: 991px !important;
+			margin-left: 0;
+		}
+	</style>
+</body>
+
+</html>
