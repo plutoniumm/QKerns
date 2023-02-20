@@ -1,6 +1,7 @@
 <script>
 </script>
 
+<h1>Kernel Generalisations</h1>
 <section>
   <h2>RBF $\rightarrow$ Matern</h2>
   <div>

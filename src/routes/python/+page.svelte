@@ -3,13 +3,19 @@
 
   $: hash = "";
 
-  function routeChange() {
-    hash = new URL(window.location.href).hash.slice(1);
-  }
+  const routeChange = () =>
+    (hash = new URL(window.location.href).hash.slice(1));
+
   onMount(routeChange);
 </script>
 
 <svelte:window on:hashchange={routeChange} />
+
+<!-- below is a hack to get around sveltes no id problem for /python#pageid -->
+{#each ["qgss-kerns.html", "docs-hybrid.html"] as pid}
+  <span class="d-n" id={pid}>&nbsp;</span>
+{/each}
+<!-- hack over -->
 
 <iframe
   src="/python/{hash}"

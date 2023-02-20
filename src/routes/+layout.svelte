@@ -33,9 +33,7 @@
     <ul class="p20">
       <li><a href="{base}/python#qgss-kerns.html">QGSS QSVM (2021)</a></li>
       <li>
-        <a href="{base}/python#docs-hybrid.html">
-          Hybrid Classifier (torch+qiskit)
-        </a>
+        <a href="{base}/python#docs-hybrid.html"> Std Hybrid Classifier </a>
       </li>
     </ul>
   </nav>

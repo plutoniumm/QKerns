@@ -2,21 +2,34 @@
   import Plot from "../../components/plotly.svelte";
   import { uuid } from "../../components/plotly";
 
-  $: holds = ["0.01", "0.1", "1", "0.2", "0.2", "0.05", "0.05"];
+  $: RFB_gamma = 1;
+  $: Sigmoid_gamma = 1;
+  $: Poly_gamma = 1;
+  $: Poly_d = 2;
+  $: Poly_r = 0.5;
+  $: Matern_nu = 1.5;
+  $: RQ_alpha = 1;
 
-  const config = [
+  $: config = [
     // plain
     {
       name: "Plain",
       title: "Baseline testing with just to see things work",
       desc: `Here we plot the function $F(x, y) = x * y$ simply for an established
-    baseline.`,
+         baseline.`,
+      params: [],
       f: `return x**2 * y**2;`,
     },
     // RBF
     {
       name: "RBF",
       title: "RBF Kernel: $F(x, y) = e^{-\\gamma * (x - y)^2}$",
+      params: [
+        {
+          name: "gamma",
+          value: RFB_gamma,
+        },
+      ],
       desc: `Here we plot the function $F(x, y) = e^{-\\gamma * (x - y)^2}$, where $\gamma$ is a hyperparameter.`,
       f: `return Math.exp(-1 * gamma * (x - y) ** 2);`,
     },
@@ -25,6 +38,12 @@
       name: "Sigmoid",
       title: "Sigmoid Kernel: $F(x, y) = \\tanh(\\gamma * (x - y) + \\beta)$",
       desc: `Here we plot the function $F(x, y) = \\tanh(\\gamma * (x - y) + \\beta)$, where $\\gamma$ and $\\beta=0.5$ are hyperparameters.`,
+      params: [
+        {
+          name: "gamma",
+          value: Sigmoid_gamma,
+        },
+      ],
       f: `return Math.tanh(gamma * (x - y) + 0.5);`,
     },
     // Polynomial
@@ -32,7 +51,21 @@
       name: "Polynomial",
       title: "Polynomial Kernel: $F(x, y) = (\\gamma * (x - y) + \\beta)^d$",
       desc: `Here we plot the function $F(x, y) = (\\gamma * (x - y) + \\beta)^d$, where $\\gamma$, $\\beta=0.5$ and $d=2$ are hyperparameters.`,
-      f: `return (gamma * (x - y) + 0.5) ** 2;`,
+      params: [
+        {
+          name: "gamma",
+          value: Poly_gamma,
+        },
+        {
+          name: "d",
+          value: Poly_d,
+        },
+        {
+          name: "r",
+          value: Poly_r,
+        },
+      ],
+      f: `return (gamma * (x - y) + r) ** d;`,
     },
     // Matern
     {
@@ -40,8 +73,13 @@
       title:
         "Matern Kernel: $F(x, y) = \\frac{2^{1-\\nu}}{\\Gamma(\\nu)}\\left(\\sqrt{2\\nu}\\frac{|x - y|}{\\lambda}\\right)^\\nu K_\\nu\\left(\\sqrt{2\\nu}\\frac{|x - y|}{\\lambda}\\right)$",
       desc: `Here we plot the function $F(x, y) = \\frac{2^{1-\\nu}}{\\Gamma(\\nu)}\\left(\\sqrt{2\\nu}\\frac{|x - y|}{\\lambda}\\right)^\\nu K_\\nu\\left(\\sqrt{2\\nu}\\frac{|x - y|}{\\lambda}\\right)$, where $\\nu=1.5$ and $\\lambda=1$ are hyperparameters.`,
+      params: [
+        {
+          name: "nu",
+          value: Matern_nu,
+        },
+      ],
       f: `{
-        const nu = 2;
         return (
           (2 ** (1 - nu)) / math.gamma(nu) *
           ((2 * nu) ** 0.5 * Math.abs(x - y)) ** nu *
@@ -55,6 +93,7 @@
       title:
         "Periodic Kernel: $F(x, y) = \\exp\\left(-\\frac{2\\sin^2\\left(\\pi\\frac{|x - y|}{p}\\right)}{l^2}\\right)$",
       desc: `Here we plot the function $F(x, y) = \\exp\\left(-\\frac{2\\sin^2\\left(\\pi\\frac{|x - y|}{p}\\right)}{l^2}\\right)$, where $l=1$ and $p=1$ are hyperparameters.`,
+      params: [],
       f: `return Math.exp(-2 * Math.sin(Math.PI * Math.abs(x - y)) ** 2);`,
     },
     // RQ
@@ -63,13 +102,20 @@
       title:
         "RQ Kernel: $F(x, y) = \\left(1 + \\frac{|x - y|^2}{2\\alpha l^2}\\right)^{-\\alpha}$",
       desc: `Here we plot the function $F(x, y) = \\left(1 + \\frac{|x - y|^2}{2\\alpha l^2}\\right)^{-\\alpha}$, where $\\alpha=1$ and $l=1$ are hyperparameters.`,
-      f: `return (1 + (x - y) ** 2 / (2 * 1 * 1)) ** -1;`,
+      params: [
+        {
+          name: "alpha",
+          value: RQ_alpha,
+        },
+      ],
+      f: `return (1 + (x - y) ** 2 / (2 * alpha)) ** -alpha;`,
     },
     // WHite Noise
     {
       name: "White Noise",
       title: "White Noise Kernel: $F(x, y) = \\delta(x - y)$",
       desc: `Here we plot the function $F(x, y) = \\delta(x - y)$, where $\delta$ is the Dirac delta function.`,
+      params: [],
       f: `return x === y ? 1 : 0;`,
     },
   ];
@@ -103,26 +149,44 @@
     <h2>{func.title}</h2>
     <div>{func.desc}</div>
     <div>
-      <label for="gamma-{uid}" style="pointer-events: none;">Gamma</label>
-      <input
-        name="gamma-{uid}"
-        class="rpm-10"
-        type="text"
-        bind:value={holds[indx]}
-      />
+      <div class="params">
+        {#each func.params as param}
+          {@const pid = uuid()}
+          {@const pname = param.name}
+          <label
+            class="fw5"
+            for="{pname}-{uid}"
+            style="pointer-events: none;text-transform: capitalize;"
+          >
+            {pname}:
+          </label>
+          <input
+            name="{pname}-{pid}"
+            class="rpm-5"
+            type="text"
+            bind:value={param.value}
+          />
+        {/each}
+      </div>
+
       <div class="ƒ">
-        <Plot
-          samples={1000}
-          type="scatter3d"
-          {name}
-          F={new Function("x", "y", `gamma=${+holds[indx]}`, f)}
-        />
-        <Plot
-          samples={50}
-          type="heatmap"
-          {name}
-          F={new Function("x", "y", `gamma=${+holds[indx]}`, f)}
-        />
+        {#each [["scatter3d", 1000], ["heatmap", 50]] as [type, samples]}
+          <div class="w-100">
+            {#key func.params.map((p) => p.value).join("-")}
+              <Plot
+                {samples}
+                {type}
+                {name}
+                F={new Function(
+                  "x",
+                  "y",
+                  ...func.params.map((p) => `${p.name}=${p.value}`),
+                  f
+                )}
+              />
+            {/key}
+          </div>
+        {/each}
       </div>
     </div>
   </section>

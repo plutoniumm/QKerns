@@ -3,11 +3,8 @@
   import { rand, initialise, uuid } from "./plotly";
 
   let //
-    plotlyDiv,
-    regen,
-    resample = false;
+    plotlyDiv;
   const id = uuid();
-  const lid = uuid();
 
   export let F = (x, y) => x * y;
   export let samples = 1000;
@@ -20,9 +17,8 @@
   const calculate = {
     // generate a heatmap (ASSUMING xyz are global)
     heatmap: () => {
-      for (let i = 0; i < samples; i++) {
+      for (let i = 0; i < samples; i++)
         z[i] = new Float32Array(x.map((x) => F(x, y[i])));
-      }
     },
     // generate a scatter3d (ASSUMING xyz are global)
     scatter3d: () => {
@@ -62,40 +58,19 @@
       title: `${name} ${type}`.toUpperCase(),
       margin: { l: 20, r: 20, b: 50, t: 50 },
     });
-
-    // Regenerate (if say params changed)
-    regen = () => {
-      for (let i = 0; i < samples; i++) calculate[type]();
-      Plotly.redraw(id);
-    };
   });
 </script>
 
-<div class="plut w-100 rx5">
-  <div class="w-100" style="padding:10px 0">
-    <label class="box" for="resample-{lid}">
-      Resample
-      <input type="checkbox" id="resample-{lid}" bind:checked={resample} />
-    </label>
-
-    <button class="box" on:click={regen}>Regenerate</button>
-  </div>
-  <div
-    {id}
-    class="w-100 fade-up h-100"
-    bind:this={plotlyDiv}
-    style="height: 400px;"
-  />
-</div>
+<div
+  {id}
+  class="w-100 fade-up h-100 plut"
+  bind:this={plotlyDiv}
+  style="height: 400px;"
+/>
 
 <style>
   .plut {
     margin: 0 auto;
     max-width: 100%;
-  }
-  .box {
-    border-radius: 5px;
-    padding: 5px;
-    background: #fff;
   }
 </style>

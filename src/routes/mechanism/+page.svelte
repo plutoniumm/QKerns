@@ -4,7 +4,7 @@
   import "highlight.js/styles/atom-one-dark.css";
 </script>
 
-<h1 class="w-100 mx-a">Kernel Functions</h1>
+<h1 class="w-100 mx-a">Kernel Functions Mechanism</h1>
 <section>
   <h2>Regression</h2>
   <p>
