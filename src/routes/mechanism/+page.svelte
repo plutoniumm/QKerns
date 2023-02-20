@@ -1,37 +1,39 @@
-<script></script>
+<script>
+  import Highlight from "svelte-highlight";
+  import python from "svelte-highlight/languages/python";
+  import "highlight.js/styles/atom-one-dark.css";
+</script>
 
 <h1 class="w-100 mx-a">Kernel Functions</h1>
-<section>
+<section class="d-n">
   <h2>Regression</h2>
   <p>
     Our objective first is to find the best linear predictor for the response
     variable $Y$ given the covariates $X$. We will assume that the response
     variable $Y$ is a linear combination of the covariates $X$ and derive a
     weight matrix $w$ such that <br />
-    $$ Y = w^T X $$ <br />
-    We do this simply by defining the loss function as the sum of squared errors
-    and minimizing it with respect to $w$. We can write this as <br />
-    $$ J(w) = \min_w \sum_{`{i=1}`}^n (y_i - w^T x_i)^2 $$ <br />
-    Solving this for $w$ gives us <br />
+    $$ Y = w^T X $$ We do this simply by defining the loss function as the sum of
+    squared errors and minimizing it with respect to $w$. We can write this as
+    <br />
+    $$ J(w) = \min_w \sum_{`{i=1}`}^n (y_i - w^T x_i)^2 $$ Solving this for $w$
+    gives us <br />
     $$ w = (X^T X)^{`{-1}`} X^T Y $$
   </p>
 </section>
-<section>
+<section class="d-n">
   <h2>Non Linearity</h2>
   <p>
     We can extend this to non linear mappings for $X$ by introducing a function
     $\phi$ such that $X \rightarrow \phi(X)$. We can then write the desired
     predictor as <br />
-    $$ Y = w^T \phi(X) $$ <br />
-    We can then also write the weight matrix as <br />
-    $$ w^* = (\phi^T \phi)^{`{-1}`} \phi^T Y $$ <br />
-    Let us introduce a regularization term $\lambda$ such that the weight matrix
-    is <br />
-    $$ w = (\phi^T \phi + \lambda I)^{`{-1}`} \phi^T Y $$ <br />
-    The logic behind adding a regularization term is that we want to penalise the
-    slope of the line. This is because we want to avoid overfitting. Adding bias
-    results in a lower variance which makes the outputs less sensitive to the inputs.
-    The parameter $\lambda$ is what controls the amount of bias we want to add
+    $$ Y = w^T \phi(X) $$ We can then also write the weight matrix as <br />
+    $$ w^* = (\phi^T \phi)^{`{-1}`} \phi^T Y $$ Let us introduce a regularization
+    term $\lambda$ such that the weight matrix is <br />
+    $$ w = (\phi^T \phi + \lambda I)^{`{-1}`} \phi^T Y $$ The logic behind adding
+    a regularization term is that we want to penalise the slope of the line. This
+    is because we want to avoid overfitting. Adding bias results in a lower variance
+    which makes the outputs less sensitive to the inputs. The parameter $\lambda$
+    is what controls the amount of bias we want to add
     <br />
     We additionally notice that in order to calculate the weight matrix, we need
     also calculate $\phi^T \phi$ which is an $n \times n$ matrix. This is computationally
@@ -40,7 +42,7 @@
     kernel trick.
   </p>
 </section>
-<details class="p5 rx20" style="border:1px solid #ccc;">
+<details class="p5 rx20 d-n" style="border:1px solid #ccc;">
   <summary>
     <h2 class="d-ib m5">Restructuring the Weight Matrix</h2>
     <div class="mx-a">
@@ -53,48 +55,41 @@
     Let us now define the new loss function along with a regularization term <br
     />
     $$ J(w) = \min_w \sum_{`{i=1}`}^n (y_i - w^T \phi(x_i))^2 + \frac{`{\u005Clambda}`}{2}
-    ||w||^2 $$ <br />
-    We can now solve for $w$ and get <br />
+    ||w||^2 $$ We can now solve for $w$ and get <br />
     $$ w^* = \frac{1}{`{\u005Clambda}`} \sum_{`{i=1}`}^n (y_i - w^T \phi(x_i))
-    \phi(x_i) $$ <br />
-    For sake of simplicity let us define a variable $\alpha$ such that <br />
+    \phi(x_i) $$ For sake of simplicity let us define a variable $\alpha$ such
+    that <br />
     $$ \alpha = \frac{1}{`{\u005Clambda}`} \sum_{`{i=1}`}^n (y_i - w^T
-    \phi(x_i)) $$ <br />
-    We can now write the weight matrix as <br />
-    $$ w^* = \sum_{`{i=1}`}^n \alpha_i \phi(x_i) = \phi^T \alpha $$ <br />
-    Let us now substitute this into the loss function and get <br />
+    \phi(x_i)) $$ We can now write the weight matrix as <br />
+    $$ w^* = \sum_{`{i=1}`}^n \alpha_i \phi(x_i) = \phi^T \alpha $$ Let us now
+    substitute this into the loss function and get <br />
     $$ J(\alpha) = (y - \phi \alpha)^T (y - \phi \alpha) + \frac{`{\u005Clambda}`}{2}
-    w^T w $$ <br />
-    expanding and simplifying this will give us <br />
+    w^T w $$ expanding and simplifying this will give us <br />
     $$ J(\alpha) = y^T y - y^T \phi \phi^T \alpha - \alpha^T \phi^T y + \alpha^T
-    \phi^T \phi \alpha + \frac{`{\u005Clambda}`}{2} w^T w $$ <br />
-
-    We can see that $\phi \phi^T$ is a repeated term. Let us define this new
-    matrix as $K$ such that $$ K = \phi \phi^T = \begin{`{bmatrix}`}
+    \phi^T \phi \alpha + \frac{`{\u005Clambda}`}{2} w^T w $$ We can see that $\phi
+    \phi^T$ is a repeated term. Let us define this new matrix as $K$ such that $$
+    K = \phi \phi^T = \begin{`{bmatrix}`}
     \phi(x_1)^T \phi(x_1) & \phi(x_1)^T \phi(x_2) & \cdots & \phi(x_1)^T \phi(x_n)
     \\ \phi(x_2)^T \phi(x_1) & \phi(x_2)^T \phi(x_2) & \cdots & \phi(x_2)^T \phi(x_n)
     \\ \vdots & \vdots & \ddots & \vdots \\ \phi(x_n)^T \phi(x_1) & \phi(x_n)^T \phi(x_2)
-    & \cdots & \phi(x_n)^T \phi(x_n) \end{`{bmatrix}`} $$ <br />
-
-    This matrix has two very important properties. First, it is symmetric and
-    second, it is positive semi-definite. (This also means it is invertible
-    which $\phi^T \phi$ MAY NOT). We can substitute all $\phi \phi^T$ with $K$
-    and also $K$ with $K^T$ and get <br />
+    & \cdots & \phi(x_n)^T \phi(x_n) \end{`{bmatrix}`} $$ This matrix has two very
+    important properties. First, it is symmetric and second, it is positive semi-definite.
+    (This also means it is invertible which $\phi^T \phi$ MAY NOT). We can substitute
+    all $\phi \phi^T$ with $K$ and also $K$ with $K^T$ and get <br />
     $$ J(\alpha) = y^T y - 2 y^T K \alpha + \alpha^T K^2 \alpha + \frac{`{\u005Clambda}`}{2}
-    \alpha^T K \alpha $$ <br />
-    Seeting the derivative of this with respect to $\alpha$ to zero and solving for
-    $\alpha$ gives us (along with $K = \phi \phi^T$) <br />
+    \alpha^T K \alpha $$ Seeting the derivative of this with respect to $\alpha$
+    to zero and solving for $\alpha$ gives us (along with $K = \phi \phi^T$)
+    <br />
     $$ \alpha* = (K + \frac{`{\u005Clambda}`}{2} I)^{-1} y $$ or $$ \alpha* = (K
-    + \lambda' I)^{-1} y $$ <br />
-    We have achieved in this section effectively converting one equation to another
-    as follows <br />
+    + \lambda' I)^{-1} y $$ We have achieved in this section effectively converting
+    one equation to another as follows <br />
     $$ w^* = (\phi^T \phi + \lambda I)^{-1} \phi^T Y $$ into <br />
-    $$ w^* = \phi^T (K + \lambda' I)^{-1} Y $$ <br />
-    By the looks of it we may not have done anything, but as we will see in the next
-    section, this step will reduce the computation time by a lot.
+    $$ w^* = \phi^T (K + \lambda' I)^{-1} Y $$ By the looks of it we may not have
+    done anything, but as we will see in the next section, this step will reduce
+    the computation time by a lot.
   </p>
 </details>
-<section>
+<section class="d-n">
   <h2>Mercer's Theorem</h2>
   <p>
     A symmetric positive semi-definite function $K(x, y)$ can be expressed as an
@@ -103,12 +98,12 @@
     $K(x,y)$ is positive semi-definite i.e <br />
     $$ \int K(x, y) g(x) g(y) dx dy \geq 0 \forall g $$ or equivalently <br />
     $$ \begin{`{bmatrix}`} K(x_1, x_1) & K(x_1, x_2) & \cdots \\ K(x_2, x_1) & \ddots
-    & \\ \vdots & & \ddots \end{`{bmatrix}`} $$ <br />
-    is positive semi-definite for any collection ${`{x_1, x_2, \\cdots}`}$
+    & \\ \vdots & & \ddots \end{`{bmatrix}`} $$ is positive semi-definite for any
+    collection ${`{x_1, x_2, \\cdots}`}$
     <br />
   </p>
 </section>
-<section>
+<section class="d-n">
   <h2>The Kernel Trick</h2>
   <p>
     What Mercer's Theorem lets us do is rewrite every term in the Kernel matrix
@@ -116,8 +111,10 @@
     \phi(x_1)^T \phi(x_1) & \phi(x_1)^T \phi(x_2) & \cdots & \phi(x_1)^T \phi(x_n)
     \\ \phi(x_2)^T \phi(x_1) & \phi(x_2)^T \phi(x_2) & \cdots & \phi(x_2)^T \phi(x_n)
     \\ \vdots & \vdots & \ddots & \vdots \\ \phi(x_n)^T \phi(x_1) & \phi(x_n)^T \phi(x_2)
-    & \cdots & \phi(x_n)^T \phi(x_n) \end{`{bmatrix}`}
-    $$ <br />
+    & \cdots & \phi(x_n)^T \phi(x_n) \end{`{bmatrix}`} = \begin{`{bmatrix}`}
+    k(x_1, x_1) & k(x_1, x_2) & \cdots & k(x_1, x_n) \\ k(x_2, x_1) & k(x_2, x_2)
+    & \cdots & k(x_2, x_n) \\ \vdots & \vdots & \ddots & \vdots \\ k(x_n, x_1) &
+    k(x_n, x_2) & \cdots & k(x_n, x_n) \end{`{bmatrix}`} $$
   </p>
   <ul class="d-ib">
     <li>First: $K$ is symmetric</li>
@@ -126,160 +123,150 @@
       which $\phi^T \phi$ MAY NOT)
     </li>
   </ul>
-  <p>hi</p>
+  <p>
+    So as long as we know the Kernel (which we can either choose or learn), we
+    can compute the Kernel matrix and use it to solve for $\alpha$ and then
+    compute $w^*$ efficiently
+  </p>
+</section>
+<section class="d-n">
+  <h2>Working Example</h2>
+  <p>
+    Consider the following mapping $$ \phi: x \rightarrow \phi(x) = \begin{`{bmatrix}`}
+    x_1^2 \\ \sqrt{`{2}`} x_1 x_2 \\ x_2^2 \end{`{bmatrix}`} $$ Let us for sake of
+    demonstration work out its kernel <br />
+    $$ \phi^T(x_m) \phi(x_n) = \begin{`{bmatrix}`} x_{`{m,1}`}^2 & \sqrt{`{2}`} x_{`{m,1}`}
+    x_{`{m,2}`} & x_{`{m,2}`}^2 \end{`{bmatrix}`} \begin{`{bmatrix}`} x_{`{n,1}`}^2
+    \\ \sqrt{`{2}`} x_{`{n,1}`} x_{`{n,2}`} \\ x_{`{n,2}`}^2 \end{`{bmatrix}`}
+    = x_{`{m,1}`}^2 x_{`{n,1}`}^2 + 2 x_{`{m,1}`} x_{`{m,2}`} x_{`{n,1}`} x_{`{n,2}`}
+    + x_{`{m,2}`}^2 x_{`{n,2}`}^2 $$ <br />
+    Clearly $$ \phi^T(x_m) \phi(x_n) = (x_{`{m,1}`}
+    x_{`{n,1}`} + x_{`{m,2}`} x_{`{n,2}`})^2 = (x_m^T x_n)^2 = k(x_m, x_n) $$
+    This is an example of a Kernel called the <b>Polynomial Kernel</b> which is
+    defined as $$ k(x, y) = (x^T y + r)^d $$ making in our case the parameters
+    $d = 2$ and $r = 0$ <br />
+  </p>
+</section>
+<section>
+  <h2>Making Predictions</h2>
+  <p>
+    We can now make predictions using the Kernel trick. We can use the following
+    equation to make predictions with $ y = w^T \phi(x) $ But as we have seen
+    above we can convert the RHS from
+    <br />$$ w^T \phi(x) = y(\phi \phi^T + \lambda' I)^{`{-1}`} \phi^T \phi(x) $$
+    to <br /> $$ w^T \phi(x) = y(K + \lambda' I)^{`{-1}`} k_x $$ where $k_x$ is
+    <br />
+    $$ k_x = \phi^T \phi(x) = \begin{`{bmatrix}`} \phi(x_1)^T \phi(x) \\ \phi(x_2)^T
+    \phi(x) \\ \vdots \\ \phi(x_n)^T \phi(x) \end{`{bmatrix}`} $$ And our result
+    is completely independent of the mapping $\phi$ and only depends on the Kernel
+    $k$ and the data $X$ and $Y$ <br />
+  </p>
+</section>
+<section>
+  <h2>Applying the Kernel Trick to the SVM</h2>
+  <p>
+    As we know an SVM is a machine that can classify data by finding a
+    hyperplane that separates the data into two classes. The SVM is a linear
+    classifier, which means that it can only classify data that is linearly
+    separable. But most data in the real world is not linear and so we need to
+    use a non-linear classifier. The work around for that is that we first apply
+    a non linear transformation to the data and then use a linear classifier to
+    classify the transformed data. <br />
+    Let us look at how we do that for a simple case
+  </p>
+  <Highlight
+    language={python}
+    code={`def rand_pt_circle(rad_min, rad_max):
+      angle = random.uniform(0, 2 * math.pi)
+      radius = random.uniform(rad_min, rad_max)
+      x = radius * math.cos(angle)
+      y = radius * math.sin(angle)
+      return (x, y)
+
+      # Data points,
+      #   X = listed 2D points of uniform random in circle of rad 0.6
+      #   Y = listed 2D points of uniform random in annulus of rad 0.5 to 1
+      X = [rand_pt_circle(0, 0.6) for i in range(100)]
+      Y = [rand_pt_circle(0.5, 1) for i in range(100)]
+
+      fX = [(x[0], x[1], x[0] ** 2 + x[1] ** 2) for x in X] # THE TRANSFORMATION
+
+      # fit
+      # svm.SVC().fit(X,Y) rather than X,Y we use fX,Y
+      svm.SVC().fit(fX,Y)`}
+  />
+  <iframe
+    class="rpm-0 b0"
+    scrolling="no"
+    title="3D Scatter Plot with Plotly.js Charts"
+    src="https://codepen.io/plutoniumblast/embed/gOjqoNJ?default-tab=result&amp;data-show-tab-bar='no'"
+    frameborder="no"
+    allowtransparency="true"
+    allowfullscreen="true"
+    style="width:100%;height: 80vh;"
+  />
+  <p>
+    While in an ideal world we should be able to stop here and call it a day, in
+    reality we need to do a bit more work. The problem here is that choosing the
+    the function fX here is a difficult task, and in interest of laziness we
+    want this work cut out for us. The second problem is that in order to be
+    able to make a non standard boundary we need to make a more complex non
+    linear transform which in turn increases the computational requirements. The
+    kernel trick will now be useful to us. The idea here is that the SVM itself
+    does not need to know what each point is mapped to under this non linear
+    transform, i.e $x_i \rightarrow f(x_i) \forall i$. The only thing it
+    actually needs to know is how each point compares to each other data point
+    i.e $f(x_i) vs f(x_j)$. This is still ultimately finding a glorified version
+    of the distance between each point. Mathematically this is equivalent to
+    doing $f(x_i)^T f(x_j)$ and this is what we define as the Kernel function
+    <br /> $$k(x_i, x_j) := f(x_i)^T f(x_j) $$
+  </p>
+  <h3>Examples</h3>
+  <h4>Linear Kernel</h4>
+  <p>
+    Let us say the transform we intend to make is $f(x) = x$ i.e the identity
+    transform. Then the kernel function is
+    <br /> $$ k(x_i, x_j) = x_i^T x_j $$ With the call
+  </p>
+  <Highlight language={python} code={`svm.SVC(kernel='linear').fit(X,Y)`} />
+  <p>
+    The linear kernel gives us a flat decision boundary as expected, it can only
+    make a straight line through the data without any transforms.
+  </p>
+  <h4>Polynomial Kernel</h4>
+  <p>
+    Let us say the non linear transform we intend to make is $f(x) = (x_1, x_2,
+    x_1x_2, x_1^2 ,x_2^2)$ i.e the polynomial transform. Then the kernel
+    function is
+    <br /> $$k(x_i, x_j) = (1 + x_i^T x_j)^2 $$ With the call
+  </p>
+  <Highlight
+    language={python}
+    code={`svm.SVC(kernel='poly', degree=2).fit(X,Y)`}
+  />
+  <p>
+    The polynomial kernel gives us a curved decision boundary as expected, this
+    is equivalent to first making an ideal transform before hand of the type
+    $c_0 + c_1x_1 + c_2x_2 + c_3x_1x_2 + c_4x_1^2 + c_5x_2^2$ for some values
+    $c_i$ and then using the linear kernel on the transformed data. The Kernel
+    function here lets us find the relations between the values as if we had
+    done the transform before hand without actually doing the transform.
+  </p>
 </section>
 
-<!-- ```
-\section{The Kernel Trick}
-What Mercer's Theorem lets us do is rewrite every term in the Kernel matrix $K$ as only a function of its base features
-\begin{equation}
-  K = \phi \phi^T = \begin{bmatrix}
-    \phi(x_1)^T \phi(x_1) & \phi(x_1)^T \phi(x_2) & \cdots & \phi(x_1)^T \phi(x_n) \u005C
-    \phi(x_2)^T \phi(x_1) & \phi(x_2)^T \phi(x_2) & \cdots & \phi(x_2)^T \phi(x_n) \u005C
-    \vdots & \vdots & \ddots & \vdots \u005C
-    \phi(x_n)^T \phi(x_1) & \phi(x_n)^T \phi(x_2) & \cdots & \phi(x_n)^T \phi(x_n)
-  \end{bmatrix}
- = \begin{bmatrix}
-    k(x_1, x_1) & k(x_1, x_2) & \cdots & k(x_1, x_n) \u005C
-    k(x_2, x_1) & k(x_2, x_2) & \cdots & k(x_2, x_n) \u005C
-    \vdots & \vdots & \ddots & \vdots \u005C
-    k(x_n, x_1) & k(x_n, x_2) & \cdots & k(x_n, x_n)
-  \end{bmatrix}
-\end{equation}
-
-So as long as we know the Kernel (which we can either choose or learn), we can compute the Kernel matrix and use it to solve for $\alpha$ and then compute $w^*$ efficiently
-
-\subsection{Working Example}
-Consider the following mapping
-\begin{equation}
- \phi: x \rightarrow \phi(x) = \begin{bmatrix}
-    x_1^2 \u005C
-    \sqrt{2} x_1 x_2 \u005C
-    x_2^2 \u005C
-  \end{bmatrix}
-\end{equation}
-Let us for sake of demonstration work out its kernel
-
-\begin{equation}
-  \phi^T{x_m} \phi(x_n) = \begin{bmatrix}
-    x_{m1}^2 \u005C
-    \sqrt{2} x_{m1} x_{m2} \u005C
-    x_{m2}^2 \u005C
-  \end{bmatrix}^T \begin{bmatrix}
-    x_{n1}^2 \u005C
-    \sqrt{2} x_{n1} x_{n2} \u005C
-    x_{n2}^2 \u005C
-  \end{bmatrix} = x_{m1}^2 x_{n1}^2 + 2 x_{m1} x_{m2} x_{n1} x_{n2} + x_{m2}^2 x_{n2}^2
-\end{equation}
-Clearly
-\begin{equation}
-  \phi^T(x_m) \phi(x_n) = (x_{m1} x_{n1} + x_{m2} x_{n2})^2 \u005C
-  \quad \quad = (x_m^T x_n)^2 = k(x_m, x_n)
-\end{equation}
-This is an example of a Kernel called the \textbf{Polynomial Kernel} which is defined as
-\begin{equation}
-  k(x_m, x_n) = (x_m^T x_n + r)^d
-\end{equation}
-making here the parameters $d = 2$ and $r = 0$
-
-\section{Making Predictions}
-We can now make predictions using the Kernel trick. We can use the following equation to make predictions
-\begin{equation}
-  y = w^T \phi(x)
-\end{equation}
-
-But as we have seen above we can convert the RHS from
-\begin{equation}
-   w^T \phi(x) = y (\phi \phi^T + \{\u005Clambda}' I)^{-1} \phi^T \phi(x) \u005C
-   \text{to}
-    w^T \phi(x) = y (K + \{\u005Clambda}' I)^{-1} k_x
-\end{equation}
-where we define
-\begin{equation}
-  k_x = \phi^T \phi(x) = \begin{bmatrix}
-    \phi(x_1)^T \phi(x) \u005C
-    \phi(x_2)^T \phi(x) \u005C
-    \vdots \u005C
-    \phi(x_n)^T \phi(x)
-  \end{bmatrix}
-\end{equation}
-
-And our result is completely independent of the mapping $\phi$ and only depends on the Kernel $k$ and the data $X$ and $Y$
-
-\section{Applying the Kernel Trick to the SVM}
-As we know an SVM is a machine that can classify data by finding a hyperplane that separates the data into two classes. The SVM is a linear classifier, which means that it can only classify data that is linearly separable. But most data in the real world is not linear and so we need to use a non-linear classifier. The work around for that is that we first apply a non linear transformation to the data and then use a linear classifier to classify the transformed data.
-
-Let us look at how we do that for a simple case
-\begin{minted}{python}
-def rand_pt_circle(rad_min, rad_max):
-    angle = random.uniform(0, 2 * math.pi)
-    radius = random.uniform(rad_min, rad_max)
-    x = radius * math.cos(angle)
-    y = radius * math.sin(angle)
-    return (x, y)
-
-# Data points,
-#   X = listed 2D points of uniform random in circle of rad 0.6
-#   Y = listed 2D points of uniform random in annulus of rad 0.5 to 1
-X = [rand_pt_circle(0, 0.6) for i in range(100)]
-Y = [rand_pt_circle(0.5, 1) for i in range(100)]
-
-fX = [(x[0], x[1], x[0] ** 2 + x[1] ** 2) for x in X] # THE TRANSFORMATION
-
-# fit
-# svm.SVC().fit(X,Y) rather than X,Y we use fX,Y
-svm.SVC().fit(fX,Y)
-\end{minted}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.5\linewidth]{images/circle}
-  \caption{Circle Decision Boundary}
-  \label{fig:circleunif}
-\end{figure}
-
-While in an ideal world we should be able to stop here and call it a day, in reality we need to do a bit more work. The problem here is that choosing the the function fX here is a difficult task, and in interest of laziness we want this work cut out for us. The second problem is that in order to be able to make a non standard boundary we need to make a more complex non linear transform which in turn increases the computational requirements.
-
-The kernel trick will now be useful to us. The idea here is that the SVM itself does not need to know what each point is mapped to under this non linear transform, i.e $x_i \rightarrow f(x_i) \forall i$. The only thing it actually needs to know is how each point compares to each other data point i.e $f(x_i) vs f(x_j)$. This is still ultimately finding a glorified version of the distance between each point. Mathematically this is equivalent to doing $f(x_i)^T f(x_j)$ and this is what we define as the Kernel function
-\begin{equation}
-k(x_i, x_j) := f(x_i)^T f(x_j)
-\end{equation}
-\subsection{Examples}
-\subsubsection{Linear Kernel}
-Let us say the transform we intend to make is $f(x) = x$ i.e the identity transform. Then the kernel function is
-\begin{equation}
-  k(x_i, x_j) = x_i^T x_j
-\end{equation}
-With the call
-\begin{minted}{python}
-svm.SVC(kernel='linear').fit(X,Y)
-\end{minted}
-The linear kernel gives us a flat decision boundary as expected, it can only make a straight line through the data without any transforms.
-
-\subsubsection{Polynomial Kernel}
-Let us say the non linear transform we intend to make is $f(x) = (x_1, x_2, x_1x_2, x_1^2 ,x_2^2)$ i.e the polynomial transform. Then the kernel function is
-\begin{equation}
-  k(x_i, x_j) = (1 + x_i^T x_j)^2
-\end{equation}
-With the call
-\begin{minted}{python}
-svm.SVC(kernel='poly', degree=2).fit(X,Y)
-\end{minted}
-The polynomial kernel gives us a curved decision boundary as expected, this is equivalent to first making an ideal transform before hand of the type $c_0 + c_1x_1 + c_2x_2 + c_3x_1x_2 + c_4x_1^2 + c_5x_2^2$ for some values $c_i$ and then using the linear kernel on the transformed data. The Kernel function here lets us find the relations between the values as if we had done the transform before hand without actually doing the transform.
-
-\subsubsection{RBF Kernel}
+<!--```\subsubsection{RBF Kernel}
 What if we were to have a function for whom the transform were extremely difficult or impossible to calculate even in an approximate case, one such example is the Radial Basis Function (RBF) kernel. The RBF kernel is defined as
-\begin{equation}
+<br/> $$
   k(x_i, x_j) = \exp(-\gamma ||x_i - x_j||^2)
-\end{equation}
+$$
 With the call
 \begin{minted}{python}
 svm.SVC(kernel='rbf', gamma=1).fit(X,Y)
 \end{minted}
 It turns out that the transform needed before hand for an RBF is infinite dimensional, i.e it looks like
-\begin{equation}
+<br/> $$
   f(x) = (\text{infinite terms})
-\end{equation}
+$$
 Notice how being basically impossible to calculate, we can still use the RBF kernel to find the relations between the points. \u005C
 \textbf{Note:} Gamma is a hyper parameter that controls the width of the RBF kernel. The smaller the gamma the wider the Kernel is therefore making it closer to a linear kernel. The larger the gamma the narrower the Kernel is therefore making it closer to a polynomial kernel of arbitrary degree. (See Proof in last section)
 
@@ -298,7 +285,7 @@ ML however can be used in places where even the Non Linear systems don't have a 
 \end{itemize}
 
 \section{Proof of RBF Kernel's Dimensionality}
-\begin{equation}
+<br/> $$
   \begin{split}
   k(x_i, x_j) & = \exp(-\frac{1}{2} ||x_i - x_j||^2) \u005C
   & = \exp(-\frac{1}{2} \langle x_i - x_j\rangle^T \langle x_i - x_j\rangle) \u005C
@@ -310,21 +297,21 @@ ML however can be used in places where even the Non Linear systems don't have a 
   & = C \sum_{n=0}^{\infty} \frac{\langle x_i, x_j\rangle^n}{n!} \quad \quad \text{Taylor Series Expansion} \u005C
   & = C \sum_{n=0}^{\infty} \frac{K_{poly(n)}(x_i, x_j) }{n!}
   \end{split}
-\end{equation}
+$$
 
 We can see that RBF is an infinite sum over polynomial transforms of degree $n \in [0, \infty)$
 
 \section{Sidetrack: RBF $\rightarrow$ Matern}
 The RBF kernel is defined as
-\begin{equation}
+<br/> $$
 k(x,x') = \exp\left(-\frac{d(x,x')}{2*\rho^2}\right)
-\end{equation}
+$$
 where $d(x,x')$ is the Euclidean distance between $x$ and $x'$ and $\rho$ is a hyperparameter. The RBF kernel is infinitely differentiable and is positive definite. The RBF kernel is also isotropic. The RBF kernel is defined for $d(x,x')\geq 0$.
 %
 The Matern kernel is a generalization of the RBF kernel. It is defined as
-\begin{equation}
+<br/> $$
 k(x,x') = \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right)^\nu K_{\nu}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right)
-\end{equation}
+$$
 where $K_{\nu}$ is the modified Bessel function of the second kind and $\Gamma$ is the gamma function. The parameter $\nu$ controls the smoothness of the function. For $\nu=1/2$, the Matern kernel reduces to the RBF kernel. For $\nu=1$, the Matern kernel reduces to the absolute exponential kernel. For $\nu\rightarrow\infty$, the Matern kernel reduces to the absolute exponential kernel. The Matern kernel is infinitely differentiable and is positive definite. The Matern kernel is also isotropic. The Matern kernel is defined for $d(x,x')\geq 0$.
 % \subsection{The Matern Kernel with $\nu=1/2$}
 \subsection{Intuition}
@@ -337,17 +324,17 @@ So the RBF is effectively the same thing as a bessel function where on a membran
 \subsection{Special Cases}
 \begin{itemize}
   \item $\nu \rightarrow \infty$ Matern reduces to RBF;
-  \begin{equation}
+  <br/> $$
     \lim_{\nu \rightarrow \infty} \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right)^\nu K_{\nu}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right) = \exp\left(-\frac{d(x,x')}{2*\rho^2}\right)
-  \end{equation}
+  $$
   \item $\nu = 1$ Matern reduces Ornstein-Uhlenbeck Kernel;
-  \begin{equation}
+  <br/> $$
     \lim_{\nu \rightarrow 1} \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right)^\nu K_{\nu}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right) = \exp\left(-\frac{d(x,x')}{\rho}\right)
-  \end{equation}
+  $$
   \item $\nu = 1/2$ Matern reduces to Absolute Exponential Kernel;
-  \begin{equation}
+  <br/> $$
     \lim_{\nu \rightarrow 1/2} \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right)^\nu K_{\nu}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right) = \exp\left(-\sqrt{2}\frac{d(x,x')}{\rho}\right)
-  \end{equation}
+  $$
 \end{itemize}
 
 The main power of a Matern kernel is that it allows for non-stationary processes. The RBF kernel is stationary, meaning that the covariance between two points $x$ and $x'$ is independent of the distance between them. The Matern kernel is non-stationary, meaning that the covariance between two points $x$ and $x'$ is dependent on the distance between them making it much more flexible. Non-stationary kernels have proved to be very useful for modeling data that exhibit spatially varying behavior, such as weather patterns or population density.
@@ -364,5 +351,8 @@ I will be attempting to (most likely fruitlessly) derive a Generalised Wedland K
   details {
     max-width: 991px;
     margin: 0 auto;
+  }
+  .rx20 {
+    overflow: hidden !important;
   }
 </style>

@@ -9,8 +9,10 @@
 	"devDependencies": {
 		"@sveltejs/adapter-static": "2.0.1",
 		"@sveltejs/kit": "1.7.2",
+		"highlight.js": "^11.7.0",
 		"sass": "^1.58.2",
 		"svelte": "3.55.1",
+		"svelte-highlight": "^7.2.0",
 		"svelte-preprocess": "5.0.1",
 		"vite": "4.1.2"
 	},
