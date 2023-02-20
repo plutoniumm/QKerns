@@ -17,23 +17,23 @@
 
 	<meta http-equiv="content-security-policy" content="">
 		<link href="./_app/immutable/assets/_layout-289f4c5d.css" rel="stylesheet">
-		<link href="./_app/immutable/assets/_page-b3612f5d.css" rel="stylesheet">
-		<link rel="modulepreload" href="./_app/immutable/start-2fd2e583.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/index-28406e41.js">
-		<link rel="modulepreload" href="./_app/immutable/chunks/singletons-760ef20a.js">
+		<link href="./_app/immutable/assets/_page-60e091ea.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/start-3784e75a.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index-7af328a4.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons-fb294236.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/paths-24bb4e9c.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/preload-helper-41c905a7.js">
-		<link rel="modulepreload" href="./_app/immutable/components/pages/_layout.svelte-63b00d6f.js">
+		<link rel="modulepreload" href="./_app/immutable/components/pages/_layout.svelte-2664c4a0.js">
 		<link rel="modulepreload" href="./_app/immutable/modules/pages/_layout.js-9cbb603b.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/_layout-da46b06b.js">
-		<link rel="modulepreload" href="./_app/immutable/components/pages/visualisations/_page.svelte-85c0690b.js"><!-- HEAD_svelte-1tfm19b_START --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.5.1/math.js"></script><script src="https://unpkg.com/bessel@1.0.2/bessel.js"></script><!-- HEAD_svelte-1tfm19b_END -->
+		<link rel="modulepreload" href="./_app/immutable/components/pages/visualisations/_page.svelte-22537f75.js"><!-- HEAD_svelte-1tfm19b_START --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.5.1/math.js"></script><script src="https://unpkg.com/bessel@1.0.2/bessel.js"></script><!-- HEAD_svelte-1tfm19b_END -->
 </head>
 
 <body data-sveltekit-preload-data="hover">
 	<div style="display: contents">
 
 
-<main class="svelte-1bg17n1"><nav class="fade-right svelte-1bg17n1"><div id="logo" class="ƒ ∆-ct mx-a" style="padding: 20px 0 10px 0;"><img src="/qiskit.svg" alt="logo" height="36px" width="36px" style="margin-right: 5px;">
+<main class="svelte-1bg17n1"><nav class="fade-right svelte-1bg17n1"><div id="logo" class="ƒ ∆-ct mx-a" style="padding: 20px 0 10px 0;"><img src="/qiskit.svg" alt="logo" height="32px" width="32px" style="margin-right: 5px;">
       <div class="fw4" style="font-size:24px;line-height:36px;align-self:center">new qkerns()
       </div></div>
     <hr class="w-50 o-25">
@@ -44,8 +44,7 @@
       <li class="svelte-1bg17n1"><a href="/rbfgen">RBF Generalisation</a></li></ul>
     <h4 class="p10 m0 svelte-1bg17n1">Python Files</h4>
     <ul class="p20 svelte-1bg17n1"><li class="svelte-1bg17n1"><a href="/python#qgss-kerns.html">QGSS QSVM (2021)</a></li>
-      <li class="svelte-1bg17n1"><a href="/python#docs-hybrid.html">Hybrid Classifier (torch+qiskit)
-        </a></li></ul></nav>
+      <li class="svelte-1bg17n1"><a href="/python#docs-hybrid.html">Std Hybrid Classifier </a></li></ul></nav>
   <div class="p20 fade content svelte-1bg17n1">
 
 <section><h1>Kernel Functions</h1>
@@ -63,21 +62,13 @@
   <hr class="o-25">
   <section><h2>Baseline testing with just to see things work</h2>
     <div>Here we plot the function $F(x, y) = x * y$ simply for an established
-    baseline.</div>
-    <div><label for="gamma-3uxnmwh" style="pointer-events: none;">Gamma</label>
-      <input name="gamma-3uxnmwh" class="rpm-10 svelte-5sc4yz" type="text" value="0.01">
-      <div class="ƒ"><div class="plut w-100 rx5 svelte-1mf3lm7"><div class="w-100" style="padding:10px 0"><label class="box svelte-1mf3lm7" for="resample-49esdmz">Resample
-      <input type="checkbox" id="resample-49esdmz"></label>
+         baseline.</div>
+    <div><br>
+      <div class="params w-100 ƒ p5" style="background: #ccc;"></div>
 
-    <button class="box svelte-1mf3lm7">Regenerate</button></div>
-  <div id="11ggxhc" class="w-100 fade-up h-100" style="height: 400px;"></div>
-</div>
-        <div class="plut w-100 rx5 svelte-1mf3lm7"><div class="w-100" style="padding:10px 0"><label class="box svelte-1mf3lm7" for="resample-5gjdhe">Resample
-      <input type="checkbox" id="resample-5gjdhe"></label>
-
-    <button class="box svelte-1mf3lm7">Regenerate</button></div>
-  <div id="3ypqjkb" class="w-100 fade-up h-100" style="height: 400px;"></div>
-</div>
+      <div class="ƒ"><div class="w-100"><div id="1a815ow" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div>
+          </div><div class="w-100"><div id="fm7yjw" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div>
+          </div>
       </div></div>
   </section>
   
@@ -86,20 +77,16 @@
   <hr class="o-25">
   <section><h2>RBF Kernel: $F(x, y) = e^{-\gamma * (x - y)^2}$</h2>
     <div>Here we plot the function $F(x, y) = e^{-\gamma * (x - y)^2}$, where $gamma$ is a hyperparameter.</div>
-    <div><label for="gamma-1anit0c" style="pointer-events: none;">Gamma</label>
-      <input name="gamma-1anit0c" class="rpm-10 svelte-5sc4yz" type="text" value="0.1">
-      <div class="ƒ"><div class="plut w-100 rx5 svelte-1mf3lm7"><div class="w-100" style="padding:10px 0"><label class="box svelte-1mf3lm7" for="resample-2m7og5t">Resample
-      <input type="checkbox" id="resample-2m7og5t"></label>
+    <div><br>
+      <div class="params w-100 ƒ p5" style="background: #ccc;">
+          
+          <label class="fw5 svelte-32rhl6" for="gamma-3oxr5iw">gamma:
+          </label>
+          <input name="gamma-167472c" class="rpm-5 svelte-32rhl6" type="text" value="1"></div>
 
-    <button class="box svelte-1mf3lm7">Regenerate</button></div>
-  <div id="119iima" class="w-100 fade-up h-100" style="height: 400px;"></div>
-</div>
-        <div class="plut w-100 rx5 svelte-1mf3lm7"><div class="w-100" style="padding:10px 0"><label class="box svelte-1mf3lm7" for="resample-1zb0lno">Resample
-      <input type="checkbox" id="resample-1zb0lno"></label>
-
-    <button class="box svelte-1mf3lm7">Regenerate</button></div>
-  <div id="3q2fnvz" class="w-100 fade-up h-100" style="height: 400px;"></div>
-</div>
+      <div class="ƒ"><div class="w-100"><div id="2idmbzl" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div>
+          </div><div class="w-100"><div id="24mpdcp" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div>
+          </div>
       </div></div>
   </section>
   
@@ -108,20 +95,20 @@
   <hr class="o-25">
   <section><h2>Sigmoid Kernel: $F(x, y) = \tanh(\gamma * (x - y) + \beta)$</h2>
     <div>Here we plot the function $F(x, y) = \tanh(\gamma * (x - y) + \beta)$, where $\gamma$ and $\beta=0.5$ are hyperparameters.</div>
-    <div><label for="gamma-4dbncs6" style="pointer-events: none;">Gamma</label>
-      <input name="gamma-4dbncs6" class="rpm-10 svelte-5sc4yz" type="text" value="1">
-      <div class="ƒ"><div class="plut w-100 rx5 svelte-1mf3lm7"><div class="w-100" style="padding:10px 0"><label class="box svelte-1mf3lm7" for="resample-pc3qtv">Resample
-      <input type="checkbox" id="resample-pc3qtv"></label>
+    <div><br>
+      <div class="params w-100 ƒ p5" style="background: #ccc;">
+          
+          <label class="fw5 svelte-32rhl6" for="gamma-z40p31">gamma:
+          </label>
+          <input name="gamma-7bzghs" class="rpm-5 svelte-32rhl6" type="text" value="1">
+          
+          <label class="fw5 svelte-32rhl6" for="beta-z40p31">beta:
+          </label>
+          <input name="beta-2j0d758" class="rpm-5 svelte-32rhl6" type="text" value="0.5"></div>
 
-    <button class="box svelte-1mf3lm7">Regenerate</button></div>
-  <div id="bgkoha" class="w-100 fade-up h-100" style="height: 400px;"></div>
-</div>
-        <div class="plut w-100 rx5 svelte-1mf3lm7"><div class="w-100" style="padding:10px 0"><label class="box svelte-1mf3lm7" for="resample-14q4m4i">Resample
-      <input type="checkbox" id="resample-14q4m4i"></label>
-
-    <button class="box svelte-1mf3lm7">Regenerate</button></div>
-  <div id="3iwylpu" class="w-100 fade-up h-100" style="height: 400px;"></div>
-</div>
+      <div class="ƒ"><div class="w-100"><div id="3jhvn2w" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div>
+          </div><div class="w-100"><div id="1s9ihdz" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div>
+          </div>
       </div></div>
   </section>
   
@@ -130,20 +117,24 @@
   <hr class="o-25">
   <section><h2>Polynomial Kernel: $F(x, y) = (\gamma * (x - y) + \beta)^d$</h2>
     <div>Here we plot the function $F(x, y) = (\gamma * (x - y) + \beta)^d$, where $\gamma$, $\beta=0.5$ and $d=2$ are hyperparameters.</div>
-    <div><label for="gamma-37hptt0" style="pointer-events: none;">Gamma</label>
-      <input name="gamma-37hptt0" class="rpm-10 svelte-5sc4yz" type="text" value="0.2">
-      <div class="ƒ"><div class="plut w-100 rx5 svelte-1mf3lm7"><div class="w-100" style="padding:10px 0"><label class="box svelte-1mf3lm7" for="resample-3ntrk7w">Resample
-      <input type="checkbox" id="resample-3ntrk7w"></label>
+    <div><br>
+      <div class="params w-100 ƒ p5" style="background: #ccc;">
+          
+          <label class="fw5 svelte-32rhl6" for="gamma-2csuw0w">gamma:
+          </label>
+          <input name="gamma-1r8gd1u" class="rpm-5 svelte-32rhl6" type="text" value="1">
+          
+          <label class="fw5 svelte-32rhl6" for="d-2csuw0w">d:
+          </label>
+          <input name="d-31j5512" class="rpm-5 svelte-32rhl6" type="text" value="2">
+          
+          <label class="fw5 svelte-32rhl6" for="r-2csuw0w">r:
+          </label>
+          <input name="r-2kl0dz6" class="rpm-5 svelte-32rhl6" type="text" value="0.5"></div>
 
-    <button class="box svelte-1mf3lm7">Regenerate</button></div>
-  <div id="2cg0e74" class="w-100 fade-up h-100" style="height: 400px;"></div>
-</div>
-        <div class="plut w-100 rx5 svelte-1mf3lm7"><div class="w-100" style="padding:10px 0"><label class="box svelte-1mf3lm7" for="resample-3hbiww2">Resample
-      <input type="checkbox" id="resample-3hbiww2"></label>
-
-    <button class="box svelte-1mf3lm7">Regenerate</button></div>
-  <div id="4johp5h" class="w-100 fade-up h-100" style="height: 400px;"></div>
-</div>
+      <div class="ƒ"><div class="w-100"><div id="23igfjs" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div>
+          </div><div class="w-100"><div id="1br4b14" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div>
+          </div>
       </div></div>
   </section>
   
@@ -152,20 +143,16 @@
   <hr class="o-25">
   <section><h2>Matern Kernel: $F(x, y) = \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\sqrt{2\nu}\frac{|x - y|}{\lambda}\right)^\nu K_\nu\left(\sqrt{2\nu}\frac{|x - y|}{\lambda}\right)$</h2>
     <div>Here we plot the function $F(x, y) = \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\sqrt{2\nu}\frac{|x - y|}{\lambda}\right)^\nu K_\nu\left(\sqrt{2\nu}\frac{|x - y|}{\lambda}\right)$, where $\nu=1.5$ and $\lambda=1$ are hyperparameters.</div>
-    <div><label for="gamma-2uikh54" style="pointer-events: none;">Gamma</label>
-      <input name="gamma-2uikh54" class="rpm-10 svelte-5sc4yz" type="text" value="0.2">
-      <div class="ƒ"><div class="plut w-100 rx5 svelte-1mf3lm7"><div class="w-100" style="padding:10px 0"><label class="box svelte-1mf3lm7" for="resample-3aoch2a">Resample
-      <input type="checkbox" id="resample-3aoch2a"></label>
+    <div><br>
+      <div class="params w-100 ƒ p5" style="background: #ccc;">
+          
+          <label class="fw5 svelte-32rhl6" for="nu-3m5b89y">nu:
+          </label>
+          <input name="nu-38yf3bk" class="rpm-5 svelte-32rhl6" type="text" value="1.5"></div>
 
-    <button class="box svelte-1mf3lm7">Regenerate</button></div>
-  <div id="30mia9k" class="w-100 fade-up h-100" style="height: 400px;"></div>
-</div>
-        <div class="plut w-100 rx5 svelte-1mf3lm7"><div class="w-100" style="padding:10px 0"><label class="box svelte-1mf3lm7" for="resample-3qaexii">Resample
-      <input type="checkbox" id="resample-3qaexii"></label>
-
-    <button class="box svelte-1mf3lm7">Regenerate</button></div>
-  <div id="6rz2rf" class="w-100 fade-up h-100" style="height: 400px;"></div>
-</div>
+      <div class="ƒ"><div class="w-100"><div id="35loh51" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div>
+          </div><div class="w-100"><div id="3789jx4" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div>
+          </div>
       </div></div>
   </section>
   
@@ -174,20 +161,12 @@
   <hr class="o-25">
   <section><h2>Periodic Kernel: $F(x, y) = \exp\left(-\frac{2\sin^2\left(\pi\frac{|x - y|}{p}\right)}{l^2}\right)$</h2>
     <div>Here we plot the function $F(x, y) = \exp\left(-\frac{2\sin^2\left(\pi\frac{|x - y|}{p}\right)}{l^2}\right)$, where $l=1$ and $p=1$ are hyperparameters.</div>
-    <div><label for="gamma-468b3w5" style="pointer-events: none;">Gamma</label>
-      <input name="gamma-468b3w5" class="rpm-10 svelte-5sc4yz" type="text" value="0.05">
-      <div class="ƒ"><div class="plut w-100 rx5 svelte-1mf3lm7"><div class="w-100" style="padding:10px 0"><label class="box svelte-1mf3lm7" for="resample-zxa8rl">Resample
-      <input type="checkbox" id="resample-zxa8rl"></label>
+    <div><br>
+      <div class="params w-100 ƒ p5" style="background: #ccc;"></div>
 
-    <button class="box svelte-1mf3lm7">Regenerate</button></div>
-  <div id="3dwme7l" class="w-100 fade-up h-100" style="height: 400px;"></div>
-</div>
-        <div class="plut w-100 rx5 svelte-1mf3lm7"><div class="w-100" style="padding:10px 0"><label class="box svelte-1mf3lm7" for="resample-3fcg8y5">Resample
-      <input type="checkbox" id="resample-3fcg8y5"></label>
-
-    <button class="box svelte-1mf3lm7">Regenerate</button></div>
-  <div id="3c4cvdo" class="w-100 fade-up h-100" style="height: 400px;"></div>
-</div>
+      <div class="ƒ"><div class="w-100"><div id="21dppxd" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div>
+          </div><div class="w-100"><div id="34qyrfg" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div>
+          </div>
       </div></div>
   </section>
   
@@ -196,55 +175,51 @@
   <hr class="o-25">
   <section><h2>RQ Kernel: $F(x, y) = \left(1 + \frac{|x - y|^2}{2\alpha l^2}\right)^{-\alpha}$</h2>
     <div>Here we plot the function $F(x, y) = \left(1 + \frac{|x - y|^2}{2\alpha l^2}\right)^{-\alpha}$, where $\alpha=1$ and $l=1$ are hyperparameters.</div>
-    <div><label for="gamma-104tb07" style="pointer-events: none;">Gamma</label>
-      <input name="gamma-104tb07" class="rpm-10 svelte-5sc4yz" type="text" value="0.05">
-      <div class="ƒ"><div class="plut w-100 rx5 svelte-1mf3lm7"><div class="w-100" style="padding:10px 0"><label class="box svelte-1mf3lm7" for="resample-3l87a3t">Resample
-      <input type="checkbox" id="resample-3l87a3t"></label>
+    <div><br>
+      <div class="params w-100 ƒ p5" style="background: #ccc;">
+          
+          <label class="fw5 svelte-32rhl6" for="alpha-2fano46">alpha:
+          </label>
+          <input name="alpha-3p3kkpq" class="rpm-5 svelte-32rhl6" type="text" value="1">
+          
+          <label class="fw5 svelte-32rhl6" for="l-2fano46">l:
+          </label>
+          <input name="l-1tnf118" class="rpm-5 svelte-32rhl6" type="text" value="1"></div>
 
-    <button class="box svelte-1mf3lm7">Regenerate</button></div>
-  <div id="1xhem0n" class="w-100 fade-up h-100" style="height: 400px;"></div>
-</div>
-        <div class="plut w-100 rx5 svelte-1mf3lm7"><div class="w-100" style="padding:10px 0"><label class="box svelte-1mf3lm7" for="resample-2iezmg4">Resample
-      <input type="checkbox" id="resample-2iezmg4"></label>
-
-    <button class="box svelte-1mf3lm7">Regenerate</button></div>
-  <div id="1sovlec" class="w-100 fade-up h-100" style="height: 400px;"></div>
-</div>
+      <div class="ƒ"><div class="w-100"><div id="pjrxxi" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div>
+          </div><div class="w-100"><div id="1m18dy6" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div>
+          </div>
       </div></div>
   </section>
   
   
 
   <hr class="o-25">
-  <section><h2>White Noise Kernel: $F(x, y) = \delta(x - y)$</h2>
-    <div>Here we plot the function $F(x, y) = \delta(x - y)$, where $delta$ is the Dirac delta function.</div>
-    <div><label for="gamma-2pqk30t" style="pointer-events: none;">Gamma</label>
-      <input name="gamma-2pqk30t" class="rpm-10 svelte-5sc4yz" type="text">
-      <div class="ƒ"><div class="plut w-100 rx5 svelte-1mf3lm7"><div class="w-100" style="padding:10px 0"><label class="box svelte-1mf3lm7" for="resample-3y98qct">Resample
-      <input type="checkbox" id="resample-3y98qct"></label>
+  <section><h2>White Noise Kernel: $F(x, y) = v\delta(x - y)$</h2>
+    <div>Here we plot the function $F(x, y) = v\delta(x - y)$, where $v=1$ is a hyperparameter.</div>
+    <div><br>
+      <div class="params w-100 ƒ p5" style="background: #ccc;">
+          
+          <label class="fw5 svelte-32rhl6" for="v-2htji2x">v:
+          </label>
+          <input name="v-2sd59qm" class="rpm-5 svelte-32rhl6" type="text" value="0.66"></div>
 
-    <button class="box svelte-1mf3lm7">Regenerate</button></div>
-  <div id="3mgr7f3" class="w-100 fade-up h-100" style="height: 400px;"></div>
-</div>
-        <div class="plut w-100 rx5 svelte-1mf3lm7"><div class="w-100" style="padding:10px 0"><label class="box svelte-1mf3lm7" for="resample-2ece1nd">Resample
-      <input type="checkbox" id="resample-2ece1nd"></label>
-
-    <button class="box svelte-1mf3lm7">Regenerate</button></div>
-  <div id="3fo9njs" class="w-100 fade-up h-100" style="height: 400px;"></div>
-</div>
+      <div class="ƒ"><div class="w-100"><div id="3ck11ji" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div>
+          </div><div class="w-100"><div id="3ndg5dt" class="w-100 fade-up h-100 plut svelte-185ij4c" style="height: 400px;"></div>
+          </div>
       </div></div>
   </section></div>
 </main>
 
 
-		<script type="module" data-sveltekit-hydrate="fwt6sw">
-			import { start } from "./_app/immutable/start-2fd2e583.js";
+		<script type="module" data-sveltekit-hydrate="s7ewj2">
+			import { start } from "./_app/immutable/start-3784e75a.js";
 
 			start({
 				assets: "",
 				env: {},
-				target: document.querySelector('[data-sveltekit-hydrate="fwt6sw"]').parentNode,
-				version: "1676879076476",
+				target: document.querySelector('[data-sveltekit-hydrate="s7ewj2"]').parentNode,
+				version: "1676884518122",
 				hydrate: {
 					node_ids: [0, 6],
 					data: [null,null],
