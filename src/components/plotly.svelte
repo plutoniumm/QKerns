@@ -1,12 +1,13 @@
 <script>
   import { onMount } from "svelte";
-  import { rand, initialise } from "./plotly";
+  import { rand, initialise, uuid } from "./plotly";
 
   let //
     plotlyDiv,
     regen,
     resample = false;
-  const id = Math.round(Math.random() * 1e10).toString(36);
+  const id = uuid();
+  const lid = uuid();
 
   export let F = (x, y) => x * y;
   export let samples = 1000;
@@ -72,9 +73,9 @@
 
 <div class="plut w-100 rx5">
   <div class="w-100" style="padding:10px 0">
-    <label class="box" for="resample">
+    <label class="box" for="resample-{lid}">
       Resample
-      <input type="checkbox" id="resample" bind:checked={resample} />
+      <input type="checkbox" id="resample-{lid}" bind:checked={resample} />
     </label>
 
     <button class="box" on:click={regen}>Regenerate</button>

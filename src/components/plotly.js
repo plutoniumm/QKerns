@@ -21,4 +21,6 @@ export const initialise = ( samples, type = "scatter3d" ) => {
   }
 
   return [ x, y, z ];
-}
+};
+
+export const uuid = () => Math.round( Math.random() * 1e10 ).toString( 36 );

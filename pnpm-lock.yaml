@@ -5,6 +5,7 @@ specifiers:
   '@sveltejs/kit': 1.7.2
   '@tensorflow/tfjs': ^4.2.0
   highlight.js: ^11.7.0
+  marked: ^4.2.12
   nodejs-polars: ^0.7.2
   plotly.js-dist: 2.18.2
   sass: ^1.58.2
@@ -15,6 +16,7 @@ specifiers:
 
 dependencies:
   '@tensorflow/tfjs': 4.2.0_seedrandom@3.0.5
+  marked: 4.2.12
   nodejs-polars: 0.7.2
   plotly.js-dist: 2.18.2
 
@@ -792,6 +794,12 @@ packages:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
+
+  /marked/4.2.12:
+    resolution: {integrity: sha512-yr8hSKa3Fv4D3jdZmtMMPghgVt6TWbk86WQaWhDloQjRSQhMMYCAro7jP7VDJrjjdV8pxVxMssXS8B8Y5DZ5aw==}
+    engines: {node: '>= 12'}
+    hasBin: true
+    dev: false
 
   /mime-db/1.52.0:
     resolution: {integrity: sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==}

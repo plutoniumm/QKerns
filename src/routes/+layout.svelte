@@ -20,6 +20,7 @@
       </div>
     </div>
     <hr class="w-50 o-25" />
+    <h4 class="p10 m0">Pages</h4>
     <ul class="p20">
       <li><a href="{base}/">Home</a></li>
       <li>
@@ -27,6 +28,15 @@
       </li>
       <li><a href="{base}/mechanism">Mechanism</a></li>
       <li><a href="{base}/rbfgen">RBF Generalisation</a></li>
+    </ul>
+    <h4 class="p10 m0">Python Files</h4>
+    <ul class="p20">
+      <li><a href="{base}/python#qgss-kerns.html">QGSS QSVM (2021)</a></li>
+      <li>
+        <a href="{base}/python#docs-hybrid.html">
+          Hybrid Classifier (torch+qiskit)
+        </a>
+      </li>
     </ul>
   </nav>
   <div class="p20 fade content">
@@ -49,6 +59,12 @@
     background: #6929c4;
     color: #fff;
   }
+  .p20 {
+    padding: 5px 20px !important;
+  }
+  .p10 {
+    padding: 5px 10px !important;
+  }
 
   .content {
     grid-area: main;
@@ -61,8 +77,9 @@
   ul {
     list-style: none;
     padding: 0;
+    margin: 0;
     li {
-      padding: 10px 0;
+      padding-bottom: 10px;
     }
   }
 
