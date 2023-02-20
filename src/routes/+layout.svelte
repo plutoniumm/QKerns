@@ -25,7 +25,7 @@
       <li>
         <a href="{base}/visualisations">Visualisations</a>
       </li>
-      <li><a href="{base}/">Contact</a></li>
+      <li><a href="{base}/mechanism">Mechanism</a></li>
     </ul>
   </nav>
   <div class="p20 fade content">
