@@ -4,11 +4,14 @@
 
   $: RFB_gamma = 1;
   $: Sigmoid_gamma = 1;
+  $: Sigmoid_beta = 0.5;
   $: Poly_gamma = 1;
   $: Poly_d = 2;
   $: Poly_r = 0.5;
   $: Matern_nu = 1.5;
   $: RQ_alpha = 1;
+  $: RQ_len = 1;
+  $: WN_v = 0.66;
 
   $: config = [
     // plain
@@ -43,8 +46,12 @@
           name: "gamma",
           value: Sigmoid_gamma,
         },
+        {
+          name: "beta",
+          value: Sigmoid_beta,
+        },
       ],
-      f: `return Math.tanh(gamma * (x - y) + 0.5);`,
+      f: `return Math.tanh(gamma * (x - y) + beta);`,
     },
     // Polynomial
     {
@@ -107,16 +114,25 @@
           name: "alpha",
           value: RQ_alpha,
         },
+        {
+          name: "l",
+          value: RQ_len,
+        },
       ],
-      f: `return (1 + (x - y) ** 2 / (2 * alpha)) ** -alpha;`,
+      f: `return (1 + (x - y) ** 2 / (2 * alpha * l ** 2)) ** -alpha;`,
     },
     // WHite Noise
     {
       name: "White Noise",
-      title: "White Noise Kernel: $F(x, y) = \\delta(x - y)$",
-      desc: `Here we plot the function $F(x, y) = \\delta(x - y)$, where $\delta$ is the Dirac delta function.`,
-      params: [],
-      f: `return x === y ? 1 : 0;`,
+      title: "White Noise Kernel: $F(x, y) = v\\delta(x - y)$",
+      desc: `Here we plot the function $F(x, y) = v\\delta(x - y)$, where $v=1$ is a hyperparameter.`,
+      params: [
+        {
+          name: "v",
+          value: WN_v,
+        },
+      ],
+      f: `return v * (x === y ? 1 : 0);`,
     },
   ];
 </script>
@@ -149,15 +165,12 @@
     <h2>{func.title}</h2>
     <div>{func.desc}</div>
     <div>
-      <div class="params">
+      <br />
+      <div class="params w-100 ƒ p5" style="background: #ccc;">
         {#each func.params as param}
           {@const pid = uuid()}
           {@const pname = param.name}
-          <label
-            class="fw5"
-            for="{pname}-{uid}"
-            style="pointer-events: none;text-transform: capitalize;"
-          >
+          <label class="fw5" for="{pname}-{uid}">
             {pname}:
           </label>
           <input
@@ -195,5 +208,10 @@
 <style>
   input[type="text"] {
     background: #fff;
+  }
+  label {
+    pointer-events: none;
+    text-transform: capitalize;
+    line-height: 2.5;
   }
 </style>

@@ -8,8 +8,8 @@
       <img
         src="{base}/qiskit.svg"
         alt="logo"
-        height="36px"
-        width="36px"
+        height="32px"
+        width="32px"
         style="margin-right: 5px;"
       />
       <div
