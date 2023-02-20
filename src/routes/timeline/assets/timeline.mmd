@@ -1,0 +1,23 @@
+graph LR
+    Derivation --> Generalisation --> RBF --> Matern --> x["Currently: Wendland"]
+    NewKernel --> Derivation --> RidgeRegression("From Ridge Regression")
+
+    CoreMath --> DeepNets("Deep Nets are Kernels")
+    CoreMath --> UAT("Universal Approximation Theorem")
+
+    Optimisations --> GeneticOpti("Genetic Optimisation")
+    Optimisations --> Annealing --> SVM2QUBO("SVM &rarr; QUBO")
+        Annealing --> GradonQUBO("Gradient Descent Step on QUBO")
+
+    Quantum --> QKerns("Quantum Kernels")
+    Quantum --> Hybrid("Hybrid Quantum Algorithms")
+
+    Other --> FeynmanPath("Feynman Path Integral as data analysis tool")
+
+    subgraph "StartingPoints"
+        NewKernel
+        CoreMath
+        Optimisations
+        Quantum
+        Other
+    end

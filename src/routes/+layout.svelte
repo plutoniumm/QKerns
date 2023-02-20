@@ -28,6 +28,7 @@
       </li>
       <li><a href="{base}/mechanism">Mechanism</a></li>
       <li><a href="{base}/rbfgen">RBF Generalisation</a></li>
+      <li><a href="{base}/timeline">Timeline</a></li>
     </ul>
     <h4 class="p10 m0">Python Files</h4>
     <ul class="p20">
