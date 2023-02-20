@@ -62,6 +62,13 @@
 
 <section>
   <h1>Kernel Functions</h1>
+  <div>
+    The ultimate objective of a kernel is to use some fancy way to still tell us
+    how similar any two inputs $x$, $x'$ are and map it to a higher dimensions.
+    Some commonly used kernels are as follows. Our objective here is to define
+    some basic kernels and then see how we can use them to combine them and
+    generate fancier functions
+  </div>
 </section>
 
 {#each config as func, indx}

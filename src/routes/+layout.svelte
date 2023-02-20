@@ -26,6 +26,7 @@
         <a href="{base}/visualisations">Visualisations</a>
       </li>
       <li><a href="{base}/mechanism">Mechanism</a></li>
+      <li><a href="{base}/rbfgen">RBF Generalisation</a></li>
     </ul>
   </nav>
   <div class="p20 fade content">
@@ -62,13 +63,6 @@
     padding: 0;
     li {
       padding: 10px 0;
-      // a {
-      //   color: #fff;
-      //   text-decoration: none;
-      //   &:hover {
-      //     text-decoration: underline;
-      //   }
-      // }
     }
   }
 

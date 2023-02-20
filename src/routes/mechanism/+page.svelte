@@ -5,7 +5,7 @@
 </script>
 
 <h1 class="w-100 mx-a">Kernel Functions</h1>
-<section class="d-n">
+<section>
   <h2>Regression</h2>
   <p>
     Our objective first is to find the best linear predictor for the response
@@ -20,7 +20,7 @@
     $$ w = (X^T X)^{`{-1}`} X^T Y $$
   </p>
 </section>
-<section class="d-n">
+<section>
   <h2>Non Linearity</h2>
   <p>
     We can extend this to non linear mappings for $X$ by introducing a function
@@ -42,7 +42,7 @@
     kernel trick.
   </p>
 </section>
-<details class="p5 rx20 d-n" style="border:1px solid #ccc;">
+<details>
   <summary>
     <h2 class="d-ib m5">Restructuring the Weight Matrix</h2>
     <div class="mx-a">
@@ -89,7 +89,7 @@
     the computation time by a lot.
   </p>
 </details>
-<section class="d-n">
+<section>
   <h2>Mercer's Theorem</h2>
   <p>
     A symmetric positive semi-definite function $K(x, y)$ can be expressed as an
@@ -103,7 +103,7 @@
     <br />
   </p>
 </section>
-<section class="d-n">
+<section>
   <h2>The Kernel Trick</h2>
   <p>
     What Mercer's Theorem lets us do is rewrite every term in the Kernel matrix
@@ -129,7 +129,7 @@
     compute $w^*$ efficiently
   </p>
 </section>
-<section class="d-n">
+<section>
   <h2>Working Example</h2>
   <p>
     Consider the following mapping $$ \phi: x \rightarrow \phi(x) = \begin{`{bmatrix}`}
@@ -195,15 +195,12 @@
       # svm.SVC().fit(X,Y) rather than X,Y we use fX,Y
       svm.SVC().fit(fX,Y)`}
   />
-  <iframe
-    class="rpm-0 b0"
-    scrolling="no"
-    title="3D Scatter Plot with Plotly.js Charts"
-    src="https://codepen.io/plutoniumblast/embed/gOjqoNJ?default-tab=result&amp;data-show-tab-bar='no'"
-    frameborder="no"
-    allowtransparency="true"
-    allowfullscreen="true"
-    style="width:100%;height: 80vh;"
+  <!-- svelte-ignore a11y-missing-attribute -->
+  <img
+    class="mx-a rx10"
+    src="https://i.imgur.com/V6IWaD2.png"
+    height="400px"
+    width="400px"
   />
   <p>
     While in an ideal world we should be able to stop here and call it a day, in
@@ -252,107 +249,125 @@
     function here lets us find the relations between the values as if we had
     done the transform before hand without actually doing the transform.
   </p>
+  <h4>RBF Kernel</h4>
+  <p>
+    What if we were to have a function for whom the transform were extremely
+    difficult or impossible to calculate even in an approximate case, one such
+    example is the Radial Basis Function (RBF) kernel. The RBF kernel is defined
+    as
+    <br />
+    $$ k(x_i, x_j) = \exp(-\gamma ||x_i - x_j||^2) $$ With the call
+  </p>
+  <Highlight
+    language={python}
+    code={`svm.SVC(kernel='rbf', gamma=1).fit(X,Y)`}
+  />
+  <p>
+    It turns out that the transform needed before hand for an RBF is infinite
+    dimensional, i.e it looks like
+    <br />
+    $$ f(x) = (\text{`{infinite terms...}`}) $$ Notice how being basically
+    impossible to calculate, we can still use the RBF kernel to find the
+    relations between the points.
+    <b>Note:</b> Gamma is a hyper parameter that controls the width of the RBF kernel.
+    The smaller the gamma the wider the Kernel is therefore making it closer to a
+    linear kernel. The larger the gamma the narrower the Kernel is therefore making
+    it closer to a polynomial kernel of arbitrary degree. (See Proof in last section)
+  </p>
 </section>
+<section>
+  <h2>Comparison with SINDy</h2>
+  <div>
+    This method is different from SINDy because SINDy usually aims to find the
+    exact equations of the least number of degrees of freedom in any given
+    system. We don't aim to do that. SINDy will not be able to convert a text
+    description to an image. We want an arbitrary classifier that can be applied
+    to any data set. SINDy would be much more suitable for a physical system
+    where physics modelling is needed, ML is not needed for that and does not
+    aim to solve those problems in the first place.
+    <br />
+    ML however can be used in places where even the Non Linear systems don't have
+    a closed form solution and we want to predict the state at some far time t beyond
+    the chaos boundary. The results, models or even the architectures of the ML models
+    used here are however not well studied and is an active area of research.
+    <ul>
+      <li>
+        It is possible however that even for a given SINDy model, the ML model
+        has lower computational requirements and thus is better used despite not
+        being as accurate. A real world example was seen in Tesla Motors Inc
+        where when calculating the current level of a battery it proved to be
+        simpler to just use an ML model on the raw voltage than actually add
+        physical resistors and model the complex interactions of all different
+        sections, heat profiles and retentivities of the battery.
+      </li>
+      <li>
+        As mentioned above, we have seen in Kadierdan et al CDC 2019, that SINDy
+        can be very accurately used to model, and therefore balance an inverted
+        vertical double pendulum. It however also turns out that SINDy is good
+        at small specific classes of tasks and should be used for as such, it
+        generalists very poorly as was seen in the modelling of Nuclear Fusion
+        where fusion control is done much better with DeepMind's new model <a
+          href="#">:Deepmind</a
+        >, we see that they're able to not only model and predict the gas plume
+        behaviour but also control it. This is a much more complex task than the
+        simple double pendulum and so it is not surprising that SINDy fails
+        here. This is also a good example of how ML can be used to solve
+        problems that are not solvable by SINDy.
+      </li>
+      <li>
+        SINDy aims to find a simple model such that it is EXPLAINABLE. The
+        latter being the more important part, in ML the model has no constraint
+        on being explainable and is very happy being a black box in interest of
+        which it has no constraints on what forms it can take, therefore
+        structurally it can be much more complex than a SINDy model. This is a
+        good thing because it allows us to model much more complex systems, but
+        it is also a bad thing because it makes it harder to explain the model
+        and thus harder to trust it. In interest of this ability to Generalise,
+        in 2011 NASA switched to ML for aircraft engine premptive fault
+        detection and in 2015 for drought prediction in the ECOSTRESS mission,
+        both areas which were traditionally left to modelling.
+      </li>
+    </ul>
+  </div>
+</section>
+<details open>
+  <summary
+    ><h2 class="d-ib m5">Proof of RBF Kernel's Dimensionality</h2></summary
+  >
+  <div>
+    $ k(x_i, x_j) $ <br />
+    $ \quad = \exp(-\frac{`{1}`}{`{2}`} ||x_i - x_j||^2)$
+    <br />
+    $ \quad = \exp(-\frac{`{1}`}{`{2}`}
+    \langle x_i - x_j\rangle^T \langle x_i - x_j\rangle) $ <br />
+    $ \quad = \exp(-\frac{`{1}`}{`{2}`}
+    (\langle x_i, x_i - x_j\rangle - \langle x_j, x_i - x_j\rangle)) $ <br />
+    $ \quad = \exp(-\frac{`{1}`}{`{2}`}
+    (\langle x_i, x_i\rangle - \langle x_i, x_j\rangle - \langle x_j, x_i\rangle
+    + \langle x_j, x_j\rangle)) $ <br />
+    $ \quad = \exp(-\frac{`{1}`}{`{2}`} (||x_i||^2 - 2\langle x_i, x_j\rangle + ||x_j||^2))
+    $ <br />
+    $ \quad = \exp[-\frac{`{1}`}{`{2}`}
+    ||x_i||^2 - \frac{`{1}`}{`{2}`} ||x_j||^2] \exp(\langle x_i, x_j\rangle) $<br
+    />
+    $ \quad = C e^{`{\\langle x_i, x_j\\rangle}`}
+    \quad \quad \text{`{since }`} C = \exp(-\frac{`{1}`}{`{2}`} ||x_i||^2 - \frac{`{1}`}{`{2}`}
+    ||x_j||^2) $ <br /> $ \quad = C \sum_{`{n=0}`}^{`{\\infty}`} \frac{`{\\langle x_i, x_j\\rangle^n}`}{`{n!}`}
+    \quad \quad \text{`{Taylor Series Expansion}`} $ <br />
+    $ \quad = C \sum_{`{n=0}`}^{`{\\infty}`}
+    \frac{`{K_{poly(n)}(x_i, x_j) }`}{`{n!}`}$
+  </div>
+</details>
 
-<!--```\subsubsection{RBF Kernel}
-What if we were to have a function for whom the transform were extremely difficult or impossible to calculate even in an approximate case, one such example is the Radial Basis Function (RBF) kernel. The RBF kernel is defined as
-<br/> $$
-  k(x_i, x_j) = \exp(-\gamma ||x_i - x_j||^2)
-$$
-With the call
-\begin{minted}{python}
-svm.SVC(kernel='rbf', gamma=1).fit(X,Y)
-\end{minted}
-It turns out that the transform needed before hand for an RBF is infinite dimensional, i.e it looks like
-<br/> $$
-  f(x) = (\text{infinite terms})
-$$
-Notice how being basically impossible to calculate, we can still use the RBF kernel to find the relations between the points. \u005C
-\textbf{Note:} Gamma is a hyper parameter that controls the width of the RBF kernel. The smaller the gamma the wider the Kernel is therefore making it closer to a linear kernel. The larger the gamma the narrower the Kernel is therefore making it closer to a polynomial kernel of arbitrary degree. (See Proof in last section)
-
-
-\section{Comparisons}
-\subsection{SINDy: Sparse Identification of Nonlinear Dynamics}
-This method is different from SINDy because SINDy usually aims to find the exact equations of the least number of degrees of freedom in any given system. We don't aim to do that. SINDy will not be able to convert a text description to an image. We want an arbitrary classifier that can be applied to any data set. SINDy would be much more suitable for a physical system where physics modelling is needed, ML is not needed for that and does not aim to solve those problems in the first place.
-
-ML however can be used in places where even the Non Linear systems don't have a closed form solution and we want to predict the state at some far time t beyond the chaos boundary. The results, models or even the architectures of the ML models used here are however not well studied and is an active area of research.
-
-\textbf{Caveats}
-\begin{itemize}
-  \item It is possible however that even for a given SINDy model, the ML model has lower computational requirements and thus is better used despite not being as accurate. A real world example was seen in Tesla Motors Inc where when calculating the current level of a battery it proved to be simpler to just use an ML model on the raw voltage than actually add physical resistors and model the complex interactions of all different sections, heat profiles and retentivities of the battery.
-  \item As mentioned above, we have seen in Kadierdan et al CDC 2019, that SINDy can be very accurately used to model, and therefore balance an inverted vertical double pendulum. It however also turns out that SINDy is good at small specific classes of tasks and should be used for as such, it generalists very poorly as was seen in the modelling of Nuclear Fusion where fusion control is done much better with DeepMind's new model \cite{deepmind}, we see that they're able to not only model and predict the gas plume behaviour but also control it. This is a much more complex task than the simple double pendulum and so it is not surprising that SINDy fails here. This is also a good example of how ML can be used to solve problems that are not solvable by SINDy.
-  \item SINDy aims to find a simple model such that it is EXPLAINABLE. The latter being the more important part, in ML the model has no constraint on being explainable and is very happy being a black box in interest of which it has no constraints on what forms it can take, therefore structurally it can be much more complex than a SINDy model. This is a good thing because it allows us to model much more complex systems, but it is also a bad thing because it makes it harder to explain the model and thus harder to trust it. In interest of this ability to Generalise, in 2011 NASA switched to ML for aircraft engine premptive fault detection and in 2015 for drought prediction in the ECOSTRESS mission, both areas which were traditionally left to modelling.
-\end{itemize}
-
-\section{Proof of RBF Kernel's Dimensionality}
-<br/> $$
-  \begin{split}
-  k(x_i, x_j) & = \exp(-\frac{1}{2} ||x_i - x_j||^2) \u005C
-  & = \exp(-\frac{1}{2} \langle x_i - x_j\rangle^T \langle x_i - x_j\rangle) \u005C
-  & = \exp(-\frac{1}{2} (\langle x_i, x_i - x_j\rangle - \langle x_j, x_i - x_j\rangle)) \u005C
-  & = \exp(-\frac{1}{2} (\langle x_i, x_i\rangle - \langle x_i, x_j\rangle - \langle x_j, x_i\rangle + \langle x_j, x_j\rangle)) \u005C
-  & = \exp(-\frac{1}{2} (||x_i||^2 - 2\langle x_i, x_j\rangle + ||x_j||^2)) \u005C
-  & = \exp[-\frac{1}{2} ||x_i||^2 - \frac{1}{2} ||x_j||^2] \exp(\langle x_i, x_j\rangle) \u005C
-  & = C e^{\langle x_i, x_j\rangle} \quad \quad \text{since} C = \exp(-\frac{1}{2} ||x_i||^2 - \frac{1}{2} ||x_j||^2) \u005C
-  & = C \sum_{n=0}^{\infty} \frac{\langle x_i, x_j\rangle^n}{n!} \quad \quad \text{Taylor Series Expansion} \u005C
-  & = C \sum_{n=0}^{\infty} \frac{K_{poly(n)}(x_i, x_j) }{n!}
-  \end{split}
-$$
-
-We can see that RBF is an infinite sum over polynomial transforms of degree $n \in [0, \infty)$
-
-\section{Sidetrack: RBF $\rightarrow$ Matern}
-The RBF kernel is defined as
-<br/> $$
-k(x,x') = \exp\left(-\frac{d(x,x')}{2*\rho^2}\right)
-$$
-where $d(x,x')$ is the Euclidean distance between $x$ and $x'$ and $\rho$ is a hyperparameter. The RBF kernel is infinitely differentiable and is positive definite. The RBF kernel is also isotropic. The RBF kernel is defined for $d(x,x')\geq 0$.
-%
-The Matern kernel is a generalization of the RBF kernel. It is defined as
-<br/> $$
-k(x,x') = \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right)^\nu K_{\nu}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right)
-$$
-where $K_{\nu}$ is the modified Bessel function of the second kind and $\Gamma$ is the gamma function. The parameter $\nu$ controls the smoothness of the function. For $\nu=1/2$, the Matern kernel reduces to the RBF kernel. For $\nu=1$, the Matern kernel reduces to the absolute exponential kernel. For $\nu\rightarrow\infty$, the Matern kernel reduces to the absolute exponential kernel. The Matern kernel is infinitely differentiable and is positive definite. The Matern kernel is also isotropic. The Matern kernel is defined for $d(x,x')\geq 0$.
-% \subsection{The Matern Kernel with $\nu=1/2$}
-\subsection{Intuition}
-It's common to say that the Bessel functions are the solutions of the Bessel Differential Equation, but thats not much of an explanation. We arrive at the Bessel Differential Equation by transforming the wave equation into cylindrical co-ordinates.
-
-Intuitively The Bessel functions are what you get in two dimensions by taking superpositions of sine waves with circular symmetry. If you draw a circle 100 meters in diameter, and put 1000 sources around the circumference of the circle, and have them transmit sine waves towards the center, all synchronized in phase, then the disturbance you get in the middle is described by a Bessel function … actually, $J_0$. If we do the same thing but have the source phase delayed linearly in a clockwise direction, so that when you come full circle they are back in phase again…that's the next Bessel function, $J_1$. Double the phase delay, and you get $J_2$, and so on.
-
-So the RBF is effectively the same thing as a bessel function where on a membrane, rather than one 'dip', i.e as in dropping a ball in the center, In the Matern Kernel there may be an arbitrary amount of dips of varying hights say as when we beat a drum. The Gamma function is just a normalization factor which comes with some mathematical trickery.
-
-\subsection{Special Cases}
-\begin{itemize}
-  \item $\nu \rightarrow \infty$ Matern reduces to RBF;
-  <br/> $$
-    \lim_{\nu \rightarrow \infty} \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right)^\nu K_{\nu}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right) = \exp\left(-\frac{d(x,x')}{2*\rho^2}\right)
-  $$
-  \item $\nu = 1$ Matern reduces Ornstein-Uhlenbeck Kernel;
-  <br/> $$
-    \lim_{\nu \rightarrow 1} \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right)^\nu K_{\nu}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right) = \exp\left(-\frac{d(x,x')}{\rho}\right)
-  $$
-  \item $\nu = 1/2$ Matern reduces to Absolute Exponential Kernel;
-  <br/> $$
-    \lim_{\nu \rightarrow 1/2} \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right)^\nu K_{\nu}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right) = \exp\left(-\sqrt{2}\frac{d(x,x')}{\rho}\right)
-  $$
-\end{itemize}
-
-The main power of a Matern kernel is that it allows for non-stationary processes. The RBF kernel is stationary, meaning that the covariance between two points $x$ and $x'$ is independent of the distance between them. The Matern kernel is non-stationary, meaning that the covariance between two points $x$ and $x'$ is dependent on the distance between them making it much more flexible. Non-stationary kernels have proved to be very useful for modeling data that exhibit spatially varying behavior, such as weather patterns or population density.
-
-\subsection{Where we go from here?}
-I will be attempting to (most likely fruitlessly) derive a Generalised Wedland Kernel as a generalization of the Matern Kernel, it comes from the Generalised Wedland Family of Covariance Functions which are a generalization of Matern Covariance Function as shown by Bevilacquaa et al in 2022\cite{wedland}.
-
-\printbibliography
-
-\end{document}
-``` -->
 <style>
   section,
   details {
     max-width: 991px;
     margin: 0 auto;
   }
-  .rx20 {
-    overflow: hidden !important;
+  details {
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 10px;
   }
 </style>
