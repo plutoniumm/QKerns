@@ -3,17 +3,17 @@ lockfileVersion: 5.4
 specifiers:
   '@sveltejs/adapter-static': 2.0.1
   '@sveltejs/kit': 1.7.2
-  '@tensorflow/tfjs': ^4.2.0
-  highlight.js: ^11.7.0
-  marked: ^4.2.12
-  mermaid: ^9.4.0
+  '@tensorflow/tfjs': 4.2.0
+  highlight.js: 11.7.0
+  marked: 4.2.12
+  mermaid: 9.4.0
   plotly.js-dist: 2.18.2
-  sass: ^1.58.2
+  sass: 1.58.2
   svelte: 3.55.1
-  svelte-highlight: ^7.2.0
+  svelte-highlight: 7.2.0
   svelte-preprocess: 5.0.1
   vite: 4.1.2
-  vite-plugin-plain-text: ^1.4.2
+  vite-plugin-plain-text: 1.4.2
 
 dependencies:
   '@tensorflow/tfjs': 4.2.0_seedrandom@3.0.5
@@ -559,12 +559,12 @@ packages:
   /@types/node-fetch/2.6.2:
     resolution: {integrity: sha512-DHqhlq5jeESLy19TYhLakJ07kNumXWjcDdxXsLUMJZ6ue8VZJj4kLPQVE/2mdHh3xZziNF1xppu5lwmS53HR+A==}
     dependencies:
-      '@types/node': 18.13.0
+      '@types/node': 18.14.0
       form-data: 3.0.1
     dev: false
 
-  /@types/node/18.13.0:
-    resolution: {integrity: sha512-gC3TazRzGoOnoKAhUx+Q0t8S9Tzs74z7m0ipwGpSqQrleP14hKxP4/JUeEQcD3W1/aIpnWl8pHowI7WokuZpXg==}
+  /@types/node/18.14.0:
+    resolution: {integrity: sha512-5EWrvLmglK+imbCJY0+INViFWUHg1AHel1sq4ZVSfdcNqGy9Edv3UB9IIzzg+xPaUcAgZYcfVs2fBcwDeZzU0A==}
 
   /@types/offscreencanvas/2019.3.0:
     resolution: {integrity: sha512-esIJx9bQg+QYF0ra8GnvfianIY8qWB0GBx54PK5Eps6m+xTj86KLavHv6qDhzKcu5UUOgNfJ2pWaIIV7TRUd9Q==}
@@ -581,7 +581,7 @@ packages:
   /@types/sass/1.43.1:
     resolution: {integrity: sha512-BPdoIt1lfJ6B7rw35ncdwBZrAssjcwzI5LByIrYs+tpXlj/CAkuVdRsgZDdP4lq5EjyWzwxZCqAoFyHKFwp32g==}
     dependencies:
-      '@types/node': 18.13.0
+      '@types/node': 18.14.0
     dev: true
 
   /@types/seedrandom/2.4.30:
@@ -1542,8 +1542,8 @@ packages:
     resolution: {integrity: sha512-ndEIpszUHiG4HtDsQLeIuMvRsDnn8c8rYStabochtUeCvfuvNptb5TUbVD68LRAILPX7p9nqQGh4xJgn3EHS/g==}
     dev: false
 
-  /rollup/3.15.0:
-    resolution: {integrity: sha512-F9hrCAhnp5/zx/7HYmftvsNBkMfLfk/dXUh73hPSM2E3CRgap65orDNJbLetoiUFwSAk6iHPLvBrZ5iHYvzqsg==}
+  /rollup/3.17.2:
+    resolution: {integrity: sha512-qMNZdlQPCkWodrAZ3qnJtvCAl4vpQ8q77uEujVCCbC/6CLB7Lcmvjq7HyiOSnf4fxTT9XgsE36oLHJBH49xjqA==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
@@ -1824,7 +1824,7 @@ packages:
       esbuild: 0.16.17
       postcss: 8.4.21
       resolve: 1.22.1
-      rollup: 3.15.0
+      rollup: 3.17.2
       sass: 1.58.2
     optionalDependencies:
       fsevents: 2.3.2

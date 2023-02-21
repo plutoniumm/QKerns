@@ -1,5 +1,12 @@
 <script>
   import { base } from "$app/paths";
+
+  const rerender = () => {
+    const { renderKatex } = window;
+    setTimeout(() => {
+      renderKatex();
+    }, 100);
+  };
 </script>
 
 <main>
@@ -21,7 +28,8 @@
     </div>
     <hr class="w-50 o-25" />
     <h4 class="p10 m0">Pages</h4>
-    <ul class="p20">
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <ul class="p20" on:click={rerender}>
       <li><a href="{base}/">Home</a></li>
       <li>
         <a href="{base}/visualisations">Visualisations</a>
