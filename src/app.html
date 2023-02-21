@@ -75,7 +75,7 @@
 		}
 
 		#toc li {
-			color: #888;
+			color: #444;
 			font-weight: 300;
 			padding: 2px 0;
 			counter-increment: level-1;
@@ -102,10 +102,18 @@
 		/* For mermaid on timeline page */
 		#rendered svg {
 			max-height: 500px;
-			max-width: 768px !important;
+			max-width: 991px !important;
 			margin-left: 0;
 		}
 	</style>
+	<script>
+		// For mermaid on timeline page
+		setTimeout( () => {
+			document.querySelectorAll( '#timeline g.node' ).forEach( node =>
+				node.setAttribute( 'transform', node.getAttribute( 'transform' ) + " scale(1.2)" )
+			);
+		}, 1000 )
+	</script>
 </body>
 
 </html>

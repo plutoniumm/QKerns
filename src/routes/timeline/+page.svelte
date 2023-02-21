@@ -16,10 +16,9 @@
       let li = `<li><a href="#${header.id}">${header.textContent}</a></li>`;
       if (bs.length > 0) {
         let nestedOl = `<ol>`;
-        for (let j = 0; j < bs.length; j++) {
-          let b = bs[j];
-          nestedOl += `<li><a href="#${b.id}">${b.textContent}</a></li>`;
-        }
+        for (let j = 0; j < bs.length; j++)
+          nestedOl += `<li>${bs[j].textContent}</li>`;
+
         nestedOl += `</ol>`;
         li = li.replace("</li>", `${nestedOl}</li>`);
       }
@@ -40,7 +39,7 @@
   });
 </script>
 
-<article class="p-abs rpm-10" id="toc">
+<article class="p-abs rpm-10 blur o-25" id="toc">
   <ol />
 </article>
 <Week count={0}>
@@ -53,14 +52,16 @@
     <chip><a href="https://youtu.be/RI35E5ewBuI">Liquid Neural Nets</a></chip>
   </div>
   <b>Current State</b>
-  <Mermaid
-    config={{
-      gitGraph: {
-        mainBranchName: "New-Kernel",
-      },
-    }}
-    content={Timeline}
-  />
+  <div id="timeline" class="w-100">
+    <Mermaid
+      config={{
+        gitGraph: {
+          mainBranchName: "New-Kernel",
+        },
+      }}
+      content={Timeline}
+    />
+  </div>
 </Week>
 
 <Week count={5}>???</Week>
@@ -203,7 +204,6 @@
 
 <style lang="scss">
   /* Set up CSS counting for the numbered TOC */
-  section,
   details {
     font-weight: 200;
     max-width: 1040px;
@@ -223,7 +223,6 @@
     }
   }
 
-  header,
   summary {
     text-transform: uppercase;
     font-weight: 500;
@@ -259,8 +258,12 @@
   #toc {
     right: 10px;
     top: 10px;
-    background: #fff;
+    --bg: #fff8;
+    --sz: 4px;
     padding-right: 15px;
+    &:hover {
+      opacity: 1;
+    }
   }
   @media (max-width: 900px) {
     iframe {
