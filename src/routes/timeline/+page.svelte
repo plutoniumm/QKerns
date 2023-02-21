@@ -2,11 +2,12 @@
   import Mermaid from "./assets/mermaid.svelte";
   import { onMount } from "svelte";
   import { plainText as Timeline } from "./assets/timeline.mmd";
+  import Week from "./assets/week.svelte";
 
   onMount(() => {
-    // generate toc with <header> > <b>
     let sections = document.querySelectorAll("section,details:not(.mini)");
     let toc = document.querySelector("#toc ol");
+
     for (let i = 0; i < sections.length; i++) {
       let section = sections[i];
       let header = section.querySelectorAll("header, summary")[0];
@@ -25,64 +26,45 @@
       toc.insertAdjacentHTML("beforeend", li);
     }
 
-    let observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          let id = entry.target.id;
-          let a = toc.querySelector(`a[href="#${id}"]`);
-          a.classList.add("bold");
-        } else {
-          let id = entry.target.id;
-          let a = toc.querySelector(`a[href="#${id}"]`);
-          a.classList.remove("bold");
-        }
-      });
-    });
+    let observer = new IntersectionObserver((entries) =>
+      entries.forEach((entry) =>
+        toc
+          .querySelector(`a[href="#${entry.target.id}"]`)
+          .classList[entry.isIntersecting ? "add" : "remove"]("bold")
+      )
+    );
 
-    const headers = [
-      ...document.querySelectorAll("section header"),
-      ...document.querySelectorAll("details:not(.mini) summary"),
-    ];
-    headers.forEach((header) => observer.observe(header));
+    document
+      .querySelectorAll("section header, details:not(.mini) summary")
+      .forEach((header) => observer.observe(header));
   });
 </script>
 
-<article
-  class="p-abs rpm-10"
-  id="toc"
-  style="right: 10px;top:10px;background:#fff;padding-right:15px;"
->
+<article class="p-abs rpm-10" id="toc">
   <ol />
 </article>
-<section>
-  <header>General</header>
+<Week count={0}>
   <h4>
     Problem: Finding new Quantum Kernel Functions for data mapping to be used in
     QSVMs and other QML Algorithms
   </h4>
+  <b>Probable Tools</b>
   <div>
-    <b>Probable Tools</b>
-    <div>
-      <chip><a href="https://youtu.be/RI35E5ewBuI">Liquid Neural Nets</a></chip>
-    </div>
-    <b>Current State</b>
-    <Mermaid
-      config={{
-        gitGraph: {
-          mainBranchName: "New-Kernel",
-        },
-      }}
-      content={Timeline}
-    />
+    <chip><a href="https://youtu.be/RI35E5ewBuI">Liquid Neural Nets</a></chip>
   </div>
-</section>
+  <b>Current State</b>
+  <Mermaid
+    config={{
+      gitGraph: {
+        mainBranchName: "New-Kernel",
+      },
+    }}
+    content={Timeline}
+  />
+</Week>
 
-<section>
-  <header>Week 5</header>
-  <div>???</div>
-</section>
-<section>
-  <header>Week 4</header>
+<Week count={5}>???</Week>
+<Week count={4}>
   <Mermaid
     config={{
       gitGraph: {
@@ -103,10 +85,9 @@
       frameborder="0"
     />
   </details>
-</section>
+</Week>
 <!-- Week 3 -->
-<section>
-  <header>Week 3</header>
+<Week count={3}>
   <details class="mini">
     <summary>Code</summary>
     <iframe
@@ -179,58 +160,49 @@
       >
     </li>
   </ul>
-</section>
+</Week>
 <!-- Week 2 -->
-<details>
-  <summary>Week 2</summary>
-  <div>
-    <ul>
-      <li>Doing LitRev of QML Algorithms</li>
-    </ul>
-    <b>Picking Topics</b>
-    <ul>
-      <li>
-        Encoding Kernel Function Finding efficient kernel fns for QML (like
-        DLOG) that work better on QCs than on classical computers
-      </li>
-      <li>Encoding Data ZZ Z XZ Finding better encodings for data</li>
-      <li>
-        RL for Ansatz Using RL for finding better initial guess for ansatz
-      </li>
-      <li>
-        Problems in Finance Finding better ways to solve problems in finance
-      </li>
-    </ul>
-  </div>
-</details>
+<Week count={2} collapse>
+  <ul>
+    <li>Doing LitRev of QML Algorithms</li>
+  </ul>
+  <b>Picking Topics</b>
+  <ul>
+    <li>
+      Encoding Kernel Function Finding efficient kernel fns for QML (like DLOG)
+      that work better on QCs than on classical computers
+    </li>
+    <li>Encoding Data ZZ Z XZ Finding better encodings for data</li>
+    <li>RL for Ansatz Using RL for finding better initial guess for ansatz</li>
+    <li>
+      Problems in Finance Finding better ways to solve problems in finance
+    </li>
+  </ul>
+</Week>
 <!-- Week 1 -->
-<details>
-  <summary>Week 1</summary>
-  <div>
-    <ul>
-      <li>
-        Revision:
-        <a
-          href="https://youtube.com/playlist?list=PLvvQ7qimTOklI0uO9gYfng__EyFfOoSna"
-        >
-          [WILP: QIC]
-        </a>
-      </li>
-      <li>
-        Started:
-        <a
-          href="https://youtube.com/playlist?list=PLmRxgFnCIhaMgvot-Xuym_hn69lmzIokg"
-        >
-          [UnivWaterloo: QML MOOC]
-        </a>
-      </li>
-    </ul>
-  </div>
-</details>
+<Week count={1} collapse>
+  <ul>
+    <li>
+      Revision:
+      <a
+        href="https://youtube.com/playlist?list=PLvvQ7qimTOklI0uO9gYfng__EyFfOoSna"
+      >
+        [WILP: QIC]
+      </a>
+    </li>
+    <li>
+      Started:
+      <a
+        href="https://youtube.com/playlist?list=PLmRxgFnCIhaMgvot-Xuym_hn69lmzIokg"
+      >
+        [UnivWaterloo: QML MOOC]
+      </a>
+    </li>
+  </ul>
+</Week>
 
 <style lang="scss">
   /* Set up CSS counting for the numbered TOC */
-
   section,
   details {
     font-weight: 200;
@@ -283,6 +255,12 @@
   iframe {
     width: min(100%, 900px);
     aspect-ratio: 16/10;
+  }
+  #toc {
+    right: 10px;
+    top: 10px;
+    background: #fff;
+    padding-right: 15px;
   }
   @media (max-width: 900px) {
     iframe {
