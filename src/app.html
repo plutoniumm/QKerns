@@ -16,32 +16,16 @@
 
 <body data-sveltekit-preload-data="hover">
 	<div style="display: contents">%sveltekit.body%</div>
-
-	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js" crossorigin="anonymous"></script>
-	<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"
-		crossorigin="anonymous"></script>
-	<script type="module">
-		import renderMathInElement from "https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.mjs";
-		const renderKatex = () =>
-			renderMathInElement( document.querySelector( '.content' ), {
-				output: 'html',
-				delimiters: [
-					{ left: '$$', right: '$$', display: true },
-					{ left: '$', right: '$', display: false }
-				],
-				throwOnError: false
-			} );
-
-		window.renderKatex = renderKatex;
-
-		// For mermaid on timeline page
-		setTimeout( () => {
-			renderKatex()
-			document.querySelectorAll( '#timeline g.node' ).forEach( node =>
-				node.setAttribute( 'transform', node.getAttribute( 'transform' ) + " scale(1.2)" )
-			);
-		}, 1000 )
-	</script>
 </body>
+
+
+<script type="module">
+	// For mermaid on timeline page
+	setTimeout( () => {
+		document.querySelectorAll( '#timeline g.node' ).forEach( node =>
+			node.setAttribute( 'transform', node.getAttribute( 'transform' ) + " scale(1.2)" )
+		);
+	}, 1000 )
+</script>
 
 </html>

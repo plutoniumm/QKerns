@@ -1,19 +1,34 @@
 <script>
-  import { base } from "$app/paths";
+  import { onMount } from "svelte";
 
-  const rerender = () => {
-    const { renderKatex } = window;
-    setTimeout(() => {
-      renderKatex();
-    }, 100);
-  };
+  onMount(() =>
+    window.renderMathInElement(document.querySelector("article.fade"), {
+      output: "html",
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+      ],
+      throwOnError: false,
+    })
+  );
 </script>
 
+<svelte:head>
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"
+  ></script>
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"
+  ></script>
+</svelte:head>
+
 <main>
-  <nav class="fade-right">
+  <nav class="fade-right" data-sveltekit-preload-data data-sveltekit-reload>
     <div id="logo" class="ƒ ∆-ct mx-a" style="padding: 20px 0 10px 0;">
       <img
-        src="{base}/qiskit.svg"
+        src="qiskit.svg"
         alt="logo"
         height="32px"
         width="32px"
@@ -21,34 +36,33 @@
       />
       <div
         class="fw4"
-        style="font-size:24px;line-height:36px;align-self:center"
+        style="font-size:24px;line-height:32px;align-self:center"
       >
         new qkerns()
       </div>
     </div>
     <hr class="w-50 o-25" />
     <h4 class="p10 m0">Pages</h4>
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <ul class="p20" on:click={rerender}>
-      <li><a href="{base}/">Home</a></li>
+    <ul class="p20">
+      <li><a href="/">Home</a></li>
       <li>
-        <a href="{base}/visualisations">Visualisations</a>
+        <a href="/visualisations">Visualisations</a>
       </li>
-      <li><a href="{base}/mechanism">Mechanism</a></li>
-      <li><a href="{base}/rbfgen">RBF Generalisation</a></li>
-      <li><a href="{base}/timeline">Timeline</a></li>
+      <li><a href="/mechanism">Mechanism</a></li>
+      <li><a href="/rbfgen">RBF Generalisation</a></li>
+      <li><a href="/timeline">Timeline</a></li>
     </ul>
     <h4 class="p10 m0">Python Files</h4>
     <ul class="p20">
-      <li><a href="{base}/python#qgss-kerns.html">QGSS QSVM (2021)</a></li>
+      <li><a href="/python#qgss-kerns.html">QGSS QSVM (2021)</a></li>
       <li>
-        <a href="{base}/python#docs-hybrid.html"> Std Hybrid Classifier </a>
+        <a href="/python#docs-hybrid.html">Std Hybrid Classifier</a>
       </li>
     </ul>
   </nav>
-  <div class="p20 fade content">
+  <article class="p20 fade">
     <slot />
-  </div>
+  </article>
 </main>
 
 <style lang="scss">
@@ -73,7 +87,7 @@
     padding: 5px 10px !important;
   }
 
-  .content {
+  article {
     grid-area: main;
     overflow-y: scroll;
     width: calc(100% - 40px);
