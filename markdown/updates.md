@@ -93,3 +93,11 @@ It is worth acutually generalising this far since Matern Kernel is a standard ob
 # Week 5 - 12th Feb Sunday to 18th Feb Saturday
 The following is a small document that contains the full explanation of how and why Kernel Functions work, it is a bit long but I think it is worth it since it is the first time I've actually understood the full mechanism of SVMs and Kernel Functions. It also includes a small function on how SINDy compares in our problem (text only).
 
+# Week 6 - 19th Feb Sunday to 25th Feb Saturday
+Have added
+- qml.nukes.in/python#docs-kernlearn.html -> Caclulates The Kernel Matrix on Quantum Computer, (Kernel Matrices for large matrices are never evaluated directly, we always do Gradient Desc, I'm preparing a classical example for sake of demo for the next time we meet)
+- qml.nukes.in/python#docs-kerntrain.html -> Copy pasted (so I can't explain it yet) but is some form of Kernel Fitting code
+
+This week and the next both I'm basically trying to understand the Qiskit libraries, There are a few kinds of feature maps which I have no idea what they do.
+- Additionally I'm trying to code up the SVM->QUBO part of https://ar5iv.labs.arxiv.org/html/2008.02369
+- Have started experimenting with DWave libraries to access their Annealer.

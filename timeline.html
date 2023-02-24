@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="utf-8" />
-	<link rel="icon" href="./favicon.png" />
+	<link rel="icon" href="./qiskit.svg" />
 	<meta name="viewport" content="width=device-width" />
 
 	<link rel="stylesheet" href="https://api.nukes.in/css/global.css">
@@ -14,16 +14,17 @@
 	<meta http-equiv="content-security-policy" content="">
 		<link href="./_app/immutable/assets/_layout.52278564.css" rel="stylesheet">
 		<link href="./_app/immutable/assets/_page.11eb3d93.css" rel="stylesheet">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/start.46dd25e5.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/index.a4d57a87.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/singletons.408e11d6.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/app.8c5a4f3f.mjs">
+		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/start.72a5dfe2.mjs">
+		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/index.75c3cfdb.mjs">
+		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/singletons.67bc3d0c.mjs">
+		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/app.b6a37ebb.mjs">
 		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/preload-helper.41c905a7.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/_layout.svelte.5adcfe9b.mjs">
+		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/_layout.svelte.51f106ac.mjs">
+		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/nav.63f85d82.mjs">
 		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/_layout.js.fb1865a6.mjs">
 		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/_layout.da46b06b.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/timeline-page.svelte.c6ee1450.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/_page.ed9f1750.mjs"><!-- HEAD_svelte-1us85gb_START --><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"></script><!-- HEAD_svelte-1us85gb_END -->
+		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/timeline-page.svelte.3bfc3001.mjs">
+		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/_page.a2b5b885.mjs"><!-- HEAD_svelte-1us85gb_START --><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"></script><!-- HEAD_svelte-1us85gb_END -->
 </head>
 
 <body data-sveltekit-preload-data="hover">
@@ -43,8 +44,11 @@
       <li class="svelte-13u0k8"><a href="/rbfgen">RBF Generalisation</a></li>
       <li class="svelte-13u0k8"><a href="/timeline">Timeline</a></li></ul>
     <h4 class="p10 m0 svelte-13u0k8">Python Files</h4>
-    <ul class="p20 svelte-13u0k8"><li class="svelte-13u0k8"><a href="/python#qgss-kerns.html">QGSS QSVM (2021)</a></li>
-      <li class="svelte-13u0k8"><a href="/python#docs-hybrid.html">Std Hybrid Classifier</a></li></ul></nav>
+    <ul class="p20 svelte-13u0k8"><li class="svelte-13u0k8"><a href="/python#qgss-kerns.html">QGSS QSVM (2021)</a>
+        </li><li class="svelte-13u0k8"><a href="/python#docs-hybrid.html">Std Hybrid Classifier</a>
+        </li><li class="svelte-13u0k8"><a href="/python#docs-kernlearn.html">Q Kernel Matrix Calc</a>
+        </li><li class="svelte-13u0k8"><a href="/python#docs-kerntrain.html">Q Kernel Train (QKA)</a>
+        </li></ul></nav>
   <article class="p20 fade svelte-13u0k8"><article class="p-abs rpm-10 blur o-25 svelte-pqw47f" id="toc"><ol></ol></article>
 <section class="mx-a fw2 svelte-1aynj0q"><header class="fw5 p10 rx10 svelte-1aynj0q">Week 0</header>
     <div><h4>Problem: Finding new Quantum Kernel Functions for data mapping to be used in
@@ -166,7 +170,7 @@
 			
 			<script>
 				{
-					__sveltekit_syelp8 = {
+					__sveltekit_3pvy1p = {
 						env: {},
 						assets: new URL(".", location.href).pathname.replace(/^\/$/, ''),
 						element: document.currentScript.parentElement
@@ -175,10 +179,10 @@
 					const data = [null,null];
 
 					Promise.all([
-						import("./_app/immutable/entry/start.46dd25e5.mjs"),
-						import("./_app/immutable/entry/app.8c5a4f3f.mjs")
+						import("./_app/immutable/entry/start.72a5dfe2.mjs"),
+						import("./_app/immutable/entry/app.b6a37ebb.mjs")
 					]).then(([kit, app]) => {
-						kit.start(app, __sveltekit_syelp8.element, {
+						kit.start(app, __sveltekit_3pvy1p.element, {
 							node_ids: [0, 6],
 							data,
 							form: null,
