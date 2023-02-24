@@ -86,14 +86,8 @@
 </section>
 
 <style>
-  section,
-  details {
+  section {
     max-width: 991px;
     margin: 0 auto;
-  }
-  details {
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    padding: 10px;
   }
 </style>

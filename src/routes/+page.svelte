@@ -1,17 +1,18 @@
 <script>
   import { onMount } from "svelte";
+  import navpy from "./nav.json";
 
   let ul;
   // onmount everything gets converted to links with concatnated hrefs
   onMount(() => {
     let links = ul.querySelectorAll("li code");
-    links.forEach((link) => {
-      const code =
-        link.parentElement.parentElement.parentElement.querySelector(
-          "code"
-        ).innerText;
-      link.innerHTML = `<a href="${code}/${link.innerText}">${link.innerText}</a>`;
-    });
+    links.forEach(
+      (link) =>
+        (link.innerHTML = `<a href="${
+          link.parentElement.parentElement.parentElement.querySelector("code")
+            .innerText
+        }/${link.innerText}">${link.innerText}</a>`)
+    );
   });
 </script>
 
@@ -30,8 +31,11 @@
     <li>
       <code>/python</code>: <br />
       <ul>
-        <li><code>docs-hybrid.html</code>: Std Hybrid Classifier</li>
-        <li><code>qgss-kerns.html</code>: QGSS QSVM (2021)</li>
+        {#each navpy as py}
+          <li>
+            <code>{py.href}.html</code>: {py.desc}
+          </li>
+        {/each}
       </ul>
     </li>
     <li>

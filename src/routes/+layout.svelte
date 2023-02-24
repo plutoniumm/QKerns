@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import navpy from "./nav.json";
 
   onMount(() =>
     window.renderMathInElement(document.querySelector("article.fade"), {
@@ -11,6 +12,8 @@
       throwOnError: false,
     })
   );
+
+  const pyth = (filename) => `/python#${filename}.html`;
 </script>
 
 <svelte:head>
@@ -54,10 +57,11 @@
     </ul>
     <h4 class="p10 m0">Python Files</h4>
     <ul class="p20">
-      <li><a href="/python#qgss-kerns.html">QGSS QSVM (2021)</a></li>
-      <li>
-        <a href="/python#docs-hybrid.html">Std Hybrid Classifier</a>
-      </li>
+      {#each navpy as py}
+        <li>
+          <a href={pyth(py.href)}>{py.title}</a>
+        </li>
+      {/each}
     </ul>
   </nav>
   <article class="p20 fade">

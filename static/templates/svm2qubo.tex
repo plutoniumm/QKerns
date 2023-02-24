@@ -1,0 +1,168 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{minted}
+\usepackage{geometry}
+
+% \usepackage{biblatex}
+% \addbibresource{kernel.bib}
+
+\geometry{a4paper, margin=0.5in}
+\title{SVM to QUBO}
+\author{Manav Seksaria}
+\date{\today}
+\numberwithin{equation}{section}
+\begin{document}
+\maketitle
+
+\section{Paper}
+Given training data $X \in \mathbb{R}^{N \times d}$ and training labels $Y \in \{-1, +1\}^N$, we would like to find a classifier (determined by weights, $w \in \mathbb{R}^d$, and bias, $b \in \mathbb{R}$), that separates the training data.
+Formally, training SVM is expressed as:
+\begin{align}
+    & \min_{w, b} \ ||w||^2 \label{eq:svm-qpp} \\
+    \text{subject to:} \quad & y_i (w^T x_i + b) \ge 1 \qquad \forall i = 1, 2, \ldots, N \nonumber.
+\end{align}
+
+Note that the objective function is convex because its Hessian matrix is the identity matrix, which is positive definite.
+Furthermore, since the constraints are linear, they are convex as well, which makes Problem \ref{eq:svm-qpp} a convex quadratic programming problem.
+To solve Problem \ref{eq:svm-qpp}, we first compute the Lagrangian dual as follows:
+\begin{align}
+    \max_{w, b, \lambda} \ \mathcal{L}(w, b, \lambda) = ||w||^2 - \sum_{i = 1}^{N} \lambda_i \left[ y_i (w^T x_i + b) - 1 \right], \label{eq:lagrangian-dual}
+\end{align}
+
+where $\lambda$ is the vector containing all the Lagrangian multipliers, i.e. $\lambda = [\lambda_1 \ \lambda_2 \ \cdots \ \lambda_N]^T$, with $\lambda_i \ge 0 \ \forall i$.
+The non-zero Lagrangian multipliers in the final solution correspond to the support vectors and determine the hyperplanes $H_1$ and $H_2$ in Figure \ref{fig:svm-explained}.
+The Lagrangian dual problem (Equation \ref{eq:lagrangian-dual}) is solved in $\mathcal{O}(N^3)$ time on classical computers by applying the Karush-Kuhn-Tucker (KKT) conditions \cite{karush1939minima,kuhn2014nonlinear}.
+
+
+\subsection{QUBO Formulation}
+\label{sub:svm-formulation}
+In order to convert SVM training into a QUBO problem, we write Equation \ref{eq:lagrangian-dual} as a minimization problem:
+\begin{align}
+    \min_{w, b, \lambda} \mathcal{L}(w, b, \lambda) &= - w^T w + w^T (X \odot Y')^T \lambda + b Y^T \lambda - 1_{N}^T \lambda \label{eq:lagrangian-dual-min}
+\end{align}
+
+where $Y'$ represents the $N \times d$ matrix obtained by stacking $Y$ horizontally $d$ times, i.e. $Y' = [Y \ Y \ \cdots \ d\text{ times}]$;
+$\odot$ is the element-wise multiplication operation;
+and, $1_N$ represents an $N$-dimensional vector of ones.
+Next, we define the variable vector $\theta$, matrix $U$ and vector $v$ as follows:
+\begin{align}
+    \theta &=   \begin{bmatrix}
+                    w \\ b \\ \lambda
+                \end{bmatrix}, \
+    U =    \begin{bmatrix}
+                -I_d & 0 & (X \odot Y')^T \\
+                0   & 0 & Y^T \\
+                0   & 0 & 0
+            \end{bmatrix}, \
+    v =    -\begin{bmatrix}
+                0 \\ 0 \\ 1_N,
+            \end{bmatrix} \label{eq:svm-theta-U-v}
+\end{align}
+where $I_d$ is a $d$ dimensional identity matrix.
+Now, we can rewrite Equation \ref{eq:lagrangian-dual-min} in matrix form as follows:
+\begin{align}
+    \min_{\theta} \mathcal{L}(\theta) &= \theta^T U \theta + \theta^T v. \label{eq:lagrangian-dual-matrix}
+\end{align}
+
+We now reintroduce the $K$-dimensional precision vector $P = [p_1, p_2, \ldots, p_K]^T$, as described in Section \ref{sub:regression-formulation}.
+% Each entry in this vector can be an integral power of $2$, and can be both positive or negative.
+% The precision vector must be sorted.
+% For example, a precision vector could be: $P = \left[ -2, -1, -\frac{1}{2}, \frac{1}{2}, 1, 2, \right]^T$.
+Next, we introduce $K$ binary variables $\hat{w}_{jk}$, $\hat{b}_{k}$, $\hat{\lambda}_{ik}$ for each SVM weight, bias and Lagrangian multiplier:
+\begin{align}
+    w_{j} &= \sum_{k=1}^K p_k \hat{w}_{jk} \qquad \forall j = 1, 2, \ldots, d \label{eq:binarized-svm-weights} \\
+    b &= \sum_{k=1}^K p_k \hat{b}_{k} \label{eq:binarized-svm-bias} \\
+    \lambda_i &= \sum_{k=K_+}^K p_k \hat{\lambda}_{ik} \qquad \forall i = 1, 2, \ldots, N \label{eq:binarized-svm-lagrange-multipliers}
+\end{align}
+
+where, $p_k$ denotes the $k^{th}$ entry in the precision vector $P$;
+and, $K_+$ denotes the index of smallest positive entry in $P$.
+Summing from $K_+$ in Equation \ref{eq:binarized-svm-lagrange-multipliers} ensures that the Lagrange multipliers are always positive, which is required when solving the Lagrangian dual (Problem \ref{eq:lagrangian-dual-min}).
+% $\hat{w}_{jk}$, $\hat{b}_k$ and $\hat{\lambda}_{jk}$ can be thought of as binary decision variables that select or ignore entries in $P$ depending on whether their value is $1$ or $0$ respectively.
+% With this formulation, we can have up to $2^K$ unique values for each $w_i$ when $P$ contains only positive values for instance.
+% However, if $P$ contains negative values as well, then the number of unique attainable values for each $w_{i}$ might be less than $2^K$.
+% For example, if $P = [-1, -\frac{1}{2}, \frac{1}{2}, 1]$, then only the following seven distinct values can be attained: $\{-\frac{3}{2}, -1, -\frac{1}{2}, 0, \frac{1}{2}, 1, \frac{3}{2}\}$.
+
+Now, we vertically stack all binary variables as follows:
+\begin{align}
+    \hat{w} &= [\hat{w}_{11} \ldots \hat{w}_{1K} \ \hat{w}_{21} \ldots \hat{w}_{2K} \ \ldots \ \hat{w}_{d1} \ldots \hat{w}_{dK} ]^T \label{eq:w-hat} \\
+    \hat{b} &= [\hat{b}_{1} \ldots \hat{b}_K]^T \label{eq:b-hat} \\
+    \hat{\lambda} &= [\hat{\lambda}_{1K_+} \ldots \hat{\lambda}_{1K} \ \hat{\lambda}_{2K_+} \ldots \hat{\lambda}_{2K} \ \ldots \ \hat{\lambda}_{NK_+} \ldots \hat{\lambda}_{NK} ]^T \label{eq:lambda-hat}
+\end{align}
+
+We also define the precision matrix as follows:
+\begin{align}
+    \mathcal{P} &=  \begin{bmatrix}
+                        I_{d+1} \otimes P^T     & 0_{(d+1) \times N (K - K_+ + 1)} \\
+                        0_{N \times (d + 1)}    & I_N \otimes P_+^T
+                    \end{bmatrix} \label{eq:precision-matrix}
+\end{align}
+% \begin{align}
+%     \mathcal{P} &=  \begin{bmatrix}
+%                         I_{d+1} \otimes P^T     & 0 \\
+%                         0    & I_N \otimes P_+^T
+%                     \end{bmatrix} \label{eq:precision-matrix}
+% \end{align}
+
+where,
+% $\otimes$ denotes the Kronecker product;
+$0_{I \times J}$ denotes $I \times J$ matrix of zeroes;
+$P_+$ denotes the vector containing only the positive elements in P.
+The dimensions of the resulting $\mathcal{P}$ are $(N + d + 1) \times (K(d + 1) + N (K - K_+ + 1))$.
+Equations \ref{eq:w-hat}, \ref{eq:b-hat}, \ref{eq:lambda-hat} and \ref{eq:precision-matrix} are done for mathematical convenience.
+Now, we stack $\hat{w}$, $\hat{b}$ and $\hat{\lambda}$ as the vector $\hat{\theta}$:
+\begin{align}
+    \hat{\theta} =  \begin{bmatrix}
+                        \hat{w} \\ \hat{b} \\ \hat{\lambda}
+                    \end{bmatrix} \label{eq:theta-hat}
+\end{align}
+Notice that:
+\begin{align}
+    \theta &= \mathcal{P} \hat{\theta} \label{eq:theta-theta-hat}
+\end{align}
+
+Finally, we substitute the value of $\theta$ from Equation \ref{eq:theta-theta-hat} into Equation \ref{eq:lagrangian-dual-matrix}:
+\begin{align}
+    \min_{\hat{\theta}} \mathcal{L} (\theta) &= \hat{\theta}^T \mathcal{P}^T U \mathcal{P} \hat{\theta} + \hat{\theta}^T  \mathcal{P}^T v \label{eq:svm-qubo}
+\end{align}
+
+Equation \ref{eq:svm-qubo} is identical to Equation \ref{eq:qubo} with $z = \hat{\theta}$, $A = \mathcal{P}^T U \mathcal{P}$, $b = \mathcal{P}^T v$, and $M = K (N + d + 1)$.
+Hence, we have converted the SVM training problem from Equation \ref{eq:lagrangian-dual} into a QUBO problem in Equation \ref{eq:svm-qubo}, which can be solved on adiabatic quantum computers.
+
+
+\subsection{Theoretical Analysis}
+\label{sub:svm-analysis}
+We begin our theoretical analysis by defining the space complexity with respect to the number of qubits needed to solve the QUBO.
+The SVM training problem stated in Equation \ref{eq:lagrangian-dual} contains $\mathcal{O}(N + d)$ variables ($w$, $b$ and $\lambda$) and $\mathcal{O}(Nd)$ data ($X$ and $Y$).
+The QUBO formulation of the SVM training problem stated in Equation \ref{eq:svm-qubo} consists of the same amount of data.
+However, as part of the QUBO formulation, we introduced $K$ binary variables for each variable in the original problem (Equation \ref{eq:lagrangian-dual}).
+So, the total number of variables in Equation \ref{eq:svm-qubo} is $\mathcal{O}(KN + Kd)$.
+% The hardware connectivity of the D-Wave quantum annealer limits the size of QUBO problems that can be solved using the minimal number of hardware qubits.
+% As a result, a direct 1-to-1 mapping of variables to hardware qubits is not possible.
+% Using an efficient embedding algorithm such as \cite{date2019efficiently}, it is possible to embed a given QUBO problem over quadratic number of qubits. %(\fix{is there an upper bound on the size of the QUBO?})
+So, the qubit footprint (or space complexity) of this formulation would be $\mathcal{O}((KN + Kd)^2)$ after embedding onto the hardware.
+In a practical setting, the number of data points is larger than the dimension of each data point, i.e. $N \gg d$.
+Thus, the number of variables would be $\mathcal{O}(NK)$, and the qubit footprint would be $\mathcal{O}(N^2 K^2)$.
+
+The time complexity of classical SVM algorithms is known to be $\mathcal{O}(N^3)$ \cite{bottou2007support}.
+% In order for us to convert the SVM training problem from Equation \ref{eq:svm-qpp} to Equation \ref{eq:svm-to-qubo}, we have to populate a square QUBO matrix of size equal to the number of variables ($\mathcal{O}(KN + Kd)$).
+To compute the time complexity for converting Problem \ref{eq:svm-qpp} into a QUBO problem, we can rewrite Equation \ref{eq:svm-qubo} as follows:
+\begin{align}
+    \min_{\hat{w}, \hat{b}, \hat{\lambda}} \mathcal{L}(\hat{w}, \hat{b}, \hat{\lambda}) &= -\sum_{j=1}^d \sum_{k=1}^{K} \sum_{l=1}^{K} p_k p_l \hat{w}_{jk} \hat{w}_{jl} \nonumber \\
+    & + \sum_{i=1}^{N} \sum_{j=1}^{d} \sum_{k=1}^{K} \sum_{l=K_+}^{K} x_{ij} y_i p_k p_l \hat{w}_{jk} \hat{\lambda}_{il} \nonumber \\
+    & + \sum_{i=1}^{N} \sum_{k=1}^{K} \sum_{l=K_+}^{K} y_i p_k p_l \hat{b}_k \hat{\lambda}_{il}
+     - \sum_{i=1}^{N} \sum_{l=K_+}^K p_l \hat{\lambda}_{il} \label{eq:svm-qpp-summation}
+\end{align}
+From Equation \ref{eq:svm-qpp-summation}, the time complexity is $\mathcal{O}(NdK^2)$, which is dominated by the second term.
+The process of obtaining the actual solution on the adiabatic quantum computer through quantum annealing can be treated as a constant ($\mathcal{O}(1)$) for all practical purposes.
+So, the total time complexity is $\mathcal{O}(N d K^2)$.
+
+Note that the qubit footprint $\mathcal{O}(N^2K^2)$ and time complexity $\mathcal{O}(NdK^2)$ assume that $K$, which is the length of the precision vector is a variable.
+% However, the precision can be fixed universally, for example, $32$-bit or $64$-bit precision on classical computers.
+% In such a scenario, $K$ can be treated as a constant.
+If the precision for all parameters ($\hat{w},\hat{b},\hat{\lambda}$) is fixed (e.g. limited to $32$-bit or $64$-bit precision), then $K$ becomes a constant factor.
+The resulting qubit footprint would be $\mathcal{O}(N^2)$, and time complexity would be $\mathcal{O}(N d)$.
+This time complexity is better than the classical algorithm ($\mathcal{O}(N^3)$).
+
+\end{document}

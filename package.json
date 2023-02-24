@@ -2,8 +2,8 @@
 	"name": "qkerns",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build",
-		"deploy": "npx gh-pages -d build -t true"
+		"build": "rm -rf build && vite build",
+		"deploy": "npx gh-pages -d build -t true && rm -rf build"
 	},
 	"type": "module",
 	"devDependencies": {

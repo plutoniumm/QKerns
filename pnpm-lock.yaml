@@ -5,7 +5,6 @@ specifiers:
   '@sveltejs/kit': 1.8.3
   '@tensorflow/tfjs': 4.2.0
   highlight.js: 11.7.0
-  katex: ^0.16.4
   marked: 4.2.12
   mermaid: 9.4.0
   plotly.js-dist: 2.18.2
@@ -18,7 +17,6 @@ specifiers:
 
 dependencies:
   '@tensorflow/tfjs': 4.2.0_seedrandom@3.0.5
-  katex: 0.16.4
   marked: 4.2.12
   mermaid: 9.4.0
   plotly.js-dist: 2.18.2
@@ -722,11 +720,6 @@ packages:
     engines: {node: '>= 10'}
     dev: false
 
-  /commander/8.3.0:
-    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
-    engines: {node: '>= 12'}
-    dev: false
-
   /concat-map/0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: true
@@ -1292,13 +1285,6 @@ packages:
     resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==}
     engines: {node: '>=0.12.0'}
     dev: true
-
-  /katex/0.16.4:
-    resolution: {integrity: sha512-WudRKUj8yyBeVDI4aYMNxhx5Vhh2PjpzQw1GRu/LVGqL4m1AxwD1GcUp0IMbdJaf5zsjtj8ghP0DOQRYhroNkw==}
-    hasBin: true
-    dependencies:
-      commander: 8.3.0
-    dev: false
 
   /khroma/2.0.0:
     resolution: {integrity: sha512-2J8rDNlQWbtiNYThZRvmMv5yt44ZakX+Tz5ZIp/mN1pt4snn+m030Va5Z4v8xA0cQFDXBwO/8i42xL4QPsVk3g==}
