@@ -7,10 +7,10 @@
 
   const routeChange = () => {
     hash = new URL(window.location.href).hash.slice(1);
+    if (!hash) return 0;
     fetch(`/markdown/${hash}`)
       .then((res) => res.text())
       .then((text) => {
-        console.log(text);
         document.querySelector("article.fade").innerHTML = marked(text);
         window.renderMathInElement(document.querySelector("article.fade"), {
           output: "html",
@@ -22,7 +22,6 @@
         });
       });
   };
-
   onMount(routeChange);
 </script>
 

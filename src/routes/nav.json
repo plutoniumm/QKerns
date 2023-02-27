@@ -24,6 +24,11 @@
       "href": "jupy-visualisations",
       "title": "Visualisations",
       "desc": "Visualisations in Python"
+    },
+    {
+      "href": "docs-kernbackprop",
+      "title": "Kernel Backprop Demo",
+      "desc": "Kernel Backpropagation Demo"
     }
   ],
   "markdown": [

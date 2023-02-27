@@ -13,7 +13,7 @@ This is the direct Q equivalent of an NN
 2. Apply some $U(\theta)$ such that $\theta$ is a parameter and get output $|ψ_{out} (x_i, \theta)\rangle = U(\theta) |ψ_{in} (x_i)\rangle$
 3. Measure Expectation across chosen dimensions, say Pauli Operators $B_j ⊂ \{I, X, Y, Z\}^{⊗N}$
 4. Using some func $F$ output $y_i = y(x_i, \theta)$ defined as $y(x_i, \theta) = F ({\langle B_j (x_i, \theta )\rangle})$
-5. **LOOP** $min\quad L(f(x_i), y(x_i, \theta))$ where $f$ is teacher and $\theta$ is param to give y_i output
+5. **LOOP** $min\, L(f(x_i), y(x_i, \theta))$ where $f$ is teacher and $\theta$ is param to give y_i output
 6. Eval Test-Train
 
 **Key Takeaways**

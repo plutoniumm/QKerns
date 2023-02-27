@@ -7,7 +7,5 @@ export default defineConfig( {
 		sveltekit(),
 		plainText( [ /\.mmd$/ ] ),
 	],
-	server: {
-		port: 3000,
-	}
+	server: { port: 3000 }
 } );

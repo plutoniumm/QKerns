@@ -7,8 +7,6 @@ graph TB
 
     subgraph CMS["Core Math"]
         direction TB
-        Derivation -- Generalisation --> RBF --> Matern --> x["Now: Wendland"]
-        CoreMath --> Derivation
 
         CoreMath --> UAT("Universal Approx Thm") --> DeepNets("Deep Nets are Kernels")
         CoreMath --> FeynmanPath("Feynman Path Int on Data")

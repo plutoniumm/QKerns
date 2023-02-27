@@ -30,7 +30,12 @@
 
 <main>
   <nav class="fade-right" data-sveltekit-preload-data data-sveltekit-reload>
-    <div id="logo" class="ƒ ∆-ct mx-a" style="padding: 20px 0 10px 0;">
+    <a
+      href="/"
+      id="logo"
+      class="ƒ ∆-ct mx-a"
+      style="padding: 20px 0 10px 0;display:block"
+    >
       <img
         src="qiskit.svg"
         alt="logo"
@@ -44,18 +49,16 @@
       >
         new qkerns()
       </div>
-    </div>
+    </a>
     <hr class="w-50 o-25" />
     <h4 class="p10 m0">Pages</h4>
     <ul class="p20">
-      <li><a href="/">Home</a></li>
       <li>
-        <a href="/visualisations">Visualisations</a>
+        <a href="/visualisations">Kern Visualisations</a>
       </li>
       <li><a href="/mechanism">Mechanism</a></li>
-      <li><a href="/rbfgen">RBF Generalisation</a></li>
     </ul>
-    <h4 class="p10 m0">Python Files</h4>
+    <h4 class="p10 m0">🐍 Python Files</h4>
     <ul class="p20">
       {#each nav.python as py}
         <li>
@@ -63,7 +66,7 @@
         </li>
       {/each}
     </ul>
-    <h4 class="p10 m0">Markdown Files</h4>
+    <h4 class="p10 m0">📝 Markdown Files</h4>
     <ul class="p20">
       {#each nav.markdown as md}
         <li>
