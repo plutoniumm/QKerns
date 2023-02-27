@@ -19,6 +19,11 @@
       "href": "docs-kerntrain",
       "title": "Q Kernel Train (QKA)",
       "desc": "Q Kernel Train (via Q Kernel Alignment)"
+    },
+    {
+      "href": "jupy-visualisations",
+      "title": "Visualisations",
+      "desc": "Visualisations in Python"
     }
   ],
   "markdown": [
