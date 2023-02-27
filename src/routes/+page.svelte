@@ -1,6 +1,5 @@
 <script>
   import { onMount } from "svelte";
-  import navpy from "./nav.json";
 
   let ul;
   // onmount everything gets converted to links with concatnated hrefs
@@ -26,16 +25,6 @@
       <ul>
         <li><code>gpt.md</code>: GPT Generated Methods</li>
         <li><code>updates.md</code>: Weekly Updates</li>
-      </ul>
-    </li>
-    <li>
-      <code>/python</code>: <br />
-      <ul>
-        {#each navpy as py}
-          <li>
-            <code>{py.href}.html</code>: {py.desc}
-          </li>
-        {/each}
       </ul>
     </li>
     <li>

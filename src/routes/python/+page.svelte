@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import navpy from "../nav.json";
+  import { python } from "../nav.json";
 
   $: hash = "";
 
@@ -13,7 +13,7 @@
 <svelte:window on:hashchange={routeChange} />
 
 <!-- below is a hack to get around sveltes no id problem for /python#pageid -->
-{#each navpy as pid}
+{#each python as pid}
   <span class="d-n" id="{pid.href}.html">&nbsp;</span>
 {/each}
 <!-- hack over -->

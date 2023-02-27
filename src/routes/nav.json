@@ -1,22 +1,31 @@
-[
-  {
-    "href": "qgss-kerns",
-    "title": "QGSS QSVM (2021)",
-    "desc": "QGSS Quantum SVM 2021"
-  },
-  {
-    "href": "docs-hybrid",
-    "title": "Std Hybrid Classifier",
-    "desc": "Hybrid Quantum-Classical Classifier"
-  },
-  {
-    "href": "docs-kernlearn",
-    "title": "Q Kernel Matrix Calc",
-    "desc": "Q Kernel Matrix Calculator"
-  },
-  {
-    "href": "docs-kerntrain",
-    "title": "Q Kernel Train (QKA)",
-    "desc": "Q Kernel Train (via Q Kernel Alignment)"
-  }
-]
+{
+  "python": [
+    {
+      "href": "qgss-kerns",
+      "title": "QGSS QSVM (2021)",
+      "desc": "QGSS Quantum SVM 2021"
+    },
+    {
+      "href": "docs-hybrid",
+      "title": "Std Hybrid Classifier",
+      "desc": "Hybrid Quantum-Classical Classifier"
+    },
+    {
+      "href": "docs-kernlearn",
+      "title": "Q Kernel Matrix Calc",
+      "desc": "Q Kernel Matrix Calculator"
+    },
+    {
+      "href": "docs-kerntrain",
+      "title": "Q Kernel Train (QKA)",
+      "desc": "Q Kernel Train (via Q Kernel Alignment)"
+    }
+  ],
+  "markdown": [
+    {
+      "href": "summaries",
+      "title": "Paper Summaries",
+      "desc": "Paper Summaries"
+    }
+  ]
+}

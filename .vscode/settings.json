@@ -1,0 +1,9 @@
+{
+  "files.exclude": {
+    "static/.nojekyll": true,
+    "static/CNAME": true,
+    "pnpm-lock.yaml": true,
+    ".npmrc": true,
+    "renovate.json": true,
+  },
+}

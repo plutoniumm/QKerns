@@ -3,7 +3,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "rm -rf build && vite build",
-		"deploy": "npx gh-pages -d build -t true && rm -rf build"
+		"deploy": "npx gh-pages -d build -t true && rm -rf build && xx log green 'Deployed to qml.nukes.in'"
 	},
 	"type": "module",
 	"devDependencies": {

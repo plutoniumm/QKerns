@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import navpy from "./nav.json";
+  import nav from "./nav.json";
 
   onMount(() =>
     window.renderMathInElement(document.querySelector("article.fade"), {
@@ -14,6 +14,7 @@
   );
 
   const pyth = (filename) => `/python#${filename}.html`;
+  const markd = (filename) => `/markdown#${filename}.md`;
 </script>
 
 <svelte:head>
@@ -57,9 +58,17 @@
     </ul>
     <h4 class="p10 m0">Python Files</h4>
     <ul class="p20">
-      {#each navpy as py}
+      {#each nav.python as py}
         <li>
           <a href={pyth(py.href)}>{py.title}</a>
+        </li>
+      {/each}
+    </ul>
+    <h4 class="p10 m0">Markdown Files</h4>
+    <ul class="p20">
+      {#each nav.markdown as md}
+        <li>
+          <a href={markd(md.href)}>{md.title}</a>
         </li>
       {/each}
     </ul>
