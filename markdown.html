@@ -13,7 +13,6 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" crossorigin="anonymous">
 	<meta http-equiv="content-security-policy" content="">
 		<link href="./_app/immutable/assets/_layout.9e951046.css" rel="stylesheet">
-		<link href="./_app/immutable/assets/_page.c586b15a.css" rel="stylesheet">
 		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/start.2567e65f.mjs">
 		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/index.486f8b79.mjs">
 		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/singletons.39bb5384.mjs">
@@ -23,8 +22,7 @@
 		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/nav.b22ccb4f.mjs">
 		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/_layout.js.fb1865a6.mjs">
 		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/_layout.da46b06b.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/_page.svelte.f0f2925f.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/_page.4746db69.mjs"><!-- HEAD_svelte-1us85gb_START --><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"></script><!-- HEAD_svelte-1us85gb_END -->
+		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/markdown-page.svelte.c6b7547a.mjs"><!-- HEAD_svelte-1us85gb_START --><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"></script><!-- HEAD_svelte-1us85gb_END -->
 </head>
 
 <body data-sveltekit-preload-data="hover">
@@ -51,63 +49,13 @@
     <h4 class="p10 m0 svelte-txkq9i">📝 Markdown Files</h4>
     <ul class="p20 svelte-txkq9i"><li class="svelte-txkq9i"><a href="/markdown#summaries.md">Paper Summaries</a>
         </li></ul></nav>
-  <article class="p20 fade svelte-txkq9i"><section class="mx-a fw2 svelte-1rvotme"><h4>Problem: Finding new Quantum Kernel Functions for data mapping to be used in
-    QSVMs and other QML Algorithms
-  </h4>
-  <b>Probable Tools</b>
-  <div><chip class="svelte-1rvotme"><a href="https://youtu.be/RI35E5ewBuI" class="svelte-1rvotme">Liquid Neural Nets</a></chip></div>
-  <b>Current State</b>
-  <div id="timeline" class="w-100"><pre class="d-n">  <!-- HTML_TAG_START -->graph TB
-  subgraph Roots
-        CoreMath
-        Optimisations
-        Quantum
-    end
+  <article class="p20 fade svelte-txkq9i">
 
-    subgraph CMS["Core Math"]
-        direction TB
 
-        CoreMath --> UAT("Universal Approx Thm") --> DeepNets("Deep Nets are Kernels")
-        CoreMath --> FeynmanPath("Feynman Path Int on Data")
-    end
+<span class="d-n" id="summaries.md"> </span>
 
-    subgraph Opti["Optimisation"]
-        Optimisations --> GeneticOpti("Genetic Optimisation")
-        Optimisations --> Annealing --> SVM2QUBO("SVM &rarr; QUBO")
-             Annealing --> GradonQUBO("&#8711;<sub>&theta;</sub> &rarr; QUBO")
-    end
 
-    subgraph QLG["QuantumAlgs"]
-        Quantum --> QKerns("Q Kernels")
-        Quantum --> Hybrid("Hybrid Q Algs")
-
-        Hybrid --> WPytorch("With Pytorch")
-        Hybrid --> WDWave("With DWave")
-    end<!-- HTML_TAG_END -->
-</pre>
-<main><div id="rendered"><!-- HTML_TAG_START --><!-- HTML_TAG_END --></div>
-</main></div></section>
-
-<section class="mx-a fw2 svelte-1rvotme"><b>Useful Resources</b>
-  <ul><li><a href="https://www.nature.com/articles/s41567-021-01287-z" class="svelte-1rvotme">[Nature] Q-kernel estimation provide Exp Q Speedup via the use of
-        Q-enhanced feature spaces
-      </a></li>
-    <li><a href="https://ar5iv.labs.arxiv.org/html/2111.06063" class="svelte-1rvotme">[Ar5iv] Infinite NNs are not blackboxes but SVMs
-      </a></li>
-    <li><a href="https://cognitivemedium.com/magic_paper/assets/Hornik.pdf" class="svelte-1rvotme">Multilayer NNs are universal approximators (Universal Approximation
-        Thm): Can be used to make a Kernel out of NN (a relatively newer idea
-        floating around
-        <a href="https://ieeexplore.ieee.org/abstract/document/7877043" class="svelte-1rvotme">here</a>
-        )?
-      </a></li>
-    <li><a href="https://www.nature.com/articles/s41598-018-20275-7" class="svelte-1rvotme">Optimisation Techniques using Self Organised Criticality (SOC)
-        Search(was shown to be more efficient than simulated annealing, incl on
-        problems equivalent to finding ground state on Ising Spin Glass)</a></li>
-    <li><a href="https://ar5iv.labs.arxiv.org/html/2107.03402" class="svelte-1rvotme">The above paper is important since it was theorized here, that training
-        dynamics of NNs are attracted towards SOC States, (this however might be
-        too far from our use case since we&#39;re not looking at NNs directly but
-        SVMs, not sure)</a></li></ul>
-</section>
+<article id="mdhold">Loading...</article>
     
     <p class="p20 svelte-txkq9i"><br></p><p class="p20 svelte-txkq9i"><br></p><p class="p20 svelte-txkq9i"><br></p><p class="p20 svelte-txkq9i"><br></p></article></main>
 <div class="p-abs o-0 svelte-txkq9i" id="overlay">
@@ -130,7 +78,7 @@
 						import("./_app/immutable/entry/app.31dee261.mjs")
 					]).then(([kit, app]) => {
 						kit.start(app, __sveltekit_115pl5o.element, {
-							node_ids: [0, 2],
+							node_ids: [0, 3],
 							data,
 							form: null,
 							error: null
