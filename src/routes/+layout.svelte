@@ -2,16 +2,7 @@
   import { onMount } from "svelte";
   import nav from "./nav.json";
 
-  onMount(() =>
-    window.renderMathInElement(document.querySelector("article.fade"), {
-      output: "html",
-      delimiters: [
-        { left: "$$", right: "$$", display: true },
-        { left: "$", right: "$", display: false },
-      ],
-      throwOnError: false,
-    })
-  );
+  onMount(() => window.TEXRender());
 
   const pyth = (filename) => `/python#${filename}.html`;
   const markd = (filename) => `/markdown#${filename}.md`;
@@ -77,8 +68,15 @@
   </nav>
   <article class="p20 fade">
     <slot />
+    <!-- padding hack -->
+    {#each new Array(4) as _}
+      <p class="p20"><br /></p>
+    {/each}
   </article>
 </main>
+<div class="p-abs o-0" id="overlay">
+  <!--  -->
+</div>
 
 <style lang="scss">
   main {
@@ -127,5 +125,13 @@
         "nav"
         "main";
     }
+  }
+
+  #overlay {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
   }
 </style>

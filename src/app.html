@@ -19,6 +19,17 @@
 </body>
 
 
+<script>
+	window.TEXRender = () =>
+		window.renderMathInElement( document.querySelector( "article.fade" ), {
+			output: "html",
+			delimiters: [
+				{ left: "$$", right: "$$", display: true },
+				{ left: "$", right: "$", display: false },
+			],
+			throwOnError: false,
+		} );
+</script>
 <script type="module">
 	// For mermaid on timeline page
 	setTimeout( () => {
