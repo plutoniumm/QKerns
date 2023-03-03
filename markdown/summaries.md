@@ -3,8 +3,18 @@
   PC: Personal/Classical Computers;
   QC: Quantum Computers
 ```
+
+<style>
+  h3::before {
+    content: "🔗 ";
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+  }
+</style>
+
 ---
-### 1. [Quantum circuit learning](https://doi.org/10.1103/PhysRevA.98.032309) - Mitarai et al (2018)
+###  1. [Quantum circuit learning](https://doi.org/10.1103/PhysRevA.98.032309) - Mitarai et al (2018)
 
 This is the direct Q equivalent of an NN
 
@@ -46,3 +56,72 @@ Therefore, instead of optimizing over $\infty$-dim RKHS we can directly start wi
 Several challenges need to be addressed for a theoretical justification of quantum advantage.
 1. These algorithms may not use QCs in an essential way. Ex, it was observed in ref. that variational circuits can only implement linear classifiers on input Q encoding, which can be replaced by a classical SVM if the encoding is classically tractable.
 2. Even if parts of the Q algorithm cannot be efficiently simulated classically, it is unclear if the learning problem it solves is also hard for classical algorithms. Indeed, one cannot rule out the existence of an end-to-end dequantization argument, where an efficient classical algorithm exists for any learning problem that can be solved by the Q learning algorithms. Third, Q learning algorithms are subject to finite sampling noise, even when implemented fault-tolerantly. Because of these challenges, none of the heuristic Q learning algorithms have hitherto been rigorously proven to solve a learning problem that is hard for classical computers.
+
+**Key Takeaways**
+- An important advantage of the SVM-QKE algorithm, which only uses QC to estimate kernel entries, is that error-mitigation techniques can be applied,, when the feature map circuit is sufficiently shallow. Our robustness analysis gives hope that an error-mitigated quantum feature map can still maintain its computational power. Recent experiments have shown the feasibility of the implementation of quantum kernel methods on near-term hardware, and moreover demonstrated the efficacy of error-mitigation techniques, as well as robustness to noise in the kernel entries,,,. Our results and these experimental advances suggest that quantum kernel methods are leading candidates toward obtaining a practical quantum advantage in machine learning on near-term devices.
+
+
+
+---
+### 4. [Forrelation: A Problem that Optimally Separates Quantum from Classical Computing](https://ar5iv.labs.arxiv.org/html/1411.5729) - Aaronson & Ambainis (2014)
+
+Achieves the largest known gap between quantum and classical query complexity for the same problem (The Forrelation problem)
+. Where one needs to decide whether one Boolean function is highly correlated with the Fourier transform of a second function.
+$O_q = 1$ and $O_c =  O(\sqrt(N) / log(N))$
+
+
+---
+### 5. [Supervised quantum machine learning models are kernel methods](https://ar5iv.labs.arxiv.org/html/2101.11020) - Schuld (2021)
+
+We map input space directly into the feature space, since feature map space and hilbert space are equivalent. \
+if $\rho(x) = |\phi(x)\rangle \langle\phi(x)|$ then $k(x, x') := f(x,x') = Tr[\rho(x) \rho(x')]$ is a kernel.
+
+Example: In angle embeding let $|\phi(x)\rangle = (\text{from }R_x)\quad cos(\frac{x}{2}) |0\rangle - i\, sin(\frac{x}{2}) |1\rangle$
+then
+$|\phi(x)\rangle\langle\phi(x)| = cos^2(\frac{x}{2}) |0\rangle\langle0| - i\, sin(\frac{x}{2}) cos(\frac{x}{2}) |0\rangle\langle1| - i\, sin(\frac{x}{2}) cos(\frac{x}{2}) |1\rangle\langle0| + sin^2(\frac{x}{2}) |1\rangle\langle1|$
+So
+$k(x,x') = cos(\frac{x-x'}{2})$
+
+So: Generally for embeddings
+
+|Embedding|Kernel|
+|:-|:-|
+|Basis|$\delta_{x,x'}$|
+|Amplitude| $\|\langle x\|x'\rangle\|^2$ |
+|Angle|$\cos(\frac{x-x'}{2})$|
+
+We can see despite the allures of Amplitude embedding the best it can do is a 2nd order polynomial kernel.
+
+---
+### 6. [Circuit-centric quantum classifiers](https://doi.org/10.1103/PhysRevA.101.032308) - Schuld, et al (2019)
+
+Introduces the idea of the phase shift rule. And some circuit designs.
+- [Supplementary Code Paper](https://arxiv.org/pdf/1811.04968.pdf)
+
+---
+### 7. [Supervised learning with quantum-enhanced feature spaces](https://doi.org/10.1038/s41586-019-0980-2) - Gambetta et al. (2019)
+
+There are 2 kinds of quantum classifiers:
+1. Quantum Kernel Estimator (QKE): Uses a quantum computer to estimate the kernel function, which is then fed into a classical SVM.
+2. Quantum Variational Classifier (QVC): Uses a variational quantum circuit to classify the data in a way similar to the method of conventional SVMs.
+
+Introduces the Pauli FeatureMaps (Z: single Qubit, ZZ: Entablement based), i.e now the well known map
+
+$$\phi_s(\mathbb{X}) =  \left\{
+\begin{array}{ll}
+      x_0 \because k=1 \\
+      \prod_{j\in\mathbb{S}} (\pi-x_j) \quad \text{otherwise}
+\end{array}
+\right. $$
+
+---
+### [Supervised quantum machine learning models are kernel methods](https://ar5iv.labs.arxiv.org/html/2101.11020) - Schuld (2021)
+
+Due to Kernel Methods in contrast to the popular strategy of variational models (where a quantum algorithm depends on a tractable number of classical parameters that are optimised), we do not have to worry about finding the right variational circuit ansatz, or about how to avoid barren plateaus problems – but pay the price of having to compute pairwise distances between data points.
+
+**Key Takeaways**
+- Quantum models are linear models in the “feature vectors”
+- Quantum models that minimise typical machine learning cost functions have measurements that can be written as “kernel expansions in the data”, $\mathcal{M} = \sum_{m}^N \alpha_m \rho(x^m)$ i.e In other words, we are guaranteed that the best measurements for machine learning tasks only have $m$ degrees of freedom (where $m$ is num of dims of training data) $𝒪(2^{2^N})$ D.O.F degrees of freedom needed to express a general measurement on a standard N-qubit quantum computer
+- The problem of finding the optimal measurement for typical machine learning cost functions trained with m data samples can be formulated as an m-dimensional optimisation problem
+
+This is magic, there is no better explanation for it.
