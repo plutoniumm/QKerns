@@ -101,3 +101,12 @@ Have added
 This week and the next both I'm basically trying to understand the Qiskit libraries, There are a few kinds of feature maps which I have no idea what they do.
 - Additionally I'm trying to code up the SVM->QUBO part of https://ar5iv.labs.arxiv.org/html/2008.02369
 - Have started experimenting with DWave libraries to access their Annealer.
+
+# Week 7 - 26th Feb Sunday to 4th March Saturday
+This week was basically just reading papers, theres honestly nothing more. I have a brief list of extractions from some the papers which i thought might be useful later on here (https://qml.nukes.in/markdown#summaries.md)
+
+They we're all relevant papers since the basically all cited each other but the gist of it is that they all slowly build up to where we are in QML today
+
+The plan for 25x25 SO FAR (may change) is im thinking of doing multi-class classification on the FULL MNIST dataset. So far we do only 0s and 1s (in every paper known), and ive not really worked out how, but since we have more qubites, there is a good chance that we can do more classes. I'm not sure how to do this yet,
+
+But im thinking of doing a binary approach where rather than couping parity in the end, we can probably output a full binary number which would then just be converted to decimal. This is a bit of a stretch but I think it is worth trying out.

@@ -6,6 +6,7 @@
 
   const pyth = (filename) => `/python#${filename}.html`;
   const markd = (filename) => `/markdown#${filename}.md`;
+  const docu = (filename) => `/document#${filename}`;
 </script>
 
 <svelte:head>
@@ -42,35 +43,45 @@
       </div>
     </a>
     <hr class="w-50 o-25" />
-    <h4 class="p10 m0">Pages</h4>
-    <ul class="p20">
+    <h4 class="p510 m0">Pages</h4>
+    <ul class="p520">
       <li>
         <a href="/visualisations">Kern Visualisations</a>
       </li>
       <li><a href="/mechanism">Mechanism</a></li>
     </ul>
-    <h4 class="p10 m0">🐍 Python Files</h4>
-    <ul class="p20">
+    <!-- generated nav -->
+    <h4 class="p510 m0">🐍 Python Files</h4>
+    <ul class="p520">
       {#each nav.python as py}
         <li>
           <a href={pyth(py.href)}>{py.title}</a>
         </li>
       {/each}
     </ul>
-    <h4 class="p10 m0">📝 Markdown Files</h4>
-    <ul class="p20">
+    <h4 class="p510 m0">📝 Markdown Files</h4>
+    <ul class="p520">
       {#each nav.markdown as md}
         <li>
           <a href={markd(md.href)}>{md.title}</a>
         </li>
       {/each}
     </ul>
+    <h4 class="p510 m0">📸 Docs & Imgs</h4>
+    <ul class="p520">
+      {#each nav.documents as md}
+        <li>
+          <a href={docu(md.href)}>{md.title}</a>
+        </li>
+      {/each}
+    </ul>
+    <!-- end generated nav -->
   </nav>
-  <article class="p20 fade">
+  <article class="p520 fade">
     <slot />
     <!-- padding hack -->
     {#each new Array(4) as _}
-      <p class="p20"><br /></p>
+      <p class="p520"><br /></p>
     {/each}
   </article>
 </main>
@@ -93,11 +104,11 @@
     background: #6929c4;
     color: #fff;
   }
-  .p20 {
-    padding: 5px 20px !important;
+  .p520 {
+    padding: 5px 20px;
   }
-  .p10 {
-    padding: 5px 10px !important;
+  .p510 {
+    padding: 5px 10px;
   }
 
   article {

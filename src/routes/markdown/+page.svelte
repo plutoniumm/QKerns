@@ -23,7 +23,7 @@
 
 <!-- below is a hack to get around sveltes no id problem for /python#pageid -->
 {#each markdown as pid}
-  <span class="d-n" id="{pid.href}.html">&nbsp;</span>
+  <span class="d-n" id="{pid.href}.md">&nbsp;</span>
 {/each}
 <!-- hack over -->
 

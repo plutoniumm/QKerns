@@ -5,7 +5,7 @@ import plainText from 'vite-plugin-plain-text';
 export default defineConfig( {
 	plugins: [
 		sveltekit(),
-		plainText( [ /\.mmd$/ ] ),
+		plainText( [ /\.mmd$/, /\.md$/ ] ),
 	],
 	server: { port: 3000 }
 } );
