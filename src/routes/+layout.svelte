@@ -3,10 +3,11 @@
   import nav from "./nav.json";
 
   onMount(() => window.TEXRender());
-
-  const pyth = (filename) => `/python#${filename}.html`;
-  const markd = (filename) => `/markdown#${filename}.md`;
-  const docu = (filename) => `/document#${filename}`;
+  const headings = [
+    ["🐍 Python Files", "python", (name) => `/python#${name}.html`],
+    ["📝 Markdown Files", "markdown", (name) => `/markdown#${name}.md`],
+    ["📸 Docs & Imgs", "documents", (name) => `/document#${name}`],
+  ];
 </script>
 
 <svelte:head>
@@ -50,32 +51,16 @@
       </li>
       <li><a href="/mechanism">Mechanism</a></li>
     </ul>
-    <!-- generated nav -->
-    <h4 class="p510 m0">🐍 Python Files</h4>
-    <ul class="p520">
-      {#each nav.python as py}
-        <li>
-          <a href={pyth(py.href)}>{py.title}</a>
-        </li>
-      {/each}
-    </ul>
-    <h4 class="p510 m0">📝 Markdown Files</h4>
-    <ul class="p520">
-      {#each nav.markdown as md}
-        <li>
-          <a href={markd(md.href)}>{md.title}</a>
-        </li>
-      {/each}
-    </ul>
-    <h4 class="p510 m0">📸 Docs & Imgs</h4>
-    <ul class="p520">
-      {#each nav.documents as md}
-        <li>
-          <a href={docu(md.href)}>{md.title}</a>
-        </li>
-      {/each}
-    </ul>
-    <!-- end generated nav -->
+    {#each headings as header}
+      <h4 class="p510 m0">{header[0]}</h4>
+      <ul class="p520">
+        {#each nav[header[1]] as item}
+          <li>
+            <a href={header[2](item.href)}>{item.title}</a>
+          </li>
+        {/each}
+      </ul>
+    {/each}
   </nav>
   <article class="p520 fade">
     <slot />

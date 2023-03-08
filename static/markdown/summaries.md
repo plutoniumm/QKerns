@@ -13,6 +13,22 @@
   }
 </style>
 
+<section id="index">
+
+## Index
+- [1. Quantum circuit learning](#1-quantum-circuit-learning)
+- [2. Quantum Machine Learning in Feature Hilbert Spaces](#2-quantum-machine-learning-in-feature-hilbert-spaces)
+- [3. A rigorous and robust quantum speed-up in supervised machine learning](#3-a-rigorous-and-robust-quantum-speed-up-in-supervised-machine-learning)
+- [4. Forrelation: A Problem that Optimally Separates Quantum from Classical Computing](#4-forrelation-a-problem-that-optimally-separates-quantum-from-classical-computing)
+- [5. Supervised quantum machine learning models are kernel methods](#5-supervised-quantum-machine-learning-models-are-kernel-methods)
+- [6. Circuit-centric quantum classifiers](#6-circuit-centric-quantum-classifiers)
+- [7. Supervised learning with quantum-enhanced feature spaces](#7-supervised-learning-with-quantum-enhanced-feature-spaces)
+- [8. Supervised quantum machine learning models are kernel methods](#8-supervised-quantum-machine-learning-models-are-kernel-methods)
+- [9. Read the Fine Print](#9-read-the-fine-print)
+
+
+</section>
+
 ---
 ###  1. [Quantum circuit learning](https://doi.org/10.1103/PhysRevA.98.032309) - Mitarai et al (2018)
 
@@ -76,9 +92,11 @@ $O_q = 1$ and $O_c =  O(\sqrt(N) / log(N))$
 We map input space directly into the feature space, since feature map space and hilbert space are equivalent. \
 if $\rho(x) = |\phi(x)\rangle \langle\phi(x)|$ then $k(x, x') := f(x,x') = Tr[\rho(x) \rho(x')]$ is a kernel.
 
-Example: In angle embeding let $|\phi(x)\rangle = (\text{from }R_x)\quad cos(\frac{x}{2}) |0\rangle - i\, sin(\frac{x}{2}) |1\rangle$
+Example: In angle embeding let
+
+$|\phi(x)\rangle = (\text{from }R_x)\quad cos(\frac{x}{2}) \ |0\rangle - i\, sin(\frac{x}{2}) |1\rangle$
 then
-$|\phi(x)\rangle\langle\phi(x)| = cos^2(\frac{x}{2}) |0\rangle\langle0| - i\, sin(\frac{x}{2}) cos(\frac{x}{2}) |0\rangle\langle1| - i\, sin(\frac{x}{2}) cos(\frac{x}{2}) |1\rangle\langle0| + sin^2(\frac{x}{2}) |1\rangle\langle1|$
+$$|\phi(x)\rangle\langle\phi(x)| = cos^2(\frac{x}{2}) |0\rangle\langle0| - i\, sin(\frac{x}{2}) cos(\frac{x}{2}) |0\rangle\langle1| - i\, sin(\frac{x}{2}) cos(\frac{x}{2}) |1\rangle\langle0| + sin^2(\frac{x}{2}) |1\rangle\langle1|$$
 So
 $k(x,x') = cos(\frac{x-x'}{2})$
 
@@ -115,7 +133,7 @@ $$\phi_s(\mathbb{X}) =  \left\{
 \right. $$
 
 ---
-### [Supervised quantum machine learning models are kernel methods](https://ar5iv.labs.arxiv.org/html/2101.11020) - Schuld (2021)
+### 8. [Supervised quantum machine learning models are kernel methods](https://ar5iv.labs.arxiv.org/html/2101.11020) - Schuld (2021)
 
 Due to Kernel Methods in contrast to the popular strategy of variational models (where a quantum algorithm depends on a tractable number of classical parameters that are optimised), we do not have to worry about finding the right variational circuit ansatz, or about how to avoid barren plateaus problems – but pay the price of having to compute pairwise distances between data points.
 
@@ -125,3 +143,23 @@ Due to Kernel Methods in contrast to the popular strategy of variational models 
 - The problem of finding the optimal measurement for typical machine learning cost functions trained with m data samples can be formulated as an m-dimensional optimisation problem
 
 This is magic, there is no better explanation for it.
+
+---
+### 9. [Read the Fine Print](https://doi.org/10.1038/nphys3272) - Aaronson (2015)
+
+HHL claims to be an efficient algorithm for solving $Ax = b$ for a sparse matrix A.
+
+HHL has some caveats, as follows
+- **QRAM Assumption**: Assuming $b = (b_1, ..., b_n)$ can be loaded quickly into memory to prepare a quantum state $|b\rangle$ = \sum_{i=1}^n b_i |i\rangle$ of $log_2(n)$ qubits, whose amplitudes encode the entries of $b$ (Amplitude Enoding).
+  EVEN IF we assume that QRAMs exist and we can read all the values of $b_i$ at once via superposition, WE STILL need to make sure that $b_i$ values are relatively uniform, or in other words the values are similar to each other. <br/>\
+  **Failure Condition**: If preparing $|b\rangle$ $n^c$ steps for some const $c$
+
+- The computer needs to be able to do $e^{-iAt}$ for a sparse matrix A. If lets say the number of non-zero entries in each row of A is $s$ for some $s << n$ then this scales Linearly as size of $s$. <br/>\
+  **Failure Condition**: If $e^{-iAt}$ takes $n^c$ steps for some const $c$
+
+- Matrix needs to not only be **robustly** invertible, but also **well-conditioned**. Let us define $$\kappa = \lambda_{min} / \lambda_{max}\quad \forall\quad \lambda_i \in \text{eigenvalues} $$
+  Then we know HHL is linear in $\kappa$
+  **Failure Condition**: If $\kappa$ grows like $n^c$ for some const $c$
+
+- The output of the HHL is not a classical $x = (x_1 ... x_n)$ but rather a quantum state $|x\rangle$ of $log_2(n)$ qubits, whose amplitudes encode the entries of $x$ (Amplitude Enoding). We then need to measure this in any basis to get the classical $x$. But to this statistically we need to do the measurement an average of $n$ times to get all $x_i$ with any statistical confidence
+  **Failure Condition**: The size of $n$ is too large
