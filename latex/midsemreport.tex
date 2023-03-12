@@ -226,7 +226,13 @@ We shall derive the idea of a kernel function from basic problem behind regressi
   $$ f(x) = (\text{infinite terms...}) $$ Notice how being basically
   impossible to calculate, we can still use the RBF kernel to find the
   relations between the points.
-  <b>Note:</b> Gamma is a hyper parameter that controls the width of the RBF kernel.
+
+  The implication of this is that when used properly the RBF kernel can
+  apply ANY function (that can be expressed as a possibly infinite sum of possibly infinite dimensions)
+  as a non linear transform to the data and then give us the distance between
+  the points in the transformed space.
+
+  \textbf{Note:} Gamma is a hyper parameter that controls the width of the RBF kernel.
   The smaller the gamma the wider the Kernel is therefore making it closer to a
   linear kernel. The larger the gamma the narrower the Kernel is therefore making
   it closer to a polynomial kernel of arbitrary degree. (See Proof in Appendix)
@@ -328,6 +334,7 @@ find the optimal parameters. However this has any question of working in the fir
 place only if the data is encoded in a way that the quantum circuit can actually
 learn something from it.
 
+\subsection{Encoding the Data}
 There are 2 ways to do encoding
 \begin{itemize}
   \item Fixed Encoding
@@ -339,7 +346,7 @@ There are 2 ways to do encoding
   \item Parametrized Encoding
 \end{itemize}
 
-\subsection{Basis Embedding}
+\subsubsection{Basis Embedding}
 This is the most primitive form of Embedding. It is basically just a one hot
 Embedding of the data. Basis embedding associates each input with a computational basis state of a qubit system.
 This forces the classical data to be in the form of binary strings so that it can be
@@ -347,7 +354,7 @@ bit-wise translated. Ex. $x = 1001 \rightarrow |1001\rangle$
 
 \textit{Example.} Let's say we have a classical dataset containing two examples $x_1 = 01 $ and $x_2 = 10$. We can represent this dataset in superpositions of computational basis states as $|\psi\rangle = \frac{1}{\sqrt{2}}(|01\rangle + |10\rangle)$.
 
-\subsection{Amplitude Embedding}
+\subsubsection{Amplitude Embedding}
 Here the data is encoded into the "amplitudes" of a quantum state. So we technically need only $log_2(n)$ qubits to represent a dataset of size $n$. So lets say we intend to encode $x = (1.0, 0.0, -5.5, 0.0)$ into a quantum state. We can do this by normalizing the vector to get $x = \frac{1}{\sqrt{31.25}}(1.0, 0.0, -5.5, 0.0)$ and then representing it as
 \begin{equation}
   |\psi\rangle = \sum_{i=1}^n x_i |i\rangle
@@ -365,19 +372,91 @@ We can see how we needed $log_2(4) = 2$ qubits to represent a 4 dimensional vect
 
 \textit{Note: } If the total number of amplitudes to embed, i.e. $NxM < 2^n$, then we can pad the data with zeros to make it fit. This is because the total number of amplitudes in a quantum state is $2^n$.
 
-\subsection{Phase/Angle Embedding}
+\subsubsection{Angle Embedding}
 This is similar to Amplitude Embedding except that we encode the data into the phase of the qubit. This is done by taking the angle of the vector and then encoding it into the phase of the qubit. This is done by taking each value $x_i$ and then applying a rotation to it in some direction say $x$ axis. This would then make the map as follows
 \begin{equation}
   x_i \rightarrow R_x(x_i)
 \end{equation}
 
+\begin{center}
 \begin{quantikz}
-  x_1 & \gate{R_x} & \qw \\
-  x_2 & \gate{R_x} & \qw \\
-  x_3 & \gate{R_x} & \qw
+  \lstick{\ket{0}} & \gate{R_x(x_1)} & \qw \\
+  \lstick{\ket{0}} & \gate{R_x(x_2)} & \qw \\
+  \lstick{\ket{0}} & \gate{R_x(x_3)} & \qw
 \end{quantikz}
+\end{center}
 
+\subsection{Using the Encoding as a feature map}
+We map input space directly into the feature space, since feature map space
+ and hilbert space are equivalent.
+So we define
+$$\rho(x) = |\phi(x)\rangle \langle\phi(x)|$$ where $|\phi(x)\rangle$ is the
+feature map or in our case the encoding then the kernel is defined as
+$$k(x, x') := f(x,x') = tr[\rho(x) \rho(x')]$$
 
+Applying this to Angle Embedding as $\phi \rightarrow R_x$ we get
+$$|\phi(x)\rangle = cos(\frac{x}{2}) \ |0\rangle - i\, sin(\frac{x}{2}) |1\rangle$$
+then
+\begin{equation}
+\begin{split}
+|\phi(x)\rangle\langle\phi(x)| & = cos^2(\frac{x}{2}) |0\rangle\langle0| \\
+& + i\, sin(\frac{x}{2}) cos(\frac{x}{2}) |0\rangle\langle1| \\
+& - i\, sin(\frac{x}{2}) cos(\frac{x}{2}) |1\rangle\langle0| \\
+& + sin^2(\frac{x}{2}) |1\rangle\langle1|
+\end{split}
+\end{equation}
+So Applying
+$$ k(x,x') = tr[\rho(x) \rho(x')] = tr[|\phi(x)\rangle\langle\phi(x)| |\phi(x')\rangle\langle\phi(x')|]$$
+we get
+$$k(x,x') = cos^2(\frac{x-x'}{2})$$
+
+So more generally for embeddings we define the feature space as follows:
+\begin{center}
+\begin{tabular}{ |c|c|c| }
+  \hline
+  Embedding & Kernel \\
+  \hline
+  Basis & $\delta_{x,x'}$ \\
+  Amplitude & $\|\langle x\|x'\rangle\|^2$ \\
+  Angle & $\cos^2(\frac{x-x'}{2})$ \\
+  \hline
+\end{tabular}
+\end{center}
+
+We can see here that the Amplitude Encoding has a Kernel function who's feature map is quadratic in nature,
+while the Angle Encoding has a Kernel function who's feature map is infinite dimensional (as we see for RBF kernel)
+we can just expand it out to get the full feature map.\\
+
+\section{Conclusion}
+The RBF Kernel gives us 1 when $x = x'$ and decreases as $x$ and $x'$ get farther apart. \\
+
+The Angle Encoding in Kernel form gives us 1 when $x = x'$ similarly but does not necessarily
+decrease as $x$ and $x'$ get farther apart. This is because the angle encoding is not just a
+transformation. It is a rotation. So there may exist values of $x$ and $x'$ such that the angle
+just rotates back all around and gives us 1. So while Angle Encoding is the most powerful of the
+three, it still has its limitations which can be fixed
+
+\subsection{Attempts to extend}
+Attempts to extend $cos^2$ to $e^x$ have so far been futile because $e^{ix}$ has no simple way
+of being converted to $e^x$ even if we were able to generate $e^{ix}$ from $cos^2$ and also somehow
+creating a $sin^2$ feature map.
+
+Even using a hack of using $x \rightarrow \frac{x}{i}$ hasn't worked because then the data inside $R_x(x_i)$
+would be complex and we would need to use a complex valued quantum state to represent it, whereas rotation can
+only be applied by real values
+
+\subsection{Comparison to RBF}
+It seems the only thing in common that the RBF kernel and the Angle Encoding have is that they both
+are infinite dimensional. Other than that the functions are largely different
+
+Consider that the definition of normal equivalence for two given norms: $p$ and $q$ is as follows:\\
+For some $c,C > 0$ we say that $p$ and $q$ are equivalent if for all $x,y \in \mathbb{R}^n$ we have
+$$c\|x\|_p \leq \|x-y\|_q \leq C\|x\|_p$$
+This is equivalent to saying that the ratio of the norms is bounded by $C$ and $c$.
+
+We know that the RBF kernel is equivalent to the $L_2$ norm since it lives in the Hilbert space and is
+created by the inner product. It is possible to reverse engineer the Angle Encoding Kernel similarly
+and show that it is equivalent to the $L_2$ norm.
 
 \section{Appendix}
 \subsection{Comparison with SINDy}
