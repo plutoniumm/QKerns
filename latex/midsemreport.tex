@@ -6,457 +6,483 @@
 \usepackage{graphicx}
 \usepackage{minted}
 \usepackage{geometry}
-
+\usepackage{tikz}
 % \usepackage{biblatex}
+
+\usetikzlibrary{quantikz}
+% https://mirrors.ibiblio.org/CTAN/graphics/pgf/contrib/quantikz/quantikz.pdf
+\geometry{a4paper, margin=0.5in}
+\numberwithin{equation}{section}
 % \addbibresource{kernel.bib}
 
-\geometry{a4paper, margin=0.5in}
+\pubyear{2023}
+%\subjectarea{C-QuICC}
 \title{Finding new Kernel Functions for QSVMs}
-\author{Manav Seksaria}
+\author{Manav Seksaria, Supervisor: Anil Prabhakar}
+\course{}
+\school{Dept. of Electrical Engineering, IIT Madras}
 \date{\today}
-\numberwithin{equation}{section}
 \begin{document}
 \maketitle
 
+% NEW SECTION
 \section{What are Kernel Functions?}
 We shall derive the idea of a kernel function from basic problem behind regressions and go from there.
 
 \subsection{Regressions}
-Our objective first is to find the best linear predictor for the response
-variable $Y$ given the covariates $X$. We will assume that the response
-variable $Y$ is a linear combination of the covariates $X$ and derive a
-weight matrix $w$ such that
-$$ Y = w^T X $$ We do this simply by defining the loss function as the sum of
-squared errors and minimizing it with respect to $w$. We can write this as
-$$ J(w) = \min_w \sum_{i=1}^n (y_i - w^T x_i)^2 $$ Solving this for $w$
-gives us
-$$ w = (X^T X)^{-1} X^T Y $$
+  Our objective first is to find the best linear predictor for the response
+  variable $Y$ given the covariates $X$. We will assume that the response
+  variable $Y$ is a linear combination of the covariates $X$ and derive a
+  weight matrix $w$ such that
+  $$ Y = w^T X $$ We do this simply by defining the loss function as the sum of
+  squared errors and minimizing it with respect to $w$. We can write this as
+  $$ J(w) = \min_w \sum_{i=1}^n (y_i - w^T x_i)^2 $$ Solving this for $w$
+  gives us
+  $$ w = (X^T X)^{-1} X^T Y $$
 
-\subsubsection{Adding Non Linearity}
-We can extend this to non linear mappings for $X$ by introducing a function $\phi$ such that $X \rightarrow \phi(X)$. We can then write the desired predictor as
-$$ Y = w^T \phi(X) $$ We can then also write the weight matrix as
-$$ w^* = (\phi^T \phi)^{-1} \phi^T Y $$ Let us introduce a regularization term $\lambda$ such that the weight matrix is
-$$ w = (\phi^T \phi + \lambda I)^{-1} \phi^T Y $$ The logic behind adding a regularization term is that we want to penalise the slope of the line. This is because we want to avoid overfitting. Adding bias results in a lower variance which makes the outputs less sensitive to the inputs. The parameter $\lambda$ is what controls the amount of bias we want to add.
+  \subsubsection{Adding Non Linearity}
+  We can extend this to non linear mappings for $X$ by introducing a function $\phi$ such that $X \rightarrow \phi(X)$. We can then write the desired predictor as
+  $$ Y = w^T \phi(X) $$ We can then also write the weight matrix as
+  $$ w^* = (\phi^T \phi)^{-1} \phi^T Y $$ Let us introduce a regularization term $\lambda$ such that the weight matrix is
+  $$ w = (\phi^T \phi + \lambda I)^{-1} \phi^T Y $$ The logic behind adding a regularization term is that we want to penalise the slope of the line. This is because we want to avoid overfitting. Adding bias results in a lower variance which makes the outputs less sensitive to the inputs. The parameter $\lambda$ is what controls the amount of bias we want to add.
 
-We additionally notice that in order to calculate the weight matrix, we need also calculate $\phi^T \phi$ which is an $n \times n$ matrix. This is computationally expensive and we can instead use a 'kernel trick' to avoid this. Before we do that, in the next section we will first set up the necessary background for the kernel trick.
+  We additionally notice that in order to calculate the weight matrix, we need also calculate $\phi^T \phi$ which is an $n \times n$ matrix. This is computationally expensive and we can instead use a 'kernel trick' to avoid this. Before we do that, in the next section we will first set up the necessary background for the kernel trick.
 
-\subsubsection{Restructuring the Weight Matrix}
-The following is what we aim to achieve, going from
-$$w^* =(\phi^T \phi + \lambda I)^{-1} \phi^T Y $$
-to
-$$w^* = \phi^T (\phi \phi^T + \lambda' I)^{-1} Y $$
+  \subsubsection{Restructuring the Weight Matrix}
+  The following is what we aim to achieve, going from
+  $$w^* =(\phi^T \phi + \lambda I)^{-1} \phi^T Y $$
+  to
+  $$w^* = \phi^T (\phi \phi^T + \lambda' I)^{-1} Y $$
 
-Let us now define the new loss function along with a regularization term
-$$ J(w) = \min_w \sum_{i=1}^n (y_i - w^T \phi(x_i))^2 + \frac{\lambda}{2} ||w||^2 $$ We can now solve for $w$ and get
-$$ w^* = \frac{1}{\lambda} \sum_{i=1}^n (y_i - w^T \phi(x_i)) \phi(x_i) $$ For sake of simplicity let us define a variable $\alpha$ such that
-$$ \alpha = \frac{1}{\lambda} \sum_{i=1}^n (y_i - w^T \phi(x_i)) $$ We can now write the weight matrix as
-$$ w^* = \sum_{i=1}^n \alpha_i \phi(x_i) = \phi^T \alpha $$ Let us now substitute this into the loss function and get
-$$ J(\alpha) = (y - \phi \alpha)^T (y - \phi \alpha) + \frac{\lambda}{2} w^T w $$ expanding and simplifying this will give us
-$$ J(\alpha) = y^T y - y^T \phi \phi^T \alpha - \alpha^T \phi^T y + \alpha^T \phi^T \phi \alpha + \frac{\lambda}{2} w^T w $$ We can see that $\phi \phi^T$ is a repeated term. Let us define this new matrix as $K$ such that. Let us define this new matrix as $K$ such that
-$$ K = \phi \phi^T = \begin{bmatrix}
-\phi(x_1)^T \phi(x_1) & \phi(x_1)^T \phi(x_2) & \cdots & \phi(x_1)^T \phi(x_n) \\
-\phi(x_2)^T \phi(x_1) & \phi(x_2)^T \phi(x_2) & \cdots & \phi(x_2)^T \phi(x_n) \\
-\vdots & \vdots & \ddots & \vdots \\
-\phi(x_n)^T \phi(x_1) & \phi(x_n)^T \phi(x_2) & \cdots & \phi(x_n)^T \phi(x_n) \end{bmatrix} $$ This matrix has two very important properties. First, it is symmetric and second, it is positive semi-definite. (This also means it is invertible which $\phi^T \phi$ MAY NOT). We can substitute all $\phi \phi^T$ with $K$ and also $K$ with $K^T$ and get
-$$ J(\alpha) = y^T y - 2 y^T K \alpha + \alpha^T K^2 \alpha + \frac{\lambda}{2} \alpha^T K \alpha $$
-Setting the derivative of this with respect to $\alpha$
-to zero and solving for $\alpha$ gives us (along with $K = \phi \phi^T$)
-$$ \alpha* = (K + \frac{\lambda}{2} I)^{-1} y $$ or $$ \alpha* = (K+ \lambda' I)^{-1} y $$
+  Let us now define the new loss function along with a regularization term
+  $$ J(w) = \min_w \sum_{i=1}^n (y_i - w^T \phi(x_i))^2 + \frac{\lambda}{2} ||w||^2 $$ We can now solve for $w$ and get
+  $$ w^* = \frac{1}{\lambda} \sum_{i=1}^n (y_i - w^T \phi(x_i)) \phi(x_i) $$ For sake of simplicity let us define a variable $\alpha$ such that
+  $$ \alpha = \frac{1}{\lambda} \sum_{i=1}^n (y_i - w^T \phi(x_i)) $$ We can now write the weight matrix as
+  $$ w^* = \sum_{i=1}^n \alpha_i \phi(x_i) = \phi^T \alpha $$ Let us now substitute this into the loss function and get
+  $$ J(\alpha) = (y - \phi \alpha)^T (y - \phi \alpha) + \frac{\lambda}{2} w^T w $$ expanding and simplifying this will give us
+  $$ J(\alpha) = y^T y - y^T \phi \phi^T \alpha - \alpha^T \phi^T y + \alpha^T \phi^T \phi \alpha + \frac{\lambda}{2} w^T w $$ We can see that $\phi \phi^T$ is a repeated term. Let us define this new matrix as $K$ such that. Let us define this new matrix as $K$ such that
+  $$ K = \phi \phi^T = \begin{bmatrix}
+  \phi(x_1)^T \phi(x_1) & \phi(x_1)^T \phi(x_2) & \cdots & \phi(x_1)^T \phi(x_n) \\
+  \phi(x_2)^T \phi(x_1) & \phi(x_2)^T \phi(x_2) & \cdots & \phi(x_2)^T \phi(x_n) \\
+  \vdots & \vdots & \ddots & \vdots \\
+  \phi(x_n)^T \phi(x_1) & \phi(x_n)^T \phi(x_2) & \cdots & \phi(x_n)^T \phi(x_n) \end{bmatrix} $$ This matrix has two very important properties. First, it is symmetric and second, it is positive semi-definite. (This also means it is invertible which $\phi^T \phi$ MAY NOT). We can substitute all $\phi \phi^T$ with $K$ and also $K$ with $K^T$ and get
+  $$ J(\alpha) = y^T y - 2 y^T K \alpha + \alpha^T K^2 \alpha + \frac{\lambda}{2} \alpha^T K \alpha $$
+  Setting the derivative of this with respect to $\alpha$
+  to zero and solving for $\alpha$ gives us (along with $K = \phi \phi^T$)
+  $$ \alpha* = (K + \frac{\lambda}{2} I)^{-1} y $$ or $$ \alpha* = (K+ \lambda' I)^{-1} y $$
 
-We have achieved in this section effectively converting
-one equation to another as follows
-$$ w^* = (\phi^T \phi + \lambda I)^{-1} \phi^T Y $$ into
-$$ w^* = \phi^T (K + \lambda' I)^{-1} Y $$ By the looks of it we may not have
-done anything, but as we will see in the next section, this step will reduce
-the computation time by a lot.
+  We have achieved in this section effectively converting
+  one equation to another as follows
+  $$ w^* = (\phi^T \phi + \lambda I)^{-1} \phi^T Y $$ into
+  $$ w^* = \phi^T (K + \lambda' I)^{-1} Y $$ By the looks of it we may not have
+  done anything, but as we will see in the next section, this step will reduce
+  the computation time by a lot.
 
-\subsubsection{Mercer's Theorem}
-A symmetric positive semi-definite function $K(x, y)$ can be expressed as an inner product of two vectors $\phi(x)$ and $\phi(y)$ such that
-$$ K(x, y) = \langle \phi(x), \phi(y) \rangle $$ for some function $\phi$ iff
-$K(x,y)$ is positive semi-definite i.e
-$$ \int K(x, y) g(x) g(y) dx dy \geq 0 \forall g $$ or equivalently
-$$ \begin{bmatrix} K(x_1, x_1) & K(x_1, x_2) & \cdots \\ K(x_2, x_1) & \ddots
-& \\ \vdots & & \ddots \end{bmatrix} $$ is positive semi-definite for any
-collection ${x_1, x_2, \\cdots}$
+  \subsubsection{Mercer's Theorem}
+  A symmetric positive semi-definite function $K(x, y)$ can be expressed as an inner product of two vectors $\phi(x)$ and $\phi(y)$ such that
+  $$ K(x, y) = \langle \phi(x), \phi(y) \rangle $$ for some function $\phi$ iff
+  $K(x,y)$ is positive semi-definite i.e
+  $$ \int K(x, y) g(x) g(y) dx dy \geq 0 \forall g $$ or equivalently
+  $$ \begin{bmatrix} K(x_1, x_1) & K(x_1, x_2) & \cdots \\ K(x_2, x_1) & \ddots
+  & \\ \vdots & & \ddots \end{bmatrix} $$ is positive semi-definite for any
+  collection ${x_1, x_2, \\cdots}$
 
-\subsubsection{The Kernel Trick}
-What Mercer's Theorem lets us do is rewrite every term in the Kernel matrix
-$K$ as only a function of its base features $$ K = \phi \phi^T = \begin{bmatrix}
-\phi(x_1)^T \phi(x_1) & \phi(x_1)^T \phi(x_2) & \cdots & \phi(x_1)^T \phi(x_n)
-\\ \phi(x_2)^T \phi(x_1) & \phi(x_2)^T \phi(x_2) & \cdots & \phi(x_2)^T \phi(x_n)
-\\ \vdots & \vdots & \ddots & \vdots \\ \phi(x_n)^T \phi(x_1) & \phi(x_n)^T \phi(x_2)
-& \cdots & \phi(x_n)^T \phi(x_n) \end{bmatrix}$$
-$$ \quad = \begin{bmatrix}
-k(x_1, x_1) & k(x_1, x_2) & \cdots & k(x_1, x_n) \\ k(x_2, x_1) & k(x_2, x_2)
-& \cdots & k(x_2, x_n) \\ \vdots & \vdots & \ddots & \vdots \\ k(x_n, x_1) &
-k(x_n, x_2) & \cdots & k(x_n, x_n) \end{bmatrix} $$
+  \subsubsection{The Kernel Trick}
+  What Mercer's Theorem lets us do is rewrite every term in the Kernel matrix
+  $K$ as only a function of its base features $$ K = \phi \phi^T = \begin{bmatrix}
+  \phi(x_1)^T \phi(x_1) & \phi(x_1)^T \phi(x_2) & \cdots & \phi(x_1)^T \phi(x_n)
+  \\ \phi(x_2)^T \phi(x_1) & \phi(x_2)^T \phi(x_2) & \cdots & \phi(x_2)^T \phi(x_n)
+  \\ \vdots & \vdots & \ddots & \vdots \\ \phi(x_n)^T \phi(x_1) & \phi(x_n)^T \phi(x_2)
+  & \cdots & \phi(x_n)^T \phi(x_n) \end{bmatrix}$$
+  $$ \quad = \begin{bmatrix}
+  k(x_1, x_1) & k(x_1, x_2) & \cdots & k(x_1, x_n) \\ k(x_2, x_1) & k(x_2, x_2)
+  & \cdots & k(x_2, x_n) \\ \vdots & \vdots & \ddots & \vdots \\ k(x_n, x_1) &
+  k(x_n, x_2) & \cdots & k(x_n, x_n) \end{bmatrix} $$
 
-This matrix has two very interesting properties:
-\begin{enumerate}
-\item $K$ is symmetric
-\item $K$ is positive semi-definite (This also means it is invertible which $\phi^T \phi$ MAY NOT be)
-\end{enumerate}
+  This matrix has two very interesting properties:
+  \begin{enumerate}
+  \item $K$ is symmetric
+  \item $K$ is positive semi-definite (This also means it is invertible which $\phi^T \phi$ MAY NOT be)
+  \end{enumerate}
 
-So as long as we know the Kernel (which we can either choose or learn), we
-can compute the Kernel matrix and use it to solve for $\alpha$ and then
-compute $w^*$ efficiently
+  So as long as we know the Kernel (which we can either choose or learn), we
+  can compute the Kernel matrix and use it to solve for $\alpha$ and then
+  compute $w^*$ efficiently
 
-\subsubsection{Working Example}
-Consider the following mapping $$ \phi: x \rightarrow \phi(x) = \begin{bmatrix}
-x_1^2 \\ \sqrt{2} x_1 x_2 \\ x_2^2 \end{bmatrix} $$
-Let us for sake of demonstration work out its kernel
-$$ \phi^T(x_m) \phi(x_n) = \begin{bmatrix} x_{m,1}^2 & \sqrt{2} x_{m,1}
-x_{m,2} & x_{m,2}^2 \end{bmatrix} \begin{bmatrix} x_{n,1}^2
-\\ \sqrt{2} x_{n,1} x_{n,2} \\ x_{n,2}^2 \end{bmatrix}
-$$
-$$ \quad = x_{m,1}^2 x_{n,1}^2 + 2 x_{m,1} x_{m,2} x_{n,1} x_{n,2}
-+ x_{m,2}^2 x_{n,2}^2 $$
-Clearly $$ \phi^T(x_m) \phi(x_n) = (x_{m,1}
-x_{n,1} + x_{m,2} x_{n,2})^2 = (x_m^T x_n)^2 = k(x_m, x_n) $$
-This is an example of a Kernel called the <b>Polynomial Kernel</b> which is
-defined as $$ k(x, y) = (x^T y + r)^d $$ making in our case the parameters
-$d = 2$ and $r = 0$
+  \subsubsection{Working Example}
+  Consider the following mapping $$ \phi: x \rightarrow \phi(x) = \begin{bmatrix}
+  x_1^2 \\ \sqrt{2} x_1 x_2 \\ x_2^2 \end{bmatrix} $$
+  Let us for sake of demonstration work out its kernel
+  $$ \phi^T(x_m) \phi(x_n) = \begin{bmatrix} x_{m,1}^2 & \sqrt{2} x_{m,1}
+  x_{m,2} & x_{m,2}^2 \end{bmatrix} \begin{bmatrix} x_{n,1}^2
+  \\ \sqrt{2} x_{n,1} x_{n,2} \\ x_{n,2}^2 \end{bmatrix}
+  $$
+  $$ \quad = x_{m,1}^2 x_{n,1}^2 + 2 x_{m,1} x_{m,2} x_{n,1} x_{n,2}
+  + x_{m,2}^2 x_{n,2}^2 $$
+  Clearly $$ \phi^T(x_m) \phi(x_n) = (x_{m,1}
+  x_{n,1} + x_{m,2} x_{n,2})^2 = (x_m^T x_n)^2 = k(x_m, x_n) $$
+  This is an example of a Kernel called the <b>Polynomial Kernel</b> which is
+  defined as $$ k(x, y) = (x^T y + r)^d $$ making in our case the parameters
+  $d = 2$ and $r = 0$
 
-\subsubsection{Making Predictions}
-We can now make predictions using the Kernel trick. We can use the following
-equation to make predictions with $ y = w^T \phi(x) $ But as we have seen
-above we can convert the RHS from
-$$ w^T \phi(x) = y(\phi \phi^T + \lambda' I)^{-1} \phi^T \phi(x) $$
-to  $$ w^T \phi(x) = y(K + \lambda' I)^{-1} k_x $$ where $k_x$ is
+  \subsubsection{Making Predictions}
+  We can now make predictions using the Kernel trick. We can use the following
+  equation to make predictions with $ y = w^T \phi(x) $ But as we have seen
+  above we can convert the RHS from
+  $$ w^T \phi(x) = y(\phi \phi^T + \lambda' I)^{-1} \phi^T \phi(x) $$
+  to  $$ w^T \phi(x) = y(K + \lambda' I)^{-1} k_x $$ where $k_x$ is
 
-$$ k_x = \phi^T \phi(x) = \begin{bmatrix} \phi(x_1)^T \phi(x) \\ \phi(x_2)^T
-\phi(x) \\ \vdots \\ \phi(x_n)^T \phi(x) \end{bmatrix} $$ And our result
-is completely independent of the mapping $\phi$ and only depends on the Kernel
-$k$ and the data $X$ and $Y$
+  $$ k_x = \phi^T \phi(x) = \begin{bmatrix} \phi(x_1)^T \phi(x) \\ \phi(x_2)^T
+  \phi(x) \\ \vdots \\ \phi(x_n)^T \phi(x) \end{bmatrix} $$ And our result
+  is completely independent of the mapping $\phi$ and only depends on the Kernel
+  $k$ and the data $X$ and $Y$
 
 \subsection{Applying the Kernel Trick to SVMs}
-As we know an SVM is a machine that can classify data by finding a
-hyperplane that separates the data into two classes. The SVM is a linear
-classifier, which means that it can only classify data that is linearly
-separable. But most data in the real world is not linear and so we need to
-use a non-linear classifier. The work around for that is that we first apply
-a non linear transformation to the data and then use a linear classifier to
-classify the transformed data.
-Let us look at how we do that for a simple case
-\begin{minted}{python}
-def rand_pt_circle(rad_min, rad_max):
-angle = random.uniform(0, 2 * math.pi)
-radius = random.uniform(rad_min, rad_max)
-x = radius * math.cos(angle)
-y = radius * math.sin(angle)
-return (x, y)
+  As we know an SVM is a machine that can classify data by finding a
+  hyperplane that separates the data into two classes. The SVM is a linear
+  classifier, which means that it can only classify data that is linearly
+  separable. But most data in the real world is not linear and so we need to
+  use a non-linear classifier. The work around for that is that we first apply
+  a non linear transformation to the data and then use a linear classifier to
+  classify the transformed data.
+  Let us look at how we do that for a simple case
+  \begin{minted}{python}
+  def rand_pt_circle(rad_min, rad_max):
+  angle = random.uniform(0, 2 * math.pi)
+  radius = random.uniform(rad_min, rad_max)
+  x = radius * math.cos(angle)
+  y = radius * math.sin(angle)
+  return (x, y)
 
-# Data points,
-#   X = listed 2D points of uniform random in circle of rad 0.6
-#   Y = listed 2D points of uniform random in annulus of rad 0.5 to 1
-X = [rand_pt_circle(0, 0.6) for i in range(100)]
-Y = [rand_pt_circle(0.5, 1) for i in range(100)]
+  # Data points,
+  #   X = listed 2D points of uniform random in circle of rad 0.6
+  #   Y = listed 2D points of uniform random in annulus of rad 0.5 to 1
+  X = [rand_pt_circle(0, 0.6) for i in range(100)]
+  Y = [rand_pt_circle(0.5, 1) for i in range(100)]
 
-fX = [(x[0], x[1], x[0] ** 2 + x[1] ** 2) for x in X] # THE TRANSFORMATION
+  fX = [(x[0], x[1], x[0] ** 2 + x[1] ** 2) for x in X] # THE TRANSFORMATION
 
-# fit
-# svm.SVC().fit(X,Y) rather than X,Y we use fX,Y
-svm.SVC().fit(fX,Y)
-\end{minted}
+  # fit
+  # svm.SVC().fit(X,Y) rather than X,Y we use fX,Y
+  svm.SVC().fit(fX,Y)
+  \end{minted}
 
-\begin{center}
-  \includegraphics[width=0.6\linewidth]{images/circern.eps}
-\end{center}
+  \begin{center}
+    \includegraphics[width=0.6\linewidth]{images/circern.eps}
+  \end{center}
 
-While in an ideal world we should be able to stop here and call it a day, in
-reality we need to do a bit more work. The problem here is that choosing the
-the function fX here is a difficult task, and in interest of laziness we
-want this work cut out for us. The second problem is that in order to be
-able to make a non standard boundary we need to make a more complex non
-linear transform which in turn increases the computational requirements. The
-kernel trick will now be useful to us. The idea here is that the SVM itself
-does not need to know what each point is mapped to under this non linear
-transform, i.e $x_i \rightarrow f(x_i) \forall i$. The only thing it
-actually needs to know is how each point compares to each other data point
-i.e $f(x_i) vs f(x_j)$. This is still ultimately finding a glorified version
-of the distance between each point. Mathematically this is equivalent to
-doing $f(x_i)^T f(x_j)$ and this is what we define as the Kernel function
- $$k(x_i, x_j) := f(x_i)^T f(x_j) $$
+  While in an ideal world we should be able to stop here and call it a day, in
+  reality we need to do a bit more work. The problem here is that choosing the
+  the function fX here is a difficult task, and in interest of laziness we
+  want this work cut out for us. The second problem is that in order to be
+  able to make a non standard boundary we need to make a more complex non
+  linear transform which in turn increases the computational requirements. The
+  kernel trick will now be useful to us. The idea here is that the SVM itself
+  does not need to know what each point is mapped to under this non linear
+  transform, i.e $x_i \rightarrow f(x_i) \forall i$. The only thing it
+  actually needs to know is how each point compares to each other data point
+  i.e $f(x_i) vs f(x_j)$. This is still ultimately finding a glorified version
+  of the distance between each point. Mathematically this is equivalent to
+  doing $f(x_i)^T f(x_j)$ and this is what we define as the Kernel function
+  $$k(x_i, x_j) := f(x_i)^T f(x_j) $$
 
 \subsection{Examples}
-\subsubsection{Linear Kernel}
-Let us say the transform we intend to make is $f(x) = x$ i.e the identity
-transform. Then the kernel function is
- $$ k(x_i, x_j) = x_i^T x_j $$ With the call
-\begin{minted}{python}
-svm.SVC(kernel='linear').fit(X,Y)
-\end{minted}
-The linear kernel gives us a flat decision boundary as expected, it can only
-make a straight line through the data without any transforms.
+  \subsubsection{Linear Kernel}
+  Let us say the transform we intend to make is $f(x) = x$ i.e the identity
+  transform. Then the kernel function is
+  $$ k(x_i, x_j) = x_i^T x_j $$ With the call
+  \begin{minted}{python}
+  svm.SVC(kernel='linear').fit(X,Y)
+  \end{minted}
+  The linear kernel gives us a flat decision boundary as expected, it can only
+  make a straight line through the data without any transforms.
 
-\subsubsection{Polynomial Kernel}
-Let us say the non linear transform we intend to make is $f(x) = (x_1, x_2,
-x_1x_2, x_1^2 ,x_2^2)$ i.e the polynomial transform. Then the kernel function
-is $$k(x_i, x_j) = (x_i^T x_j + r)^d $$ making in our case the parameters
-$d = 2$ and $r = 0$ With the call
-\begin{minted}{python}
-svm.SVC(kernel='poly', degree=2).fit(X,Y)
-\end{minted}
-The polynomial kernel gives us a curved decision boundary as expected, this
-is equivalent to first making an ideal transform before hand of the type
-$c_0 + c_1x_1 + c_2x_2 + c_3x_1x_2 + c_4x_1^2 + c_5x_2^2$ for some values
-$c_i$ and then using the linear kernel on the transformed data. The Kernel
-function here lets us find the relations between the values as if we had
-done the transform before hand without actually doing the transform.
+  \subsubsection{Polynomial Kernel}
+  Let us say the non linear transform we intend to make is $f(x) = (x_1, x_2,
+  x_1x_2, x_1^2 ,x_2^2)$ i.e the polynomial transform. Then the kernel function
+  is $$k(x_i, x_j) = (x_i^T x_j + r)^d $$ making in our case the parameters
+  $d = 2$ and $r = 0$ With the call
+  \begin{minted}{python}
+  svm.SVC(kernel='poly', degree=2).fit(X,Y)
+  \end{minted}
+  The polynomial kernel gives us a curved decision boundary as expected, this
+  is equivalent to first making an ideal transform before hand of the type
+  $c_0 + c_1x_1 + c_2x_2 + c_3x_1x_2 + c_4x_1^2 + c_5x_2^2$ for some values
+  $c_i$ and then using the linear kernel on the transformed data. The Kernel
+  function here lets us find the relations between the values as if we had
+  done the transform before hand without actually doing the transform.
 
-\subsubsection{RBF Kernel}
-Let us say the non linear transform we intend to make is $f(x) = e^{-\gamma
-||x||^2}$ i.e the radial basis function transform. Then the kernel function
-is $$k(x_i, x_j) = e^{-\gamma ||x_i - x_j||^2} $$ making in our case the
-parameter $\gamma = 1$ With the call
-\begin{minted}{python}
-svm.SVC(kernel='rbf', gamma=1).fit(X,Y)
-\end{minted}
-It turns out that the transform needed before hand for an RBF is infinite
-dimensional, i.e it looks like
+  \subsubsection{RBF Kernel}
+  Let us say the non linear transform we intend to make is $f(x) = e^{-\gamma
+  ||x||^2}$ i.e the radial basis function transform. Then the kernel function
+  is $$k(x_i, x_j) = e^{-\gamma ||x_i - x_j||^2} $$ making in our case the
+  parameter $\gamma = 1$ With the call
+  \begin{minted}{python}
+  svm.SVC(kernel='rbf', gamma=1).fit(X,Y)
+  \end{minted}
+  It turns out that the transform needed before hand for an RBF is infinite
+  dimensional, i.e it looks like
 
-$$ f(x) = (\text{infinite terms...}) $$ Notice how being basically
-impossible to calculate, we can still use the RBF kernel to find the
-relations between the points.
-<b>Note:</b> Gamma is a hyper parameter that controls the width of the RBF kernel.
-The smaller the gamma the wider the Kernel is therefore making it closer to a
-linear kernel. The larger the gamma the narrower the Kernel is therefore making
-it closer to a polynomial kernel of arbitrary degree. (See Proof in Appendix)
+  $$ f(x) = (\text{infinite terms...}) $$ Notice how being basically
+  impossible to calculate, we can still use the RBF kernel to find the
+  relations between the points.
+  <b>Note:</b> Gamma is a hyper parameter that controls the width of the RBF kernel.
+  The smaller the gamma the wider the Kernel is therefore making it closer to a
+  linear kernel. The larger the gamma the narrower the Kernel is therefore making
+  it closer to a polynomial kernel of arbitrary degree. (See Proof in Appendix)
 
-\section{Applying the Kernelised SVM to Quantum Computation}
-\subsection{Classical Gradient Descent}
-Everytime we do regression or classification we never actually calculate the
-optimal values of the parameters, we just use an iterative method to find
-the best values. The most common method is gradient descent. The idea is
-that we start with some initial values of the parameters and then we
-calculate the gradient of the loss function with respect to the parameters
-and then we move in the direction of the gradient.
+% NEW SECTION
+\section{Calculating the Kernel via Gradient Descent}
+  Everytime we do regression or classification we never actually calculate the
+  optimal values of the parameters, we just use an iterative method to find
+  the best values. The most common method is gradient descent. The idea is
+  that we start with some initial values of the parameters and then we
+  calculate the gradient of the loss function with respect to the parameters
+  and then we move in the direction of the gradient.
 
-So in service of doing gradient descent first we slightly modify the
-main equation of the SVM to include the kernel function
-$$ Y = W\phi(x) +b $$ where $\phi(x)$ is the feature map. When we write this
-as a kernel function we take the sum over all the data points in one direction
-and leave the other vectorized.
-$$ Y = \sum_{i=1}^n \alpha_i k(x_i, x) + b $$
+  So in service of doing gradient descent first we slightly modify the
+  main equation of the SVM to include the kernel function
+  $$ Y = W\phi(x) +b $$ where $\phi(x)$ is the feature map. When we write this
+  as a kernel function we take the sum over all the data points in one direction
+  and leave the other vectorized.
+  $$ Y = \sum_{i=1}^n \alpha_i k(x_i, x) + b $$
 
-Now to calculate the actual predictor all we have to do is use this equation
-to do the SVM training to calculate the ideal values of $\alpha_i$ and $b$.
-The following being the py example of the same.
-\begin{minted}{python}
-"""
-Kernel Explaination:
-  We have Eqn Y = Xw + b
-  We convert RHS into kernelized form with
+  Now to calculate the actual predictor all we have to do is use this equation
+  to do the SVM training to calculate the ideal values of $\alpha_i$ and $b$.
+  The following being the py example of the same.
+  \begin{minted}{python}
+  """
+  Kernel Explaination:
+    We have Eqn Y = Xw + b
+    We convert RHS into kernelized form with
       K_x such that K_x = K (X, X(i)
-      so evidently we sum it over all such values
-  Y = \sum alpha_i K(X, X(i)) + b
-"""
+      so evidently we ∑ it over all such values
+    Y = \sum alpha_i K(X, X(i)) + b
+  """
 
-def kernel(X_1, X_2, gamma=gamma):
-    K = np.zeros((len(X_1), len(X_2)));
-    # Inefficient for loop way: to demonstrate
-    # for i in range(len(X)):
-    #     for j in range(len(X)):
-    #         K[i, j] = RBF_kernel(X[i], X[j])
+  def kernel(X_1, X_2, gamma=gamma):
+      K = np.zeros((len(X_1), len(X_2)));
+      # Inefficient for loop way: to demonstrate
+      # for i in range(len(X)):
+      #     for j in range(len(X)):
+      #         K[i, j] = RBF_kernel(X[i], X[j])
 
-    # numpy way:
-    distances = np.sum(X_1**2, axis=1).reshape(-1, 1)
-              + np.sum(X_2**2, axis=1)
-              - 2 * np.dot(X_1, X_2.T);
+      # numpy way:
+      distances = np.sum(X_1**2, axis=1).reshape(-1, 1)
+                + np.sum(X_2**2, axis=1)
+                - 2 * np.dot(X_1, X_2.T);
 
-    return np.exp(-gamma * distances);
-\end{minted}
+      return np.exp(-gamma * distances);
+  \end{minted}
 
-And the below function is the actual SVM gradient calculating function.
-\begin{minted}{python}
-def calculate_gradients(X, y, y_pred, alpha):
-  # d(\sum_i (1 - y_i(alpha_i k(x, x_i)))) / d(alpha_i)
-  #        = -y_i * k(x, x_i) if y_i(alpha_i k(x, x_i)) < 0
-  temp_diff = y *
-        np.sum(kernel(X, X), axis=1).reshape(-1, 1)
+  And the below function is the actual SVM gradient calculating function.
+  \begin{minted}{python}
+  def calculate_gradients(X, y, y_pred, alpha):
+    # d(\sum_i (1 - y_i(alpha_i k(x, x_i))))
+    #         / d(alpha_i)
+    # = -y_i * k(x, x_i) if y_i(alpha_i k(x, x_i)) < 0
+    temp_diff = y *
+          np.sum(kernel(X, X), axis=1).reshape(-1, 1)
 
-  # For correct preds set temp_differential to 0
-  # since if pred correct we only regu11 & not penalize
-  y_pred = y_pred.reshape(-1, 1)
-  temp_diff[y * y_pred > 0] = 0
+    # For correct preds set temp_differential=0
+    # since, pred correct=> only regu11 & not penalize
+    y_pred = y_pred.reshape(-1, 1)
+    temp_diff[y * y_pred > 0] = 0
 
-  # dalpha_l = lamda * 2 * alpha
-  #    + np.dot(y[pred_vector].T, kernel(X, X)).reshape(-1, 1)
-  # 2nd term: such that y_pred = \alpha K
-  # This is dL/dAlpha
-  return lamda * 2 * alpha - temp_diff
-\end{minted}
+    # dalpha_l = lamda * 2 * alpha
+    #    + np.dot(y[pred_vector].T, kernel(X, X))
+                          # .reshape(-1, 1)
+    # 2nd term: such that y_pred = \alpha K
+    # This is dL/dAlpha
+    return lamda * 2 * alpha - temp_diff
+  \end{minted}
 
-Following which the below is the pseudo code for the SVM training.
-\begin{minted}{python}
-for epoch in range(EPOCHS):
-  y_pred = predict(train_X, alpha) # make a prediction
+  Following which the below is the pseudo code for the SVM training.
+  \begin{minted}{python}
+  for epoch in range(EPOCHS):
+    y_pred = predict(train_X, alpha) # prediction
 
-  loss = calculate_svm_loss(y_pred, train_y) # calculate the loss
+    # calculate loss
+    loss = calculate_svm_loss(y_pred, train_y)
 
-  # calculate the backprop gradients
-  dalpha_l = calculate_gradients(train_X, train_y, y_pred, alpha)
-  alpha = update_weights(dalpha_l, alpha) # update weights
-\end{minted}
+    # calculate the backprop gradients
+    dalpha_l = calculate_gradients(
+      train_X, train_y, y_pred, alpha
+    )
+    # update weights
+    alpha = update_weights(dalpha_l, alpha)
+  \end{minted}
 
+% NEW SECTION
+\section{Quantum SVM}
+Any ML algorithm in Quantum-land has 3 parts to it
+\begin{enumerate}
+  \item Embedding the Data from Classical Data into Qubit representation
+  \item The Quantum Circuit
+  \item Measurement and Decoding the Qubit representation into Classical Data
+\end{enumerate}
+
+This measurement step is what helps us usually calculate some form of loss function
+which we can then use to calculate the gradients and then use gradient descent to
+find the optimal parameters. However this has any question of working in the first
+place only if the data is encoded in a way that the quantum circuit can actually
+learn something from it.
+
+There are 2 ways to do encoding
+\begin{itemize}
+  \item Fixed Encoding
+    \begin{enumerate}
+    \item Basis Embedding: $x \rightarrow |\psi_x\rangle$
+    \item Amplitude Embedding
+    \item Phase/Angle Embedding
+    \end{enumerate}
+  \item Parametrized Encoding
+\end{itemize}
+
+\subsection{Basis Embedding}
+This is the most primitive form of Embedding. It is basically just a one hot
+Embedding of the data. Basis embedding associates each input with a computational basis state of a qubit system.
+This forces the classical data to be in the form of binary strings so that it can be
+bit-wise translated. Ex. $x = 1001 \rightarrow |1001\rangle$
+
+\textit{Example.} Let's say we have a classical dataset containing two examples $x_1 = 01 $ and $x_2 = 10$. We can represent this dataset in superpositions of computational basis states as $|\psi\rangle = \frac{1}{\sqrt{2}}(|01\rangle + |10\rangle)$.
+
+\subsection{Amplitude Embedding}
+Here the data is encoded into the "amplitudes" of a quantum state. So we technically need only $log_2(n)$ qubits to represent a dataset of size $n$. So lets say we intend to encode $x = (1.0, 0.0, -5.5, 0.0)$ into a quantum state. We can do this by normalizing the vector to get $x = \frac{1}{\sqrt{31.25}}(1.0, 0.0, -5.5, 0.0)$ and then representing it as
+\begin{equation}
+  |\psi\rangle = \sum_{i=1}^n x_i |i\rangle
+\end{equation}
+giving us
+\begin{equation}
+\begin{split}
+  |\psi\rangle & = \frac{1}{\sqrt{31.25}}(1.0|0\rangle + 0.0|1\rangle - 5.5|2\rangle + 0.0|3\rangle) \\
+  & = \frac{1}{\sqrt{31.25}}(1.0|00\rangle + 0.0|01\rangle - 5.5|10\rangle + 0.0|11\rangle) \\
+  & = \frac{1}{\sqrt{31.25}}(1.0|00\rangle - 5.5|10\rangle)
+\end{split}
+\end{equation}
+
+We can see how we needed $log_2(4) = 2$ qubits to represent a 4 dimensional vector.
+
+\textit{Note: } If the total number of amplitudes to embed, i.e. $NxM < 2^n$, then we can pad the data with zeros to make it fit. This is because the total number of amplitudes in a quantum state is $2^n$.
+
+\subsection{Phase/Angle Embedding}
+This is similar to Amplitude Embedding except that we encode the data into the phase of the qubit. This is done by taking the angle of the vector and then encoding it into the phase of the qubit. This is done by taking each value $x_i$ and then applying a rotation to it in some direction say $x$ axis. This would then make the map as follows
+\begin{equation}
+  x_i \rightarrow R_x(x_i)
+\end{equation}
+
+\begin{quantikz}
+  x_1 & \gate{R_x} & \qw \\
+  x_2 & \gate{R_x} & \qw \\
+  x_3 & \gate{R_x} & \qw
+\end{quantikz}
+
+
+
+\section{Appendix}
+\subsection{Comparison with SINDy}
+This method is different from SINDy because SINDy usually aims to find the exact equations of the least number of degrees of freedom in any given system. We don't aim to do that. SINDy will not be able to convert a text description to an image. We want an arbitrary classifier that can be applied to any data set. SINDy would be much more suitable for a physical system where physics modelling is needed, ML is not needed for that and does not aim to solve those problems in the first place.
+
+ML however can be used in places where even the Non Linear systems don't have a closed form solution and we want to predict the state at some far time $t$ beyond the chaos boundary. The results, models or even the architectures of the ML models used here are however not well studied and is an active area of research.
+\begin{enumerate}
+  \item It is possible however that even for a given SINDy model, the ML model
+  has lower computational requirements and thus is better used despite not
+  being as accurate. A real world example was seen in Tesla Motors Inc
+  where when calculating the current level of a battery it proved to be
+  simpler to just use an ML model on the raw voltage than actually add
+  physical resistors and model the complex interactions of all different
+  sections, heat profiles and retentivities of the battery.
+  \item As mentioned above, we have seen in Kadierdan et al CDC 2019, that SINDy
+  can be very accurately used to model, and therefore balance an inverted
+  vertical double pendulum. It however also turns out that SINDy is good
+  at small specific classes of tasks and should be used for as such, it
+  generalists very poorly as was seen in the modelling of Nuclear Fusion
+  where fusion control is done much better with DeepMind's new model,
+  we see that they're able to not only model and predict the gas plume
+  behaviour but also control it. This is a much more complex task than the
+  simple double pendulum and so it is not surprising that SINDy fails
+  here. This is also a good example of how ML can be used to solve
+  problems that are not solvable by SINDy.
+  \item SINDy aims to find a simple model such that it is EXPLAINABLE. The
+  latter being the more important part, in ML the model has no constraint
+  on being explainable and is very happy being a black box in interest of
+  which it has no constraints on what forms it can take, therefore
+  structurally it can be much more complex than a SINDy model. This is a
+  good thing because it allows us to model much more complex systems, but
+  it is also a bad thing because it makes it harder to explain the model
+  and thus harder to trust it. In interest of this ability to Generalise,
+  in 2011 NASA switched to ML for aircraft engine premptive fault
+  detection and in 2015 for drought prediction in the ECOSTRESS mission,
+  both areas which were traditionally left to modelling.
+\end{enumerate}
+
+\subsection{Proof of RBF Kernel's Dimensionality}
+
+\begin{equation}
+\begin{split}
+k(x_i, x_j) & = \exp(-\frac{1}{2} ||x_i - x_j||^2) \\
+  & = \exp(-\frac{1}{2} \langle x_i - x_j\rangle^T \langle x_i - x_j\rangle) \\
+  & = \exp(-\frac{1}{2} (\langle x_i, x_i - x_j\rangle - \langle x_j, x_i - x_j\rangle)) \\
+  & = \exp(-\frac{1}{2} (\langle x_i, x_i\rangle - \langle x_i, x_j\rangle - \langle x_j, x_i\rangle + \langle x_j, x_j\rangle)) \\
+  & = \exp(-\frac{1}{2} (||x_i||^2 - 2\langle x_i, x_j\rangle + ||x_j||^2)) \\
+  & = \exp[-\frac{1}{2} ||x_i||^2 - \frac{1}{2} ||x_j||^2] \exp(\langle x_i, x_j\rangle) \\
+  & = C e^{\langle x_i, x_j\rangle} \quad \quad \text{since } C = \exp(-\frac{1}{2} ||x_i||^2 - \frac{1}{2} ||x_j||^2) \\
+  & = C \sum_{n=0}^{\infty} \frac{\langle x_i, x_j\rangle^n}{n!} \quad \quad \text{Taylor Series Expansion} \\
+  & = C \sum_{n=0}^{\infty} \frac{K_{poly(n)}(x_i, x_j) }{n!}
+\end{split}
+\end{equation}
+
+\subsection{Generalisation of RBF}
+The RBF kernel is defined as
+ $$ k(x,x') = \exp\left(-\frac{d(x,x')}{2*\rho^2}\right) $$
+where $d(x,x') \geq 0$ is the Euclidean distance between $x$ and $x'$ and
+$\rho$ is a hyperparameter. The RBF kernel is infinitely differentiable and
+is positive definite.
+
+The Matern kernel is a generalization of the RBF kernel. It is defined as
+$$ k(x,x') = \frac{2^{1-\nu}}{\Gamma(\nu)}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right)^\nu K_{\nu}\left(\frac{\sqrt{2\nu}d(x,x')}{\rho}\right) $$
+where $K_{\nu}$ is the modified Bessel function of the second kind and
+order $\nu$. The Matern kernel is infinitely differentiable and is positive definite.
+It is also isotropic, being defined for all $d(x,x') \geq 0$.
+
+\subsubsection{Intuition}
+It's common to say that the Bessel functions are the solutions of the Bessel
+Differential Equation, but thats not much of an explanation. We arrive at
+the Bessel Differential Equation by transforming the wave equation into
+cylindrical co-ordinates.
+
+Intuitively The Bessel functions are what you get in two dimensions by taking
+superpositions of sine waves with circular symmetry. If you draw a circle 100
+meters in diameter, and put 1000 sources around the circumference of the circle,
+and have them transmit sine waves towards the center, all synchronized in phase,
+then the disturbance you get in the middle is described by a Bessel function
+… actually, $J_0$. If we do the same thing but have the source phase delayed
+linearly in a clockwise direction, so that when you come full circle they are
+back in phase again…that's the next Bessel function, $J_1$. Double the phase
+delay, and you get $J_2$, and so on.
+
+So the RBF is effectively the same thing as a bessel function where on a membrane,
+rather than one 'dip', i.e as in dropping a ball in the center, In the Matern
+Kernel there may be an arbitrary amount of dips of varying hights say as when
+we beat a drum. The Gamma function is just a normalization factor which comes
+with some mathematical trickery.
+
+The main power of a Matern kernel is that it allows for non-stationary processes.
+The RBF kernel is stationary, meaning that the cov`ariance between two points
+$x$ and $x'$ is independent of the distance between them. The Matern kernel is
+non-stationary, meaning that the covariance between two points $x$ and $x'$ is
+dependent on the distance between them making it much more flexible. Non-stationary
+kernels have proved to be very useful for modeling data that exhibit spatially
+varying behavior, such as weather patterns or population density.
+
+\subsubsection{Special Cases}
+\begin{enumerate}
+  \item \textbf{nu = 0.5:} Matern reduces to $e^{-d}$ i.e exponential distance
+  \item \textbf{nu = 1.5:} Matern reduces to $(1+ \sqrt3 d) e^{-\sqrt3 d}$
+  \item \textbf{nu = 2.5:} Matern reduces to $(1+ \sqrt5 d + \frac{5}{3} d^2) e^{-\sqrt5 d}$
+  \item \textbf{nu = $\infty$} Matern reduces to $e^{-\frac{d^2}{2}}$ i.e RBF
+    kernel
+\end{enumerate}
 
 
 \end{document}
-
-
-
-
-% //APPENDIX
-%   <h2>Comparison with SINDy</h2>
-%   <div>
-% This method is different from SINDy because SINDy usually aims to find the
-% exact equations of the least number of degrees of freedom in any given
-% system. We don't aim to do that. SINDy will not be able to convert a text
-% description to an image. We want an arbitrary classifier that can be applied
-% to any data set. SINDy would be much more suitable for a physical system
-% where physics modelling is needed, ML is not needed for that and does not
-% aim to solve those problems in the first place.
-%
-% ML however can be used in places where even the Non Linear systems don't have
-% a closed form solution and we want to predict the state at some far time t beyond
-% the chaos boundary. The results, models or even the architectures of the ML models
-% used here are however not well studied and is an active area of research.
-% <ul>
-%   <li>
-%     It is possible however that even for a given SINDy model, the ML model
-%     has lower computational requirements and thus is better used despite not
-%     being as accurate. A real world example was seen in Tesla Motors Inc
-%     where when calculating the current level of a battery it proved to be
-%     simpler to just use an ML model on the raw voltage than actually add
-%     physical resistors and model the complex interactions of all different
-%     sections, heat profiles and retentivities of the battery.
-%   </li>
-%   <li>
-%     As mentioned above, we have seen in Kadierdan et al CDC 2019, that SINDy
-%     can be very accurately used to model, and therefore balance an inverted
-%     vertical double pendulum. It however also turns out that SINDy is good
-%     at small specific classes of tasks and should be used for as such, it
-%     generalists very poorly as was seen in the modelling of Nuclear Fusion
-%     where fusion control is done much better with DeepMind's new model <a
-%       href="#">:Deepmind</a
-%     >, we see that they're able to not only model and predict the gas plume
-%     behaviour but also control it. This is a much more complex task than the
-%     simple double pendulum and so it is not surprising that SINDy fails
-%     here. This is also a good example of how ML can be used to solve
-%     problems that are not solvable by SINDy.
-%   </li>
-%   <li>
-%     SINDy aims to find a simple model such that it is EXPLAINABLE. The
-%     latter being the more important part, in ML the model has no constraint
-%     on being explainable and is very happy being a black box in interest of
-%     which it has no constraints on what forms it can take, therefore
-%     structurally it can be much more complex than a SINDy model. This is a
-%     good thing because it allows us to model much more complex systems, but
-%     it is also a bad thing because it makes it harder to explain the model
-%     and thus harder to trust it. In interest of this ability to Generalise,
-%     in 2011 NASA switched to ML for aircraft engine premptive fault
-%     detection and in 2015 for drought prediction in the ECOSTRESS mission,
-%     both areas which were traditionally left to modelling.
-%   </li>
-% </ul>
-%   </div>
-
-% <details>
-%   <summary>
-% <h2 class="d-ib m5">Proof of RBF Kernel's Dimensionality</h2>
-
-%   <div>
-% $ k(x_i, x_j) $
-% $ \quad = \exp(-\frac{1}{2} ||x_i - x_j||^2)$
-%
-% $ \quad = \exp(-\frac{1}{2}
-% \langle x_i - x_j\rangle^T \langle x_i - x_j\rangle) $
-% $ \quad = \exp(-\frac{1}{2}
-% (\langle x_i, x_i - x_j\rangle - \langle x_j, x_i - x_j\rangle)) $
-% $ \quad = \exp(-\frac{1}{2}
-% (\langle x_i, x_i\rangle - \langle x_i, x_j\rangle - \langle x_j, x_i\rangle
-% + \langle x_j, x_j\rangle)) $
-% $ \quad = \exp(-\frac{1}{2} (||x_i||^2 - 2\langle x_i, x_j\rangle + ||x_j||^2))
-% $
-% $ \quad = \exp[-\frac{1}{2}
-% ||x_i||^2 - \frac{1}{2} ||x_j||^2] \exp(\langle x_i, x_j\rangle) $<br
-% />
-% $ \quad = C e^{\\langle x_i, x_j\\rangle}
-% \quad \quad \text{since } C = \exp(-\frac{1}{2} ||x_i||^2 - \frac{1}{2}
-% ||x_j||^2) $  $ \quad = C \sum_{n=0}^{\\infty} \frac{\\langle x_i, x_j\\rangle^n}{n!}
-% \quad \quad \text{Taylor Series Expansion} $
-% $ \quad = C \sum_{n=0}^{\\infty}
-% \frac{K_{poly(n)}(x_i, x_j) }{n!}$
-%   </div>
-
-% <h1>Kernel Generalisations</h1>
-
-%   <h2>RBF $\rightarrow$ Matern</h2>
-%   <div>
-% The RBF kernel is defined as
-%  $$ k(x,x') = \exp\left(-\frac{d(x,x')}{2*\rho^2}\right) $$
-% where $d(x,x') \geq 0$ is the Euclidean distance between $x$ and $x'$ and
-% $\rho$ is a hyperparameter. The RBF kernel is infinitely differentiable and
-% is positive definite.
-%
-% The Matern kernel is a generalization of the RBF kernel. It is defined as
-%  $$ k(x,x') = \frac{2^{1-\\nu}}{\\Gamma(\\nu)}\left(\frac{\\sqrt{2\\nu}d(x,x')}{\\rho}\right)^\nu
-% K_{\\nu}\left(\frac{\\sqrt{2\\nu}d(x,x')}{\\rho}\right) $$ where
-% $K_{\\nu}$ is the modified Bessel function of the second kind and
-% $\Gamma$ is the gamma function. The parameter $\nu$ controls the smoothness
-% of the function. For $\nu=1/2$, the Matern kernel reduces to the RBF kernel.
-% For $\nu=1$, the Matern kernel reduces to the absolute exponential kernel.
-% For $\nu\rightarrow\infty$, the Matern kernel reduces to the absolute
-% exponential kernel. The Matern kernel is infinitely differentiable and is
-% positive definite. The Matern kernel is also isotropic. The Matern kernel is
-% defined for $d(x,x')\geq 0$.
-%   </div>
-%   <h3>Intuition</h3>
-%   <div>
-% It's common to say that the Bessel functions are the solutions of the Bessel
-% Differential Equation, but thats not much of an explanation. We arrive at
-% the Bessel Differential Equation by transforming the wave equation into
-% cylindrical co-ordinates.
-%
-% Intuitively The Bessel functions are what you get in two dimensions by taking
-% superpositions of sine waves with circular symmetry. If you draw a circle 100
-% meters in diameter, and put 1000 sources around the circumference of the circle,
-% and have them transmit sine waves towards the center, all synchronized in phase,
-% then the disturbance you get in the middle is described by a Bessel function
-% … actually, $J_0$. If we do the same thing but have the source phase delayed
-% linearly in a clockwise direction, so that when you come full circle they are
-% back in phase again…that's the next Bessel function, $J_1$. Double the phase
-% delay, and you get $J_2$, and so on.
-%
-% So the RBF is effectively the same thing as a bessel function where on a membrane,
-% rather than one 'dip', i.e as in dropping a ball in the center, In the Matern
-% Kernel there may be an arbitrary amount of dips of varying hights say as when
-% we beat a drum. The Gamma function is just a normalization factor which comes
-% with some mathematical trickery.
-%
-% The main power of a Matern kernel is that it allows for non-stationary processes.
-% The RBF kernel is stationary, meaning that the covariance between two points
-% $x$ and $x'$ is independent of the distance between them. The Matern kernel is
-% non-stationary, meaning that the covariance between two points $x$ and $x'$ is
-% dependent on the distance between them making it much more flexible. Non-stationary
-% kernels have proved to be very useful for modeling data that exhibit spatially
-% varying behavior, such as weather patterns or population density.
-%   </div>
-%   <div>
-% <h4>Special Cases</h4>
-% <ul>
-%   <li>
-%     <b>nu = 0.5:</b> Matern reduces to $e^{-d}$ i.e exponential distance
-%   </li>
-%   <li>
-%     <b>nu = 1.5:</b> Matern reduces to $(1+ \sqrt(3) d) e^{-\\sqrt(3) d}$
-%   </li>
-%   <li>
-%     <b>nu = 2.5:</b> Matern reduces to $(1+ \sqrt(5) d + \frac{5}{3} d^2) e^{-\\sqrt(5) d}$
-%   </li>
-%   <li>
-%     <b>nu = $\infty$</b> Matern reduces to $e^{-\\frac{d^2}{2}}$ i.e RBF
-%     kernel
-%   </li>
-% </ul>
-%   </div>
