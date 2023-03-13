@@ -20,6 +20,7 @@
       <div>New Kernels for QSVMs</div>
     </section>
 
+    <!-- Slide 1: Introduction -->
     <section>
       We define regression as finding a $w$ such that we can predict new values of $y_i$ given $x_i$ as
       <div class="ƒ w-100 ∆-ar">
@@ -37,6 +38,7 @@
       </div>
     </section>
 
+    <!-- Slide 2: Linear Regression -->
     <section>
       How do we do it? Lets look at the regularized value of $w$
       (from $L(w) = \frac{1}{2} \sum_i (y_i - w^T x_i)^2 $)
@@ -51,6 +53,7 @@
       </div>
     </section>
 
+    <!-- Slide 3: Linear Regression Problem -->
     <section>
       In $ w = (\phi^T \phi + \lambda I)^{-1} \phi^T Y $, the matrix $\phi^T \phi$ is painful to
       calculate so we can use some mathematical jugglery refactor it from
@@ -61,7 +64,9 @@
       it turns out that $\phi \phi^T$ is much easier to calculate
     </section>
 
+    <!-- Slide 4: Proof of Kernel Transf -->
     <section style="font-size: 16px !important;">
+      <b>Optional Proof:</b> <br />
       Let us now define the new loss function along with a regularization term
       $$ J(w) = \min_w \sum_{i=1}^n (y_i - w^T \phi(x_i))^2 + \frac{\lambda}{2}
       ||w||^2 \implies
@@ -85,12 +90,11 @@
       (This also means it is invertible which $\phi^T \phi$ MAY NOT). We can substitute
       all $\phi \phi^T$ with $K$ and also $K$ with $K^T$ and get <br />
       $$ J(\alpha) = y^T y - 2 y^T K \alpha + \alpha^T K^2 \alpha + \frac{\lambda}{2}
-      \alpha^T K \alpha $$ Seeting the derivative of this with respect to $\alpha$
-      to zero and solving for $\alpha$ gives us (along with $K = \phi \phi^T$)
-      <br />
-      $$ \alpha* = (K + \frac{\lambda}{2} I)^{-1} y = (K
+      \alpha^T K \alpha \implies \alpha* = (K + \frac{\lambda}{2} I)^{-1} y = (K
       + \lambda' I)^{-1} y $$
     </section>
+
+    <!-- Slide 5: Kernel Trick -->
     <section>
       <p>
         What this effectively lets us do is,
@@ -103,6 +107,41 @@
       <p>
         This gives us the end result directly
       </p>
+      <div class="ƒ ∆-ar">
+        <img src="https://miro.medium.com/v2/1*zWzeMGyCc7KvGD9X8lwlnQ.png" height="200px">
+        <img
+          src="https://www.researchgate.net/profile/Marouane-Hachimi/publication/340610860/figure/fig4/AS:880021191286786@1586824810950/Non-linear-classifier-using-Kernel-trick-16.ppm"
+          height="200px">
+      </div>
+    </section>
+
+    <!-- Slide 6: Kernel Examples -->
+    <section>
+      <h2>Some examples of kernelised transforms:</h2>
+      <div class="ƒ ∆-bw ƒ∑">
+        <p class="w-50">
+          <b>Linear Kernel:</b> $ \phi(x) = x $ <br>
+          where $k(x, x') = x^T x'$
+        </p>
+        <p class="w-50">
+          <b>Polynomial Kernel:</b>
+          $k(x, x') = (x^T x' + c)^d$
+        </p>
+        <p class="w-50">
+          <b>RBF Kernel:</b> $ \phi(x) = \sum_{i=0}^{\infty} c_i x^i $ <br>
+          where $k(x, x') = e^{-\gamma ||x - x'||^2}$
+        </p>
+        <p class="w-50">
+          <b>Arbitary Example:</b> $ \phi(x) = [x_1^2, \sqrt{2} x_1 x_2, x_2^2] $ <br>
+          where $k(x, x') = (x_1 x_1' + x_2 x_2')^2$
+        </p>
+      </div>
+    </section>
+
+    <!-- Slide 7: QSVM Intro -->
+    <section>
+      <h1 class="†c">$|QML\rangle$</h1>
+      <div>Heading to QSVMs</div>
     </section>
   </main>
 
