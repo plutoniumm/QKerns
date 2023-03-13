@@ -42,8 +42,8 @@
     kernel trick.
   </p>
 </section>
-<details>
-  <summary>
+<details open>
+  <summary id="proof">
     <h2 class="d-ib m5">Restructuring the Weight Matrix</h2>
     <div class="mx-a">
       <b>Result:</b> <br />
@@ -80,12 +80,12 @@
     \alpha^T K \alpha $$ Seeting the derivative of this with respect to $\alpha$
     to zero and solving for $\alpha$ gives us (along with $K = \phi \phi^T$)
     <br />
-    $$ \alpha* = (K + \frac{`{\u005Clambda}`}{2} I)^{-1} y $$ or $$ \alpha* = (K
-    + \lambda' I)^{-1} y $$ We have achieved in this section effectively converting
+    $$ \alpha* = (K + \frac{`{\u005Clambda}`}{2} I)^{`{-1}`} y $$ or $$ \alpha* =
+    (K + \lambda' I)^{`{-1}`} y $$ We have achieved in this section effectively converting
     one equation to another as follows <br />
-    $$ w^* = (\phi^T \phi + \lambda I)^{-1} \phi^T Y $$ into <br />
-    $$ w^* = \phi^T (K + \lambda' I)^{-1} Y $$ By the looks of it we may not have
-    done anything, but as we will see in the next section, this step will reduce
+    $$ w^* = (\phi^T \phi + \lambda I)^{`{-1}`} \phi^T Y $$ into <br />
+    $$ w^* = \phi^T (K + \lambda' I)^{`{-1}`} Y $$ By the looks of it we may not
+    have done anything, but as we will see in the next section, this step will reduce
     the computation time by a lot.
   </p>
 </details>

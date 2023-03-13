@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="https://api.nukes.in/css/global.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/theme/simple.css" id="theme">
+</head>
+
+<body class="reveal">
+  <main class="slides">
+    <!-- Slide 0: Objective -->
+    <section>
+      <h1 class="ƒ ∆-ct" style="align-self: center;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Qiskit-Logo.svg" height="150">
+        bjective
+      </h1>
+      <div>New Kernels for QSVMs</div>
+    </section>
+
+    <section>
+      We define regression as finding a $w$ such that we can predict new values of $y_i$ given $x_i$ as
+      <div class="ƒ w-100 ∆-ar">
+        <p class="dull" style="font-size:1.25rem">
+          <i>Linear:</i> $ Y = w^T X $ &larr; (easy)
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/be/Normdist_regression.png" height="250"
+            class="p-rel" style="top:20px" />
+        </p>
+        <p class="dull" style="font-size:1.25rem">
+          <i>Non-Linear:</i> $ Y = w^T \phi(X) $ &larr; (hard)
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Loess_curve.svg/1920px-Loess_curve.svg.png"
+            height="290">
+        </p>
+      </div>
+    </section>
+
+    <section>
+      How do we do it? Lets look at the regularized value of $w$
+      (from $L(w) = \frac{1}{2} \sum_i (y_i - w^T x_i)^2 $)
+
+      <div class="ƒ ∆-ar">
+        <p>
+          <i>Linear:</i> $$ w = (X^T X)^{-1} X^T Y $$
+        </p>
+        <p>
+          <i>Non-Linear:</i> $$ w = (\phi^T \phi + \lambda I)^{-1} \phi^T Y $$
+        </p>
+      </div>
+    </section>
+
+    <section>
+      In $ w = (\phi^T \phi + \lambda I)^{-1} \phi^T Y $, the matrix $\phi^T \phi$ is painful to
+      calculate so we can use some mathematical jugglery refactor it from
+      <b>$$ w^* = (\phi^T \phi + \lambda I)^{-1} \phi^T Y $$</b>
+      to
+      <b>$$ w^* = \phi^T (\phi \phi^T + \lambda' I)^{-1} Y $$</b>
+
+      it turns out that $\phi \phi^T$ is much easier to calculate
+    </section>
+
+    <section style="font-size: 16px !important;">
+      Let us now define the new loss function along with a regularization term
+      $$ J(w) = \min_w \sum_{i=1}^n (y_i - w^T \phi(x_i))^2 + \frac{\lambda}{2}
+      ||w||^2 \implies
+      w^* = \frac{1}{\lambda} \sum_{i=1}^n (y_i - w^T \phi(x_i))
+      \phi(x_i) $$ For sake of simplicity let us define a variable $\alpha$ such
+      that <br />
+      .$ \alpha = \frac{1}{\lambda} \sum_{i=1}^n (y_i - w^T
+      \phi(x_i)) $. We can now write the weight matrix as <br />
+      $$ w^* = \sum_{i=1}^n \alpha_i \phi(x_i) = \phi^T \alpha $$ Let us now
+      substitute this into the loss function and get <br />
+      $$ J(\alpha) = (y - \phi \alpha)^T (y - \phi \alpha) + \frac{\lambda}{2}
+      w^T w = y^T y - y^T \phi \phi^T \alpha - \alpha^T \phi^T y + \alpha^T
+      \phi^T \phi \alpha + \frac{\lambda}{2} w^T w $$ We can see that $\phi
+      \phi^T$ is a repeated term. Let us define this new matrix as $K$ such that $$
+      K = \phi \phi^T = \begin{bmatrix}
+      \phi(x_1)^T \phi(x_1) & \phi(x_1)^T \phi(x_2) & \cdots & \phi(x_1)^T \phi(x_n)
+      \\ \phi(x_2)^T \phi(x_1) & \phi(x_2)^T \phi(x_2) & \cdots & \phi(x_2)^T \phi(x_n)
+      \\ \vdots & \vdots & \ddots & \vdots \\ \phi(x_n)^T \phi(x_1) & \phi(x_n)^T \phi(x_2)
+      & \cdots & \phi(x_n)^T \phi(x_n) \end{bmatrix} $$ This matrix has two very
+      important properties. First, it is symmetric and second, it is positive semi-definite.
+      (This also means it is invertible which $\phi^T \phi$ MAY NOT). We can substitute
+      all $\phi \phi^T$ with $K$ and also $K$ with $K^T$ and get <br />
+      $$ J(\alpha) = y^T y - 2 y^T K \alpha + \alpha^T K^2 \alpha + \frac{\lambda}{2}
+      \alpha^T K \alpha $$ Seeting the derivative of this with respect to $\alpha$
+      to zero and solving for $\alpha$ gives us (along with $K = \phi \phi^T$)
+      <br />
+      $$ \alpha* = (K + \frac{\lambda}{2} I)^{-1} y = (K
+      + \lambda' I)^{-1} y $$
+    </section>
+    <section>
+      <p>
+        What this effectively lets us do is,
+      </p>
+      <p>
+        We need to do a Non Linear transform so that we can then draw a linear line through the transformed data, and
+        then
+        un transform that
+      </p>
+      <p>
+        This gives us the end result directly
+      </p>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reveal.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/plugin/math/math.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/plugin/markdown/markdown.js"></script>
+  <script>
+    document.querySelectorAll( 'section[md]' ).forEach( e => {
+      // converts 'md' to revealJS compatible format
+      e.setAttribute( 'data-markdown', "" );
+      e.removeAttribute( 'md' );
+      e.innerHTML = `<script type="text/template">${ e.innerText }</` + `script>`;
+    } );
+    //
+    Reveal.initialize( {
+      history: true,
+      transition: 'linear',
+      showSlideNumber: 'all',
+      fragments: false,
+      hideCursorTime: 1e3,
+      viewDistance: 3,
+      plugins: [ RevealMath, RevealMarkdown ]
+    } );
+
+    // DEV MODE:
+    setTimeout( () => window.location.reload(), 12e4 );
+  </script>
+  <style type="text/css">
+    ul {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    li {
+      list-style-type: none;
+      font-size: 1rem;
+    }
+
+    img {
+      object-fit: contain;
+    }
+
+    .reveal .reveal_section {
+      position: relative;
+    }
+
+    .reveal .caption {
+      position: absolute;
+      bottom: 0px;
+      left: 50px;
+    }
+
+    .dull {
+      opacity: 0.75;
+    }
+
+    .MathJax {
+      pointer-events: none;
+    }
+  </style>
+</body>
+
+</html>

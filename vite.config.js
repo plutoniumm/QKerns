@@ -7,5 +7,12 @@ export default defineConfig( {
 		sveltekit(),
 		plainText( [ /\.mmd$/, /\.md$/ ] ),
 	],
-	server: { port: 3000 }
+	server: {
+		port: 3000,
+		fs: {
+			allow: [
+				// '../'
+			],
+		},
+	}
 } );
