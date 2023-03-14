@@ -109,7 +109,18 @@
       <ul class="norm-li">
         <li>🟡 Quantum Part: No Variations & 10 Qubits</li>
         <li>🟢 Model Runs from Start to Finish</li>
-        <li>🔴 Takes too long (~90 mins)</li>
+        <!-- Start: 9:14 AM -->
+        <!-- End:   10:14 AM for 7 epoch -->
+        <!-- Total:  -->
+        <li>🔴 Takes too long (~180 mins): <br>
+          <span style="font-size: 0.66em;color:#222;line-height: 0.5em;">
+            <span style="padding-left:100px">Current:</span>
+            <code>$2^{10}$Shots*$2^4$Epochs*$2^7$Batches ~ $2^{21}$ (2.1 Million)</code>
+            <br>
+            <span style="padding-left:100px">Targets:</span>
+            <code>$2^{10}$Shots*$2^7$Epochs*$2^{16}$Batches ~ $2^{33}$ (8.5 Billion)</code>
+          </span>
+        </li>
         <li>🟡 Circuit <code>||</code>isation Tests: <code>py multiprocessing</code></li>
         <li>🟡 Accuracy? ~10% @ Incomplete & Untuned</li>
       </ul>

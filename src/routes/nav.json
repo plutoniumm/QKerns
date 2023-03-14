@@ -23,6 +23,10 @@
     {
       "href": "kern-backprop",
       "title": "Kernel Backprop Demo"
+    },
+    {
+      "href": "mnist-hybrid",
+      "title": "MNIST Full Classifier"
     }
   ],
   "markdown": [
