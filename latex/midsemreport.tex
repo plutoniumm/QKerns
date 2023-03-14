@@ -7,7 +7,7 @@
 \usepackage{minted}
 \usepackage{geometry}
 \usepackage{tikz}
-% \usepackage{biblatex}
+\usepackage{biblatex}
 
 \usetikzlibrary{quantikz}
 % https://mirrors.ibiblio.org/CTAN/graphics/pgf/contrib/quantikz/quantikz.pdf
@@ -16,18 +16,21 @@
 % \addbibresource{kernel.bib}
 
 \pubyear{2023}
-%\subjectarea{C-QuICC}
 \title{Finding new Kernel Functions for QSVMs}
-\author{Manav Seksaria, Supervisor: Anil Prabhakar}
-\course{}
-\school{Dept. of Electrical Engineering, IIT Madras}
+\author{Manav Seksaria,\\ Supervisor: Dr. Anil Prabhakar, Co-Supervisor: Dr. Radhika Vathsan}
+\school{
+Dept. of Electrical Engineering, IIT Madras \\
+Dept. of Mathematics, BITS Pilani
+}
 \date{\today}
 \begin{document}
 \maketitle
 
 % NEW SECTION
 \section{What are Kernel Functions?}
-We shall derive the idea of a kernel function from basic problem behind regressions and go from there.
+Rather than directly define it, We shall derive the idea of a kernel function
+from basic problem behind regressions and go from there. We will then extend this
+idea to the Quantum Kernel.
 
 \subsection{Regressions}
   Our objective first is to find the best linear predictor for the response
@@ -239,6 +242,7 @@ We shall derive the idea of a kernel function from basic problem behind regressi
 
 % NEW SECTION
 \section{Calculating the Kernel via Gradient Descent}
+
   Everytime we do regression or classification we never actually calculate the
   optimal values of the parameters, we just use an iterative method to find
   the best values. The most common method is gradient descent. The idea is
@@ -252,6 +256,11 @@ We shall derive the idea of a kernel function from basic problem behind regressi
   as a kernel function we take the sum over all the data points in one direction
   and leave the other vectorized.
   $$ Y = \sum_{i=1}^n \alpha_i k(x_i, x) + b $$
+
+  \textbf{Sidenote}: This above statement applies to Quantum Kernel's also even
+  in infinite dimensional spaces. This is provided to us by the \textit{Representer Theorem}
+  which says we can basically represent the kernel as a sum of the kernel
+  function evaluated at at most the number of input data points.\\
 
   Now to calculate the actual predictor all we have to do is use this equation
   to do the SVM training to calculate the ideal values of $\alpha_i$ and $b$.
@@ -380,9 +389,9 @@ This is similar to Amplitude Embedding except that we encode the data into the p
 
 \begin{center}
 \begin{quantikz}
-  \lstick{\ket{0}} & \gate{R_x(x_1)} & \qw \\
-  \lstick{\ket{0}} & \gate{R_x(x_2)} & \qw \\
-  \lstick{\ket{0}} & \gate{R_x(x_3)} & \qw
+  \lstick{\ket{0}} & \gate{R_x(x_1)} & \rstick{$R_x(x_1)|0\rangle$}\qw \\
+  \lstick{\ket{0}} & \gate{R_x(x_2)} & \rstick{$R_x(x_2)|0\rangle$}\qw \\
+  \lstick{\ket{0}} & \gate{R_x(x_3)} & \rstick{$R_x(x_3)|0\rangle$}\qw
 \end{quantikz}
 \end{center}
 
@@ -423,6 +432,9 @@ So more generally for embeddings we define the feature space as follows:
 \end{tabular}
 \end{center}
 
+Backtracking these kernels to the 'classical' search space, we can see
+what the dimensionalities of the feature spaces are. \\
+
 We can see here that the Amplitude Encoding has a Kernel function who's feature map is quadratic in nature,
 while the Angle Encoding has a Kernel function who's feature map is infinite dimensional (as we see for RBF kernel)
 we can just expand it out to get the full feature map.\\
@@ -435,6 +447,11 @@ decrease as $x$ and $x'$ get farther apart. This is because the angle encoding i
 transformation. It is a rotation. So there may exist values of $x$ and $x'$ such that the angle
 just rotates back all around and gives us 1. So while Angle Encoding is the most powerful of the
 three, it still has its limitations which can be fixed
+
+The short version of this is that the Angle Encoding is the most powerful kernel possible
+in the sense that it is a possibly infinite sum of a polynomial of maximum dimension that
+is also possibly infinite. Any improvement that can be made in the space of kernels from this
+point will be either very specific to the problem or just a calculation optimization.
 
 \subsection{Attempts to extend}
 Attempts to extend $cos^2$ to $e^x$ have so far been futile because $e^{ix}$ has no simple way
@@ -454,47 +471,10 @@ For some $c,C > 0$ we say that $p$ and $q$ are equivalent if for all $x,y \in \m
 $$c\|x\|_p \leq \|x-y\|_q \leq C\|x\|_p$$
 This is equivalent to saying that the ratio of the norms is bounded by $C$ and $c$.
 
-We know that the RBF kernel is equivalent to the $L_2$ norm since it lives in the Hilbert space and is
-created by the inner product. It is possible to reverse engineer the Angle Encoding Kernel similarly
-and show that it is equivalent to the $L_2$ norm.
+This however cannot be applied here because norm equivalence does not always extend to
+infinite dimensional spaces which both the RBF & Angle Encoding are.
 
 \section{Appendix}
-\subsection{Comparison with SINDy}
-This method is different from SINDy because SINDy usually aims to find the exact equations of the least number of degrees of freedom in any given system. We don't aim to do that. SINDy will not be able to convert a text description to an image. We want an arbitrary classifier that can be applied to any data set. SINDy would be much more suitable for a physical system where physics modelling is needed, ML is not needed for that and does not aim to solve those problems in the first place.
-
-ML however can be used in places where even the Non Linear systems don't have a closed form solution and we want to predict the state at some far time $t$ beyond the chaos boundary. The results, models or even the architectures of the ML models used here are however not well studied and is an active area of research.
-\begin{enumerate}
-  \item It is possible however that even for a given SINDy model, the ML model
-  has lower computational requirements and thus is better used despite not
-  being as accurate. A real world example was seen in Tesla Motors Inc
-  where when calculating the current level of a battery it proved to be
-  simpler to just use an ML model on the raw voltage than actually add
-  physical resistors and model the complex interactions of all different
-  sections, heat profiles and retentivities of the battery.
-  \item As mentioned above, we have seen in Kadierdan et al CDC 2019, that SINDy
-  can be very accurately used to model, and therefore balance an inverted
-  vertical double pendulum. It however also turns out that SINDy is good
-  at small specific classes of tasks and should be used for as such, it
-  generalists very poorly as was seen in the modelling of Nuclear Fusion
-  where fusion control is done much better with DeepMind's new model,
-  we see that they're able to not only model and predict the gas plume
-  behaviour but also control it. This is a much more complex task than the
-  simple double pendulum and so it is not surprising that SINDy fails
-  here. This is also a good example of how ML can be used to solve
-  problems that are not solvable by SINDy.
-  \item SINDy aims to find a simple model such that it is EXPLAINABLE. The
-  latter being the more important part, in ML the model has no constraint
-  on being explainable and is very happy being a black box in interest of
-  which it has no constraints on what forms it can take, therefore
-  structurally it can be much more complex than a SINDy model. This is a
-  good thing because it allows us to model much more complex systems, but
-  it is also a bad thing because it makes it harder to explain the model
-  and thus harder to trust it. In interest of this ability to Generalise,
-  in 2011 NASA switched to ML for aircraft engine premptive fault
-  detection and in 2015 for drought prediction in the ECOSTRESS mission,
-  both areas which were traditionally left to modelling.
-\end{enumerate}
-
 \subsection{Proof of RBF Kernel's Dimensionality}
 
 \begin{equation}
@@ -508,6 +488,15 @@ k(x_i, x_j) & = \exp(-\frac{1}{2} ||x_i - x_j||^2) \\
   & = C e^{\langle x_i, x_j\rangle} \quad \quad \text{since } C = \exp(-\frac{1}{2} ||x_i||^2 - \frac{1}{2} ||x_j||^2) \\
   & = C \sum_{n=0}^{\infty} \frac{\langle x_i, x_j\rangle^n}{n!} \quad \quad \text{Taylor Series Expansion} \\
   & = C \sum_{n=0}^{\infty} \frac{K_{poly(n)}(x_i, x_j) }{n!}
+\end{split}
+\end{equation}
+
+\subsection{Proof of Angle Encoding's Kernel Dimensionality}
+
+\begin{equation}
+\begin{split}
+k(x_i, x_j) & = cos(\frac{x-x'}{2}) \\
+& = 1+ \sum_{n=1}^\infty (-1)^n \frac{2^{2n-1}x^{2n}}{2n!}
 \end{split}
 \end{equation}
 
