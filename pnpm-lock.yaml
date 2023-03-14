@@ -7,7 +7,7 @@ specifiers:
   highlight.js: 11.7.0
   marked: 4.2.12
   mermaid: 9.4.3
-  plotly.js-dist: 2.19.0
+  plotly.js-dist: 2.19.1
   sass: 1.59.2
   svelte: 3.55.1
   svelte-highlight: 7.2.0
@@ -19,7 +19,7 @@ dependencies:
   '@tensorflow/tfjs': 4.2.0_seedrandom@3.0.5
   marked: 4.2.12
   mermaid: 9.4.3
-  plotly.js-dist: 2.19.0
+  plotly.js-dist: 2.19.1
 
 devDependencies:
   '@sveltejs/adapter-static': 2.0.1_@sveltejs+kit@1.8.3
@@ -1485,8 +1485,8 @@ packages:
     engines: {node: '>=8.6'}
     dev: true
 
-  /plotly.js-dist/2.19.0:
-    resolution: {integrity: sha512-frr4GZc8vTEWWYym5PU8OzR7wU5VqN9Id4VnXCR3nVXupmvNSAqQi8FHglQf+F/fVxY83T++jryZsLi2KHTcvA==}
+  /plotly.js-dist/2.19.1:
+    resolution: {integrity: sha512-026KRstI8GF/u2eJyBEa3RDFQJrcAY3Q3Bkg8cudhEwmuY8OLTZc+ve31xy7dAR+qMvcupbGPs/BgsLANs6ZGw==}
     dev: false
 
   /postcss/8.4.21:
