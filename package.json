@@ -20,7 +20,7 @@
 	"dependencies": {
 		"@tensorflow/tfjs": "4.2.0",
 		"marked": "4.2.12",
-		"mermaid": "9.4.3",
+		"mermaid": "10.0.2",
 		"plotly.js-dist": "2.19.0"
 	}
 }
