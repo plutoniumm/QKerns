@@ -6,7 +6,7 @@ specifiers:
   '@tensorflow/tfjs': 4.2.0
   highlight.js: 11.7.0
   marked: 4.2.12
-  mermaid: 9.4.3
+  mermaid: 10.0.2
   plotly.js-dist: 2.19.0
   sass: 1.59.2
   svelte: 3.56.0
@@ -18,7 +18,7 @@ specifiers:
 dependencies:
   '@tensorflow/tfjs': 4.2.0_seedrandom@3.0.5
   marked: 4.2.12
-  mermaid: 9.4.3
+  mermaid: 10.0.2
   plotly.js-dist: 2.19.0
 
 devDependencies:
@@ -1344,8 +1344,8 @@ packages:
     engines: {node: '>= 8'}
     dev: true
 
-  /mermaid/9.4.3:
-    resolution: {integrity: sha512-TLkQEtqhRSuEHSE34lh5bCa94KATCyluAXmFnNI2PRZwOpXFeqiJWwZl+d2CcemE1RS6QbbueSSq9QIg8Uxcyw==}
+  /mermaid/10.0.2:
+    resolution: {integrity: sha512-slwoB9WdNUT+/W9VhxLYRLZ0Ey12fIE+cAZjm3FmHTD+0F1uoJETfsNbVS1POnvQZhFYzfT6/z6hJZXgecqVBA==}
     dependencies:
       '@braintree/sanitize-url': 6.0.2
       cytoscape: 3.23.0
