@@ -64,34 +64,17 @@
       it turns out that $\phi \phi^T$ is much easier to calculate
     </section>
 
-    <!-- Slide 4: Proof of Kernel Transf -->
-    <section style="font-size: 16px !important;">
-      <b>Optional Proof:</b> <br />
-      Let us now define the new loss function along with a regularization term
-      $$ J(w) = \min_w \sum_{i=1}^n (y_i - w^T \phi(x_i))^2 + \frac{\lambda}{2}
-      ||w||^2 \implies
-      w^* = \frac{1}{\lambda} \sum_{i=1}^n (y_i - w^T \phi(x_i))
-      \phi(x_i) $$ For sake of simplicity let us define a variable $\alpha$ such
-      that <br />
-      .$ \alpha = \frac{1}{\lambda} \sum_{i=1}^n (y_i - w^T
-      \phi(x_i)) $. We can now write the weight matrix as <br />
-      $$ w^* = \sum_{i=1}^n \alpha_i \phi(x_i) = \phi^T \alpha $$ Let us now
-      substitute this into the loss function and get <br />
-      $$ J(\alpha) = (y - \phi \alpha)^T (y - \phi \alpha) + \frac{\lambda}{2}
-      w^T w = y^T y - y^T \phi \phi^T \alpha - \alpha^T \phi^T y + \alpha^T
-      \phi^T \phi \alpha + \frac{\lambda}{2} w^T w $$ We can see that $\phi
-      \phi^T$ is a repeated term. Let us define this new matrix as $K$ such that $$
-      K = \phi \phi^T = \begin{bmatrix}
-      \phi(x_1)^T \phi(x_1) & \phi(x_1)^T \phi(x_2) & \cdots & \phi(x_1)^T \phi(x_n)
-      \\ \phi(x_2)^T \phi(x_1) & \phi(x_2)^T \phi(x_2) & \cdots & \phi(x_2)^T \phi(x_n)
-      \\ \vdots & \vdots & \ddots & \vdots \\ \phi(x_n)^T \phi(x_1) & \phi(x_n)^T \phi(x_2)
-      & \cdots & \phi(x_n)^T \phi(x_n) \end{bmatrix} $$ This matrix has two very
-      important properties. First, it is symmetric and second, it is positive semi-definite.
-      (This also means it is invertible which $\phi^T \phi$ MAY NOT). We can substitute
-      all $\phi \phi^T$ with $K$ and also $K$ with $K^T$ and get <br />
-      $$ J(\alpha) = y^T y - 2 y^T K \alpha + \alpha^T K^2 \alpha + \frac{\lambda}{2}
-      \alpha^T K \alpha \implies \alpha* = (K + \frac{\lambda}{2} I)^{-1} y = (K
-      + \lambda' I)^{-1} y $$
+    <!-- Slide 4: Kernel Trick -->
+    <section>
+      <fh1>$ x \rightarrow f(x) $</fh1>
+      <p>
+        We don't need to know where each point goes after transformation. We just need to know how all points are
+        related
+      </p>
+      <fh1>$ f(x)$ vs $f(x') $</fh1>
+      <fh1>
+        $ f(x)^T f(x') = k(x,x') $
+      </fh1>
     </section>
 
     <!-- Slide 5: Kernel Trick -->
@@ -138,10 +121,127 @@
       </div>
     </section>
 
+    <!-- PART 2 -->
     <!-- Slide 7: QSVM Intro -->
     <section>
       <h1 class="†c">$|QML\rangle$</h1>
-      <div>Heading to QSVMs</div>
+      <div>Applying to QSVMs</div>
+    </section>
+
+    <!-- Slide 8: QML Intro -->
+    <section>
+      <h2>QML has 3 parts</h2>
+      <div class="ƒ ∆-bw">
+        <div class="w-33 rpm-10 ƒ-col ∆-ct †c" style="background:#faa">
+          <div>
+            Data Enc <br> $|x\rangle$
+          </div>
+          <div>
+            <ul>
+              <li>Basis Enc</li>
+              <li>Amplitude Enc</li>
+              <li>Phase Enc</li>
+            </ul>
+          </div>
+        </div>
+        <div class="w-33 rpm-10 ƒ-col ∆-ct †c" style="background:#ffa">
+          <div>
+            Q-Circuit <br> $U(x)$
+          </div>
+          <div>
+            <ul>
+              <li><i>Loop:</i></li>
+              <li>Circuit is Parametrised</li>
+              <li>Circuit is Run</li>
+              <li>Measurement is done</li>
+              <li>Params Adjusted</li>
+            </ul>
+          </div>
+        </div>
+        <div class="w-33 rpm-10 ƒ-col ∆-ct †c" style="background:#aaf">
+          <div>
+            Measurement <br> $M(x)$
+          </div>
+          <div>
+            <ul>
+              <li>Nothing special here yet</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 9: QML Enc -->
+    <section>
+      <h3>Data Enc: $|x\rangle$</h3>
+      <div class="ƒ-col ∆-bw">
+        <p>
+          <b>Basis Enc:</b> <br>
+          $(10001) \rightarrow |1001\rangle$
+        </p>
+        <p>
+          <b>Amplitude Enc:</b>
+          $(1.0, 0.9, -5.5, 0.9) \rightarrow \frac{1}{\sqrt{31.25}}(1.0|0.0\rangle - 5.5|10\rangle)$
+        </p>
+        <p>
+          <b>Phase Enc:</b> <br>
+          $(0.5, 0.3) \rightarrow (R_x(0.5)|0\rangle, R_x(0.3)|0\rangle)$
+        </p>
+      </div>
+    </section>
+
+    <!-- Slide 10: Quantum Kernels -->
+    <section>
+      What are Kernels in Quantum-land?
+      <p>
+        Let $$ \rho(x) = |\phi(x)\rangle\langle\phi(x)| $$ be a quantum state, where $ \phi(x) $ is the feature map.
+        Then
+        $$ k(x,x') := f(x,x') = tr[\rho(x)\rho(x')] $$
+      </p>
+      <p>
+        But Where does this come from?
+      </p>
+    </section>
+
+    <!-- Slide 11: Quantum Kernels Intuition -->
+    <section>
+      <p>
+        A given kern can be related to many different feature spaces. Kernel theory also defines a unique Hilbert space
+        associated for each kernel, the Reproducing Kernel Hilbert Space.
+      </p>
+      <p>
+        Since a feature map gives rise to a kern & a kernel gives rise to an RKHS, we can construct a unique RKHS for
+        any given feature map. OR
+      </p>
+      <div class="fw5">
+        Feature Map → Kernel → RKHS <br>
+        ⟹ <br>
+        Feature Map → RKHS
+      </div>
+    </section>
+
+    <!-- Slide 12: Quantum Kernels -->
+    <section>
+      Applying these to basic encodings
+      <div class="ƒ-col">
+        <p>
+          <b>Basis Enc:</b> <br>
+          $k(x,x') = \delta_{x,x'}$
+        </p>
+        <p>
+          <b>Amplitude Enc:</b> <br>
+          $k(x,x') = ||\langle x | x' \rangle||^2$
+        </p>
+        <p>
+          <b>Phase Enc:</b> <br>
+          $k(x,x') = cos^2(\frac{x-x'}{2})$
+        </p>
+      </div>
+    </section>
+
+    <!-- Slide 13: Angle Enc -->
+    <section>
+      Hi
     </section>
   </main>
 
@@ -200,6 +300,11 @@
 
     .MathJax {
       pointer-events: none;
+    }
+
+    fh1 {
+      font-size: 2em;
+      display: block;
     }
   </style>
 </body>
