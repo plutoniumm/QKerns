@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="https://api.nukes.in/css/global.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/theme/simple.css" id="theme">
+</head>
+
+<body class="reveal">
+  <main class="slides">
+    <!-- Slide 0: Objective -->
+    <section>
+      <h2 class="ƒ ∆-ct" style="align-self: center;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Qiskit-Logo.svg" height="72">
+        bjective
+      </h2>
+      <div>A full classification of the MNIST Database</div>
+
+      <img src="https://miro.medium.com/v2/1*XdCMCaHPt-pqtEibUfAnNw.png" height="300px">
+    </section>
+
+    <section>
+      <h3 class="fw7">
+        What makes this approach different?
+      </h3>
+      <p style="font-size:0.66em">
+        Current State of Art does classification of just '0' & '1'. We use a series of optimizations rather than any one
+        big change
+      </p>
+      <ul class="norm-li">
+        <li>- Hybrid Network: C&rarr;Q&rarr;C</li>
+        <li>- Parallelised Quantum Circuit</li>
+        <li>- Learned Encoding & Decoding</li>
+        <li>- 25x25</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>A Quantum NN has 3 parts</h2>
+      <div class="ƒ ∆-bw">
+        <div class="w-33 rpm-10 ƒ-col ∆-ct †c" style="background:#faa">
+          <div>
+            Data Enc <br> $|x\rangle$
+          </div>
+          <div>
+            <ul>
+              <li></li>
+              <li>Basis, Amplitude, Phase</li>
+              <li>IQP, Others</li>
+            </ul>
+          </div>
+        </div>
+        <div class="w-33 rpm-10 ƒ-col ∆-ct †c" style="background:#ffa">
+          <div>
+            Q-Circuit <br> $U(x)$
+          </div>
+          <div>
+            <img
+              src="https://mermaid.ink/svg/pako:eNpVjTEOwjAMRa8SeW4vkIEBwQYSKmsWK3Fp1CapXEcIVb07aSlIbM_P398z2OQINLRDetoOWdSlMVGphuobMgYS9hOpuj6oJsdtk-M2XgmnzLSqHTd9RNuPnMbVf_lz_tcIFQTigN6V5_MaNiAdBTKgCzrk3oCJS8lhlnR_RQtaOFMFeXQodPL4KG2gWxymnz07L4l3ubwBzBZKhg"
+              height="60px">
+          </div>
+        </div>
+        <div class="w-33 rpm-10 ƒ-col ∆-ct †c" style="background:#aaf">
+          <div>
+            Measurement <br> $M(x)$
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h3>A Parametrised Circuit (VQC)</h3>
+      <img src="/assets/qml/sample-params.png" height="200px">
+      <p>
+        We can use the learned parameters to then treat it like a Neural Net. Much more
+        powerful than classical NNs
+      </p>
+    </section>
+
+    <section>
+      <h3>Our Approach</h3>
+      <div class="ƒ w-100 ∆-bw">
+        <!-- input -->
+        <span style="line-height: 250px;">9️⃣</span>
+        <span style="line-height: 250px;">&rarr;</span>
+        <!-- conv -->
+        <img src="/assets/qml/conv.svg" height="200px">
+        <span style="line-height: 250px;">&rarr;</span>
+        <!-- quantum -->
+        <ul class="w-33 p10 rx10 ƒ-col ∆-ct †c" style="background:#aaf;height:200px;">
+          <li class="mx-a †c w-100">Quantum Layer (Large VQC)</li>
+          <li style="font-size: 1em;">$$U(x)$$</li>
+          <li class="o-50" style="font-size: 0.4em;">$13x48 = 624$</li>
+        </ul>
+        <span style="line-height: 250px;">&rarr;</span>
+        <!-- linear -->
+        <img src="/assets/qml/c2.svg" height="200px">
+        <span style="line-height: 250px;">&rarr;</span>
+        <!-- out -->
+        <span style="line-height: 250px;">9</span>
+      </div>
+    </section>
+
+    <section>
+      <h3>Current Progress: </h3>
+      <ul class="norm-li">
+        <li>🟡 Quantum Part: No Variations & 10 Qubits</li>
+        <li>🟢 Model Runs from Start to Finish</li>
+        <li>🔴 Takes too long (~90 mins)</li>
+        <li>🟡 Circuit <code>||</code>isation Tests: <code>py multiprocessing</code></li>
+        <li>🟡 Accuracy? ~10% @ Incomplete & Untuned</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/reveal.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/plugin/math/math.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.1.0/plugin/markdown/markdown.js"></script>
+  <script>
+    document.querySelectorAll( 'section[md]' ).forEach( e => {
+      // converts 'md' to revealJS compatible format
+      e.setAttribute( 'data-markdown', "" );
+      e.removeAttribute( 'md' );
+      e.innerHTML = `<script type="text/template">${ e.innerText }</` + `script>`;
+    } );
+    //
+    Reveal.initialize( {
+      history: true,
+      transition: 'linear',
+      showSlideNumber: 'all',
+      fragments: false,
+      hideCursorTime: 1e3,
+      viewDistance: 3,
+      plugins: [ RevealMath, RevealMarkdown ]
+    } );
+
+    // DEV MODE:
+    setTimeout( () => window.location.reload(), 12e4 );
+  </script>
+  <style type="text/css">
+    ul {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    li {
+      list-style-type: none;
+      font-size: 1rem;
+    }
+
+    img {
+      object-fit: contain;
+    }
+
+    .reveal .reveal_section {
+      position: relative;
+    }
+
+    .reveal .caption {
+      position: absolute;
+      bottom: 0px;
+      left: 50px;
+    }
+
+    .dull {
+      opacity: 0.75;
+    }
+
+    .MathJax {
+      pointer-events: none;
+    }
+
+    fh1 {
+      font-size: 2em;
+      display: block;
+    }
+
+    .norm-li li {
+      font-size: 1em;
+    }
+  </style>
+</body>
+
+</html>

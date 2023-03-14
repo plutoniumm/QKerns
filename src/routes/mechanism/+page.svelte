@@ -306,9 +306,8 @@
         vertical double pendulum. It however also turns out that SINDy is good
         at small specific classes of tasks and should be used for as such, it
         generalists very poorly as was seen in the modelling of Nuclear Fusion
-        where fusion control is done much better with DeepMind's new model <a
-          href="#">:Deepmind</a
-        >, we see that they're able to not only model and predict the gas plume
+        where fusion control is done much better with DeepMind's new model, we
+        see that they're able to not only model and predict the gas plume
         behaviour but also control it. This is a much more complex task than the
         simple double pendulum and so it is not surprising that SINDy fails
         here. This is also a good example of how ML can be used to solve
