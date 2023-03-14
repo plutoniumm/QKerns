@@ -44,5 +44,19 @@
       "href": "anglenc.pdf",
       "title": "Angle Encoding as Kern"
     }
+  ],
+  "presentations": [
+    {
+      "href": "w3.html",
+      "title": "Week 3 Presentation"
+    },
+    {
+      "href": "midsem.html",
+      "title": "Midsem Presentation"
+    },
+    {
+      "href": "mnist.html",
+      "title": "Full MNIST Classification"
+    }
   ]
 }

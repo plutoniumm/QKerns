@@ -14,6 +14,7 @@
     ["🐍 Python Files", "python", (name) => `/python#${name}.html`],
     ["📝 Markdown Files", "markdown", (name) => `/markdown#${name}.md`],
     ["📸 Docs & Imgs", "documents", (name) => `/document#${name}`],
+    ["🖥️ Presentation", "presentations", (name) => `/presentation#${name}`],
   ];
 </script>
 
