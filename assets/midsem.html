@@ -72,6 +72,7 @@
         related
       </p>
       <fh1>$ f(x)$ vs $f(x') $</fh1>
+      Therefore
       <fh1>
         $ f(x)^T f(x') = k(x,x') $
       </fh1>
@@ -185,39 +186,26 @@
         </p>
         <p>
           <b>Phase Enc:</b> <br>
-          $(0.5, 0.3) \rightarrow (R_x(0.5)|0\rangle, R_x(0.3)|0\rangle)$
+          $(0.5, 0.3) \rightarrow (R_x(0.5)|0\rangle,\, R_x(0.3)|0\rangle)$
+        </p>
+        <p style="color: #888;font-size: 0.8em;">
+          We shall return to the idea of encoding in a moment
         </p>
       </div>
     </section>
 
     <!-- Slide 10: Quantum Kernels -->
     <section>
-      What are Kernels in Quantum-land?
+      How do we define kernels in Quantum-land
       <p>
-        Let $$ \rho(x) = |\phi(x)\rangle\langle\phi(x)| $$ be a quantum state, where $ \phi(x) $ is the feature map.
-        Then
+        For a given feature map $ \phi(x) $, we can define its density operator as
+        $$ \rho(x) = |\phi(x)\rangle\langle\phi(x)| $$
+        And therefore the kernel as:
         $$ k(x,x') := f(x,x') = tr[\rho(x)\rho(x')] $$
       </p>
       <p>
-        But Where does this come from?
+        This gives us effectively the 'distance' between two points in the feature space.
       </p>
-    </section>
-
-    <!-- Slide 11: Quantum Kernels Intuition -->
-    <section>
-      <p>
-        A given kern can be related to many different feature spaces. Kernel theory also defines a unique Hilbert space
-        associated for each kernel, the Reproducing Kernel Hilbert Space.
-      </p>
-      <p>
-        Since a feature map gives rise to a kern & a kernel gives rise to an RKHS, we can construct a unique RKHS for
-        any given feature map. OR
-      </p>
-      <div class="fw5">
-        Feature Map → Kernel → RKHS <br>
-        ⟹ <br>
-        Feature Map → RKHS
-      </div>
     </section>
 
     <!-- Slide 12: Quantum Kernels -->
@@ -237,11 +225,26 @@
           $k(x,x') = cos^2(\frac{x-x'}{2})$
         </p>
       </div>
+      <p>
+        Backtracking the 'classical' search space the above feature maps,
+        we see that Phase Encoding is $\infty$ dimensional, & therefore
+        most powerful here
+      </p>
     </section>
 
-    <!-- Slide 13: Angle Enc -->
-    <section>
-      Hi
+    <section md>
+      ### Comparing against RBF
+      if $x=x'$, then we get $k(x,x') = 1$
+      in both the classical RBF & the Angle Encoding
+      </p>
+      <p>
+        However while $(x-x') \rightarrow \infty \implies k \rightarrow 0$,
+        is always true for RBF, for Angle Encoding isn't.
+      </p>
+      <p>
+        So while Angle Encoding is the most powerful of the
+        three, it still has its limitations which can be fixed
+      </p>
     </section>
   </main>
 
@@ -265,9 +268,6 @@
       viewDistance: 3,
       plugins: [ RevealMath, RevealMarkdown ]
     } );
-
-    // DEV MODE:
-    setTimeout( () => window.location.reload(), 12e4 );
   </script>
   <style type="text/css">
     ul {
