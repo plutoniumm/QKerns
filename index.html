@@ -14,18 +14,19 @@
 	<meta http-equiv="content-security-policy" content="">
 		<link href="./_app/immutable/assets/_layout.635835f1.css" rel="stylesheet">
 		<link href="./_app/immutable/assets/_page.356de47d.css" rel="stylesheet">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/start.18fd0b87.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/index.486f8b79.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/singletons.d668582d.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/app.ac66c4e8.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/preload-helper.41c905a7.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/_layout.svelte.537e520d.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/nav.85e4b3d4.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/_layout.js.fb1865a6.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/_layout.da46b06b.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/entry/_page.svelte.406f334f.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/_page.115dc75c.mjs">
-		<link rel="preload" as="script" crossorigin="anonymous" href="./_app/immutable/chunks/marked.esm.75dc6516.mjs"><!-- HEAD_svelte-1us85gb_START --><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"></script><!-- HEAD_svelte-1us85gb_END -->
+		<link rel="modulepreload" href="./_app/immutable/entry/start.da8fc6aa.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.997ad408.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.59aa6599.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.ac7f7d55.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/preload-helper.41c905a7.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/_layout.svelte.a28daa30.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/nav.8c1532a5.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/_layout.js.984db11e.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/_layout.da46b06b.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/_page.svelte.4b789048.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/_page.713f8d8e.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/_commonjsHelpers.725317a4.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/marked.esm.75dc6516.js"><!-- HEAD_svelte-1us85gb_START --><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"></script><!-- HEAD_svelte-1us85gb_END -->
 </head>
 
 <body data-sveltekit-preload-data="hover">
@@ -48,6 +49,7 @@
             </li><li class="svelte-1pvnnym"><a href="/python#docs-kerntrain.html">Q Kernel Train (QKA)</a>
             </li><li class="svelte-1pvnnym"><a href="/python#jupy-visualisations.html">Py Visualisations</a>
             </li><li class="svelte-1pvnnym"><a href="/python#kern-backprop.html">Kernel Backprop Demo</a>
+            </li><li class="svelte-1pvnnym"><a href="/python#mnist-hybrid.html">MNIST Full Classifier</a>
             </li>
         </ul><h4 class="p510 m0 svelte-1pvnnym">📝 Markdown Files</h4>
         <ul class="p520 svelte-1pvnnym"><li class="svelte-1pvnnym"><a href="/markdown#summaries.md">Paper Summaries</a>
@@ -114,19 +116,19 @@
 			
 			<script>
 				{
-					__sveltekit_5ytbpu = {
+					__sveltekit_bnvlwa = {
 						env: {},
-						assets: new URL(".", location.href).pathname.replace(/^\/$/, ''),
+						base: new URL(".", location).pathname.slice(0, -1),
 						element: document.currentScript.parentElement
 					};
 
 					const data = [null,null];
 
 					Promise.all([
-						import("./_app/immutable/entry/start.18fd0b87.mjs"),
-						import("./_app/immutable/entry/app.ac66c4e8.mjs")
+						import("./_app/immutable/entry/start.da8fc6aa.js"),
+						import("./_app/immutable/entry/app.ac7f7d55.js")
 					]).then(([kit, app]) => {
-						kit.start(app, __sveltekit_5ytbpu.element, {
+						kit.start(app, __sveltekit_bnvlwa.element, {
 							node_ids: [0, 2],
 							data,
 							form: null,
